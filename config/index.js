@@ -17,7 +17,7 @@ module.exports = {
   authorized: maincfg.authorization,
   fiware_orion_url: maincfg.orion_url,
   ngsi_connector_port: maincfg.api_port,
-  run_server_protocol: 'http',
+  run_server_protocol: 'https',
   allowed_file_extentions: [".csv", ".json"],
   default_return_entities: 100,
   expected_headers: ["fiware-service", "fiware-servicepath", "x-auth-token"],

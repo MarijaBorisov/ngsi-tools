@@ -22,10 +22,10 @@ RUN sudo npm cache clean -f && \
 
 # Download latest version of the code and install npm dependencies
 RUN git clone https://github.com/MarijaBorisov/ngsi-tools.git && \
-	cd ocbconnector && \
+	cd ngsi-tools && \
 	npm install
 
 # Change Workdir
-WORKDIR /opt/ocbconnector
+WORKDIR /opt/ngsi-tools
 
 CMD ["sudo", "npm", "start"]
