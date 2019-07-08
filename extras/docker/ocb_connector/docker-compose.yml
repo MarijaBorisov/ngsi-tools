@@ -1,0 +1,11 @@
+version: "3"
+services:
+  connector:
+    image: despotsen/ocbconnector
+    ports:
+      - "3000:3000"
+networks:
+   default:
+       driver: bridge
+       driver_opts:
+          com.docker.network.driver.mtu: 1400

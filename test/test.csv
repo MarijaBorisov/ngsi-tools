@@ -1,0 +1,101 @@
+id;family;type;name;description;refCategory;wastecode;definitionSource
+waste:1;Resource;Waste;Biowaste;;wastecategory:1;200108;easetech
+waste:2;Resource;Waste;Meat and bone meal;;wastecategory:1;200108;easetech
+waste:3;Resource;Waste;Rape meal;;wastecategory:1;200108;easetech
+waste:4;Resource;Waste;Sugar cane;;wastecategory:1;200108;easetech
+waste:5;Resource;Waste;Soy meal;;wastecategory:1;200108;easetech
+waste:6;Resource;Waste;Palm meal;;wastecategory:1;200108;easetech
+waste:7;Resource;Waste;Fish meal;;wastecategory:1;200108;easetech
+waste:8;Resource;Waste;Maize grain;;wastecategory:1;200108;easetech
+waste:9;Resource;Waste;Wheat grain;;wastecategory:1;200108;easetech
+waste:10;Resource;Waste;Barley grain;;wastecategory:1;200108;easetech
+waste:11;Resource;Waste;Brewers grain;;wastecategory:1;200108;easetech
+waste:12;Resource;Waste;Beet pulp;;wastecategory:1;200108;easetech
+waste:13;Resource;Waste;Beet top;;wastecategory:1;200108;easetech
+waste:14;Resource;Waste;Beet molasses;;wastecategory:1;200108;easetech
+waste:15;Resource;Waste;Potato pulp;;wastecategory:1;200108;easetech
+waste:96;Resource;Waste;Meat ;;wastecategory:1;200108;Food app
+waste:97;Resource;Waste;Pig meat;;wastecategory:1;200108;Food app
+waste:98;Resource;Waste;Beef;;wastecategory:1;200108;Food app
+waste:99;Resource;Waste;Poultry meat;;wastecategory:1;200108;Food app
+waste:100;Resource;Waste;Others meat;;wastecategory:1;200108;Food app
+waste:101;Resource;Waste;Dairy products;;wastecategory:1;200108;Food app
+waste:102;Resource;Waste;Milk and cream;;wastecategory:1;200108;Food app
+waste:103;Resource;Waste;Cheese;;wastecategory:1;200108;Food app
+waste:104;Resource;Waste;Butter;;wastecategory:1;200108;Food app
+waste:105;Resource;Waste;Others dairy;;wastecategory:1;200108;Food app
+waste:106;Resource;Waste;Cereals based products;;wastecategory:1;200108;Food app
+waste:107;Resource;Waste;Bread;;wastecategory:1;200108;Food app
+waste:108;Resource;Waste;Pasta;;wastecategory:1;200108;Food app
+waste:109;Resource;Waste;Others Cereals based products;;wastecategory:1;200108;Food app
+waste:110;Resource;Waste;Roots and tubers;;wastecategory:1;200108;Food app
+waste:111;Resource;Waste;Vegetables;;wastecategory:1;200108;Food app
+waste:112;Resource;Waste;Fruit;;wastecategory:1;200108;Food app
+waste:113;Resource;Waste;Oranges;;wastecategory:1;200108;Food app
+waste:114;Resource;Waste;Apples;;wastecategory:1;200108;Food app
+waste:115;Resource;Waste;Others fruit;;wastecategory:1;200108;Food app
+waste:116;Resource;Waste;Beverages;;wastecategory:1;200108;Food app
+waste:117;Resource;Waste;Coffee;;wastecategory:1;200108;Food app
+waste:118;Resource;Waste;Beer;;wastecategory:1;200108;Food app
+waste:119;Resource;Waste;Wine;;wastecategory:1;200108;Food app
+waste:120;Resource;Waste;Mineral water;;wastecategory:1;200108;Food app
+waste:121;Resource;Waste;Others beverages;;wastecategory:1;200108;Food app
+waste:122;Resource;Waste;Pre-prepared meals;;wastecategory:1;200108;Food app
+waste:123;Resource;Waste;Fish and seafood;;wastecategory:1;200108;Food app
+waste:124;Resource;Waste;Oilcrops and pulses;;wastecategory:1;200108;Food app
+waste:125;Resource;Waste;Sunflower oil;;wastecategory:1;200108;Food app
+waste:126;Resource;Waste;Olive oil;;wastecategory:1;200108;Food app
+waste:127;Resource;Waste;Others oilcrops and pulses;;wastecategory:1;200108;Food app
+waste:128;Resource;Waste;Cereal;;wastecategory:1;200108;Non bota zer
+waste:129;Resource;Waste;food waste fruit, vegetables;;wastecategory:1;200108;Non bota zer
+waste:130;Resource;Waste;Vegetable;;wastecategory:1;200108;Non bota zer
+waste:131;Resource;Waste;Fruit;;wastecategory:1;200108;Non bota zer
+waste:132;Resource;Waste;Nuts;;wastecategory:1;200108;Non bota zer
+waste:133;Resource;Waste;Infusion;;wastecategory:1;200108;Non bota zer
+waste:134;Resource;Waste;Vegetable;;wastecategory:1;200108;Non bota zer
+waste:135;Resource;Waste;Meat;;wastecategory:1;200108;Non bota zer
+waste:136;Resource;Waste;Seafood;;wastecategory:1;200108;Non bota zer
+waste:137;Resource;Waste;Stew;;wastecategory:1;200108;Non bota zer
+waste:138;Resource;Waste;Sweet ;;wastecategory:1;200108;Non bota zer
+waste:139;Resource;Waste;Candy;;wastecategory:1;200108;Non bota zer
+waste:140;Resource;Waste;Fatty food;;wastecategory:1;200108;Non bota zer
+waste:141;Resource;Waste;Macaroni;;wastecategory:1;200108;Non bota zer
+waste:142;Resource;Waste;Butter;;wastecategory:1;200108;Non bota zer
+waste:143;Resource;Waste;Mayonnaise;;wastecategory:1;200108;Non bota zer
+waste:144;Resource;Waste;Jam;;wastecategory:1;200108;Non bota zer
+waste:145;Resource;Waste;Candy stick;;wastecategory:1;200108;Non bota zer
+waste:146;Resource;Waste;Food paste;;wastecategory:1;200108;Non bota zer
+waste:147;Resource;Waste;Fish;;wastecategory:1;200108;Non bota zer
+waste:148;Resource;Waste;Pita;;wastecategory:1;200108;Non bota zer
+waste:149;Resource;Waste;Coffee;;wastecategory:1;200108;Non bota zer
+waste:150;Resource;Waste;Coffee grounds;;wastecategory:1;200108;Non bota zer
+waste:736;Resource;Waste;Bread;;wastecategory:1;200108;serious games
+waste:737;Resource;Waste;Goldfish;;wastecategory:1;200108;serious games
+waste:738;Resource;Waste;Pizza;;wastecategory:1;200108;serious games
+waste:739;Resource;Waste;Apple;;wastecategory:1;200108;serious games
+waste:740;Resource;Waste;Sandwich;;wastecategory:1;200108;serious games
+waste:741;Resource;Waste;Fairy cake cases;;wastecategory:1;200108;serious games
+waste:16;Resource;Waste;Glass;;wastecategory:10;210102;easetech
+waste:17;Resource;Waste;Non recyclable glass;;wastecategory:10;210102;easetech
+waste:151;Resource;Waste;Salad bowl;;wastecategory:10;210102;Non bota zer
+waste:152;Resource;Waste;Screen;;wastecategory:10;210102;Non bota zer
+waste:153;Resource;Waste;Aquarium;;wastecategory:10;210102;Non bota zer
+waste:154;Resource;Waste;Crystal plates, glasses;;wastecategory:10;210102;Non bota zer
+waste:155;Resource;Waste;Nail polish container;;wastecategory:10;210102;Non bota zer
+waste:156;Resource;Waste;Flask;;wastecategory:10;210102;Non bota zer
+waste:157;Resource;Waste;Salt shaker;;wastecategory:10;210102;Non bota zer
+waste:158;Resource;Waste;Oilcan;;wastecategory:10;210102;Non bota zer
+waste:159;Resource;Waste;Vase jug;;wastecategory:10;210102;Non bota zer
+waste:742;Resource;Waste;Plate glass;;wastecategory:10;210102;serious games
+waste:743;Resource;Waste;Broken Cup;;wastecategory:10;210102;serious games
+waste:744;Resource;Waste;Broken plates;;wastecategory:10;210102;serious games
+waste:18;Resource;Waste;Plastic bottles;;wastecategory:11;150102;easetech
+waste:19;Resource;Waste;Hard plastic;;wastecategory:11;150102;easetech
+waste:160;Resource;Waste;Bowl;;wastecategory:11;150102;Non bota zer
+waste:161;Resource;Waste;Hot water bottle;;wastecategory:11;150102;Non bota zer
+waste:162;Resource;Waste;Plastic bucket without recycle symbol;;wastecategory:11;150102;Non bota zer
+waste:163;Resource;Waste;Lunch box;;wastecategory:11;150102;Non bota zer
+waste:164;Resource;Waste;Lipstick container;;wastecategory:11;150102;Non bota zer
+waste:165;Resource;Waste;Clothes pegs;;wastecategory:11;150102;Non bota zer
+waste:166;Resource;Waste;Container;;wastecategory:11;150102;Non bota zer
+waste:167;Resource;Waste;Food container lid;;wastecategory:11;150102;Non bota zer

@@ -1,0 +1,11 @@
+{
+    "500" : "There are no Fiware Orion instance to fulfill the request.",
+    "404" : "The resource (entity, subscription, etc.) referred in the request has not been found.",
+    "400" : "The resource (file) reffered in the request is not valid",
+    "501" : "The server does not support the functionality required to fulfill the request.",
+    "428" : "They headers resource (Fiware-Service, Fiware-ServicePath, X-Auth-Token) was not found",
+    "401" : "The request has not been applied because it lacks valid authentication credentials for the target resource.",
+    "ext": [
+      ".csv", ".json"
+    ]
+}

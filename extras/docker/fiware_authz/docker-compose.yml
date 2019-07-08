@@ -1,0 +1,6 @@
+version: "3"
+services:
+  authz:
+    image: fiware/authzforce-ce-server:release-8.0.1
+    ports:
+      - "8080:83"

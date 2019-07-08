@@ -1,0 +1,37 @@
+const rules = require( "../utilities" );
+
+const DepoistPointType = {
+    id: rules.idCheck,
+    type: rules.typeCheck,
+    family: rules.mandatoryCheck,
+    name: rules.mandatoryCheck,
+    refInputs: rules.stringToArray,
+    refOutputs: rules.stringToArray,
+    width: rules.commaNumToUnitsMandatory,
+    height: rules.commaNumToUnitsMandatory,
+    depth: rules.commaNumToUnitsMandatory,
+    weight: rules.commaNumToUnitsMandatory,
+    cargoVolume: rules.commaNumToUnitsMandatory,
+    maximumLoad: rules.commaNumToUnitsMandatory,
+    recommendedLoad: rules.commaNumToUnitsMandatory,
+    category: rules.mandatoryCheck,
+    insertHolesNumber: rules.commaNumToUnitsMandatory,
+    insertHoleWidth: rules.commaNumToUnits,
+    insertHoleHeight: rules.commaNumToUnits,
+    loadType: rules.stringCheck,
+    madeOf: rules.stringCheck,
+    madeOfCode: rules.stringCheck,
+    brandName: rules.mandatoryCheck,
+    modelName: rules.mandatoryCheck,
+    manufacturerName: rules.stringCheck,
+    colors: rules.stringToArray,
+    image: rules.stringCheck,
+    compliantWith: rules.stringToArray,
+    accessLimitation: rules.stringCheck,
+    userIdentification: rules.stringCheck,
+    inputControl: rules.stringCheck,
+    maximumInputVolume: rules.commaNumToUnits,
+    features: rules.stringToArrayMandatory,
+};
+
+module.exports = DepoistPointType;
