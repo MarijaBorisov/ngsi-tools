@@ -21,7 +21,7 @@ RUN sudo npm cache clean -f && \
 	sudo n stable
 
 # Download latest version of the code and install npm dependencies
-RUN git clone https://github.com/Despotsen/ocbconnector.git && \
+RUN git clone https://github.com/MarijaBorisov/ngsi-tools.git && \
 	cd ocbconnector && \
 	npm install
 
