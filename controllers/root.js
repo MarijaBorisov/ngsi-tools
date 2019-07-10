@@ -21,8 +21,8 @@ function getEntities(req, res) {
     .catch((error) => {
       if (error.statusCode === 401) {
         res.status(401).json("User token not authorized");
-      }
-      res.status(500).json(responseMessages[ "500" ]);
+      } else
+        res.status(500).json(responseMessages[ "500" ]);
     });
 }
 
