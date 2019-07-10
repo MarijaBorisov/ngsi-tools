@@ -39,7 +39,7 @@ const Waste = {
     "impact:pt": rules.stringCheck,
     "impact:eus": rules.stringCheck,
     "impact:gr": rules.stringCheck,
-    "refCategory": rules.stringToArrayMandatory,
+    "refCategory": rules.stringToArray,
     "definitionSource": rules.stringCheck,
     "image": rules.stringCheck,
     "wasteCode": rules.stringCheck
