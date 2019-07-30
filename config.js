@@ -12,6 +12,6 @@ config.authorization = true;
 
 config.returnEntities = 20;
 
-config.batch_size = 200;
+config.batch_size = 100;
 
 module.exports = config;
