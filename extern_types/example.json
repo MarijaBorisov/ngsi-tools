@@ -1,0 +1,7 @@
+{
+  "nameOfNewType": {
+    "id": "EntityID;mandatory",
+    "type": "Entity type; mandatory",
+    "nameOfFirstProperty": "[string|list of strings(separated with commas)|list of numbers(separated with commas)|list of ResourceIDs(separated with commas)|geolocation|float number(comma as delimiter)|integer number|datetime|StructuredValue(JSON object)];Mandatory|Optional"
+  }
+}
