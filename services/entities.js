@@ -1,5 +1,6 @@
 const request = require( "request-promise" );
 const url = require( "../config" ).orion_url;
+const batchSize = require( "../config" ).batch_size;
 
 const entitiesOperations = {
 
@@ -35,7 +36,6 @@ const entitiesOperations = {
     json: true,
   }),
 };
-
 function processEntities(id, headers) {
   if (!id) {
     return entitiesOperations.getEntities(headers);
@@ -52,7 +52,7 @@ async function sendEntities(data, headers, operation) {
   var allBatches = []
   while (data.length > slicer) {
     let anchor = slicer;
-    slicer += 250;
+    slicer += batchSize;
     allBatches.push(
       entitiesOperations.createEntity(data.slice(anchor,slicer), headers)
     );
@@ -61,7 +61,7 @@ async function sendEntities(data, headers, operation) {
   }
   return Promise.all(allBatches)
     .then((x) => {
-      return Promise.resolve('Etities created successfuly.')
+      return Promise.resolve('Entities created successfuly.')
     })
     .catch((e)=>{
       return Promise.reject(e)
@@ -73,7 +73,7 @@ async function updateEntities(data, headers) {
   var allBatches = []
   while (data.length > slicer) {
     let anchor = slicer;
-    slicer += 300;
+    slicer += batchSize;
     allBatches.push(
       entitiesOperations.updateEntity(data.slice(anchor,slicer), headers)
     );

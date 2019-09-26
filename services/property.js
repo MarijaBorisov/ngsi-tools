@@ -51,7 +51,7 @@ function propertyChecks( rules, entity, operation, ext ) {
     const rulesetLowCase = {};
 
     if ( !operation || operation === "CREATE" ) {
-        if ( Object.keys( rulesProp ).length !== Object.keys( patka ).length ) {
+      if (Object.keys(rulesProp).length !== Object.keys(patka).length) {
             throw new Error( "Rules headers and entity headers are not same." );
         }
     }

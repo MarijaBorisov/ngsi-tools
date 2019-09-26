@@ -68,12 +68,28 @@ function postEntitiesBody(req, res, file, headers, body) {
       .catch((error) => {
         if (error.statusCode === 401) {
           res.status(401).json(error.error);
-        }
-         res.json(error);
+        } 
+        else res.json([
+          {
+            "Entity attribute errors:": data.errors.length,
+            "Entities without errors:": data.result.length,
+            "Info on rules for given type:": typet(data.result),
+          },
+          data.errors,
+          resp(data.result, "Create"),
+        ]);
       });
   })
     .catch((error) => {
-      res.json(error);
+      res.json([
+        {
+          "Entity attribute errors:": data.errors.length,
+          "Entities without errors:": data.result.length,
+          "Info on rules for given type:": typet(data.result),
+        },
+        data.errors,
+        resp(data.result, "Create"),
+      ]);
     });
 }
 
