@@ -11,7 +11,7 @@ const WasteCategory = {
     "name:pt": rules.stringCheck,
     "name:eus": rules.stringCheck,
     "name:gr": rules.stringCheck,
-    "refResources": rules.stringCheck,
+    "refResources": rules.stringToArray,
     "description": rules.mandatoryCheck,
     "description:en": rules.stringCheck,
     "description:es": rules.stringCheck,
