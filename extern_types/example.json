@@ -1,7 +1,22 @@
 {
   "nameOfNewType": {
-    "id": "EntityID;mandatory",
-    "type": "Entity type; mandatory",
-    "nameOfFirstProperty": "[string|list of strings(separated with commas)|list of numbers(separated with commas)|list of ResourceIDs(separated with commas)|geolocation|float number(comma as delimiter)|integer number|datetime|StructuredValue(JSON object)];Mandatory|Optional"
+    "id": {
+      "type": "EntityID",
+      "mandatory": "YES"
+    },
+    "type": {
+      "type": "EntityType",
+      "mandatory": "YES"
+    },
+    "nameOfFirstProperty":{
+      "type": "Text|Relationship|TextList(,)|NumberList(,)|RelationshipList(,)|GeoJSON(Point)|Float(,)|Integer|Datetime|StructuredValue(JSON object)",
+      "mandatory": "YES|NO",
+      "metadata" :{
+        "name": "EnterArbitraryName",
+        "value": "EnterArbitraryValue",
+        "type": "EnterArbitraryType"
+      }
+    },
+    "..." : {"...":"..."}
   }
 }
