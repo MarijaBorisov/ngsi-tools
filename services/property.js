@@ -80,6 +80,8 @@ function rulesCheck( parsedData, ext ) {
     }
 
     const rules = entityRules[ type ];
+  // console.log("rules");
+  // console.log(rules);
     const errors = [];
 
    
@@ -120,9 +122,15 @@ function processEntity( rules, entity, option, ext ) {
         try {
             result[ property ] = processEntityProperty( rules, entity, property );
         } catch ( error ) {
-            if ( option !== "update" ) {
+          if (option !== "update") {
+            if (error == "Incorrectly structured metadata.") { 
+              throw new Error( `Property ${ property } failed attribute check in ${ entity.id }: Incorrectly structured metadata.` );
+            } else
                 throw new Error( `Property ${ property } failed attribute check in ${ entity.id }` );
-            } else if ( error.message !== "100" ) {
+          } else if (error.message !== "100") {
+            if (error == "Incorrectly structured metadata.") { 
+              throw new Error( `Property ${ property } failed attribute check in ${ entity.id }: Incorrectly structured metadata.` );
+            } else
                 throw new Error( `Property ${ property } failed attribute check in ${ entity.id }` );
             }
         }
