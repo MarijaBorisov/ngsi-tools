@@ -5,7 +5,7 @@ const moment = require( "moment" );
 
 let counter = 0;
 
-function commaNumToUnits( oldNum ) {
+function commaNumToUnits( oldNum ) {//OK Float Optional
     counter += 1;
 
     if(typeof oldNum === 'object') {
@@ -16,11 +16,13 @@ function commaNumToUnits( oldNum ) {
         }
     }
 
-    const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
-    let obj = [];
-    if ( pos( counter ) ) {
+  // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
+  const newNum = oldNum ? oldNum : 0;
+  let obj = [];
+  let meta = pos(counter);
+    if ( meta ) {
         obj = [];
-        meta = pos(counter);
+        // meta = pos(counter);
         let send =  {
             value: newNum || 0,
             type: "Float",
@@ -35,12 +37,13 @@ function commaNumToUnits( oldNum ) {
     }
 
           return {
-              "value": newNum || 0,
-              "type": "Float"
+            "value": newNum || 0,
+            "type": "Float",
+            metadata: {}
           };
 }
 
-function commaNumToUnitsInt( oldNum ) {
+function commaNumToUnitsInt( oldNum ) {//OK Opional Integer
     counter += 1;
 
     if(typeof oldNum === 'object') {
@@ -51,11 +54,14 @@ function commaNumToUnitsInt( oldNum ) {
         }
     }
 
-    const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
-    let obj = [];
-    if ( pos( counter ) ) {
+    // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
+    const newNum = oldNum ? oldNum : 0;
+  let obj = [];
+  let meta = pos(counter);
+  // console.log( meta);
+    if ( meta ) {
         obj = [];
-        meta = pos(counter);
+        // meta = pos(counter);
         let send =  {
             value: newNum || 0,
             type: "Integer",
@@ -71,11 +77,53 @@ function commaNumToUnitsInt( oldNum ) {
 
           return {
               "value": newNum || 0,
-              "type": "Integer"
+            "type": "Integer",
+            metedata: {}
           };
 }
 
-function commaNumToUnitsMandatory(oldNum) {
+function commaNumToUnitsIntMandatory(oldNum) {//OK Mandatory Integer
+  counter += 1;
+
+  if (!oldNum) {
+    return null;
+  }
+  
+  if (typeof oldNum === "object") {
+    return {
+      value: oldNum.value,
+      type: "Integer",
+      metadata: oldNum.metadata
+    };
+  }
+
+  // const newNum = oldNum ? Number(oldNum.replace(".", "").replace(",", ".")) : 0;
+  const newNum = oldNum ? oldNum : 0;
+  let obj = [];
+  let meta = pos(counter);
+  if (meta) {
+    obj = [];
+    // meta = pos(counter);
+    let send = {
+      value: newNum || 0,
+      type: "Integer",
+      metadata: JSON.parse(meta)
+    };
+    obj.push(send);
+  }
+
+  if (obj.length !== 0) {
+    return obj[0];
+  }
+
+  return {
+    value: newNum || 0,
+    type: "Integer",
+    metadata: {}
+  };
+}
+
+function commaNumToUnitsMandatory(oldNum) {//OK Mandatory Float
     counter += 1;
     if(!oldNum) {
         return null;
@@ -89,11 +137,13 @@ function commaNumToUnitsMandatory(oldNum) {
         }
     }
 
-    const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
-    let obj = [];
-    if(pos(counter)) {
+    // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
+    const newNum = oldNum ? oldNum : 0;
+  let obj = [];
+  let meta = pos(counter);
+    if(meta) {
         obj = [];
-        meta = pos(counter);
+        // meta = pos(counter);
         let send =  {
             value: newNum || 0,
             type: "Float",
@@ -108,55 +158,90 @@ function commaNumToUnitsMandatory(oldNum) {
 
     return {
         "value": newNum || 0,
-        "type": "Float"
+      "type": "Float",
+      metedata: {}
     };
 }
 
-function stringToArray(string) {
+// function stringToArray(string) {
+//   counter += 1;
+//   if (!string) {
+//     return {
+//         value: [],
+//         type: "List",
+//         metadata: {}
+//     };
+//   }
+
+//   if (typeof string === 'object') {
+//       return {
+//           value: string.value || [],
+//           type: "List",
+//           metadata: string.metadata || {}
+//       }
+//   }
+//   if (string) {
+//       let obj = [];
+//       if(pos(counter)) {
+//           obj = [];
+//           meta = pos(counter);
+//           let send =  {
+//               value: string.split(',').map(raw => raw.trim()),
+//               type: "List",
+//               metadata: JSON.parse(meta)
+//           };
+//           obj.push(send);
+
+//       }
+
+//       if(obj.length !== 0) {
+//           return obj[0];
+//       }
+
+//         return {
+//             value: string.split(',').map(raw => raw.trim()),
+//             type: "List",
+//             metadata: {}
+//         }
+//   }
+//   return null;
+// }
+
+function stringToArray(string) {//OK Optional List Float or String
   counter += 1;
-  if (!string) {
+
+  if (typeof string === "object") {
     return {
-        value: [],
-        type: "List",
-        metadata: {}
+      value: string.value || [],
+      type: "List",
+      metadata: string.metadata || {}
     };
   }
-
-  if (typeof string === 'object') {
-      return {
-          value: string.value || [],
-          type: "List",
-          metadata: string.metadata || {}
-      }
+  let obj = [];
+  let meta = pos(counter);
+  if (meta) {
+    obj = [];
+    // meta = pos(counter);
+    let send = {
+      value: string ? string.split(",").map(raw => raw.trim()) : [],
+      type: "List",
+      metadata: JSON.parse(meta)
+    };
+    obj.push(send);
   }
-  if (string) {
-      let obj = [];
-      if(pos(counter)) {
-          obj = [];
-          meta = pos(counter);
-          let send =  {
-              value: string.split(',').map(raw => raw.trim()),
-              type: "List",
-              metadata: JSON.parse(meta)
-          };
-          obj.push(send);
 
-      }
-
-      if(obj.length !== 0) {
-          return obj[0];
-      }
-
-        return {
-            value: string.split(',').map(raw => raw.trim()),
-            type: "List",
-            metadata: {}
-        }
+  if (obj.length !== 0) {
+    return obj[0];
   }
-  return null;
+
+  return {
+    value: string ? string.split(",").map(raw => raw.trim()) : [],
+    type: "List",
+    metadata: {}
+  };
 }
 
-function stringToArrayMandatory(string) {
+function stringToArrayMandatory(string) {//OK Mandatory List Float or String
     counter += 1;
   if (!string) {
     return null;
@@ -172,9 +257,10 @@ function stringToArrayMandatory(string) {
 
   if (string) {
     let obj = [];
-    if(pos(counter)) {
+    let meta = pos(counter);
+    if(meta) {
         obj = [];
-        meta = pos(counter);
+        // meta = pos(counter);
         let send =  {
             value: string.split(',').map(raw => raw.trim()),
             type: "List",
@@ -195,10 +281,12 @@ function stringToArrayMandatory(string) {
   return null;
 }
 
-function dateCheckMandatory(date) {
+function dateCheckMandatory(date) {// Not in use
+  counter += 1;
   if (!date) {
     return null;
   }
+  //Missing objest check!!!
   return {
       value: date,
       type: "DateTime",
@@ -206,13 +294,53 @@ function dateCheckMandatory(date) {
   };
 }
 
-function dateCheck(date) {
+// function dateCheckMandatory(string) {
+//   counter += 1;
+//   if (!string) {
+//     return null;
+//   }
+//   if (typeof string === "object") {
+//     return {
+//       value: string.value || "",
+//       type: "DateTime",
+//       metadata: string.metadata || {}
+//     };
+//   }
+// //console.log(!(new Date("2019/09/09"))||new Date("2019/09/09x")=="Invalid Date"? "false":"true");
+//   if (string) {
+//     let obj = [];
+//     if (pos(counter)) {
+//       obj = [];
+//       meta = pos(counter);
+//       let send = {
+//         value: new Date(string).toISOString(),
+//         type: "DateTime",
+//         metadata: JSON.parse(meta)
+//       };
+//       obj.push(send);
+//     }
+
+//     if (obj.length !== 0) {
+//       return obj[0];
+//     }
+//     return {
+//       value: string,
+//       type: "DateTime",
+//       metadata: {}
+//     };
+//   }
+//   return null;
+// }
+
+function dateCheck(date) {// not in use
+    counter += 1;
     if (!date)
         return {
             value: "",
             type: "String",
             metadata: {}
-        }
+    }
+  //missing object check!!
     return {
         value: date,
         type: "DateTime",
@@ -220,7 +348,8 @@ function dateCheck(date) {
     }
 }
 
-function mandatoryCheck( attribute ) {
+
+function mandatoryCheck( attribute ) {//OK Mandatory String
     counter += 1;
     if ( !attribute ) {
         return null;
@@ -238,13 +367,14 @@ function mandatoryCheck( attribute ) {
     const forbide = [ "<", ">", "'", ";", "(", ")" ];
     test.forEach( ( element ) => {
         if ( forbide.includes( element ) ) {
-            throw "Forbiden char";
+            throw "Forbidden character";
         }
     } );
-    let obj = [];
-    if ( pos( counter ) ) {
+  let obj = [];
+  let meta = pos( counter );
+    if ( meta ) {
         obj = [];
-        const meta = pos( counter );
+        // const meta = pos( counter );
         const send = {
             value: attribute,
             type: "String",
@@ -264,7 +394,8 @@ function mandatoryCheck( attribute ) {
     };
 }
 
-function stringCheck(value) {
+
+function stringCheck(value) {//OK Optional String
     counter += 1;
 
     if(typeof value === 'object') {
@@ -275,11 +406,12 @@ function stringCheck(value) {
         }
     }
 
-    if(pos(counter)) {
+    let meta = pos( counter );
+    if(meta) {
         return  {
-            value: value,
+            value: value || "", //
             type: "String",
-            metadata: JSON.parse(pos(counter))
+            metadata: JSON.parse(meta)
         };
     }
     return {
@@ -289,22 +421,23 @@ function stringCheck(value) {
     }
 }
 
-function stringToArrayNum(string) {
-    
+function stringToArrayNum(string) {//OK Optional List<Float>
+  console.log("stringToArrayNum", string);
     counter += 1;
   if (typeof string === 'object') {
     return {
-        value: string,
+        value: string.value,//string,////
         type: "List",
-        metadata: {}
+        metadata: string.metadata//{}////
     }
   }
 
   if (string) {
     let obj = [];
-    if(pos(counter)) {
+    let meta = pos( counter );
+    if(meta) {
         obj = [];
-        meta = pos(counter);
+        // meta = pos(counter);
         let send =  {
             value: arrToNum(string),
             type: "List",
@@ -323,32 +456,84 @@ function stringToArrayNum(string) {
       }
   } else {
       obj = [];
-        meta = pos(counter);
+    let meta = pos(counter);
         let send =  {
             value: [],
             type: "List",
-            metadata: JSON.parse(meta) || {}
+            metadata: meta? JSON.parse(meta) : {}
         };
-        obj.push(send);
-        if(obj.length !== 0) {
+    obj.push(send);
+    if (obj.length !== 0) {
             return obj[0];
         }
     }
   return null;
 }
 
-function idCheck(attr) {
+function stringToArrayNumMandatory(string) {//OK Mandatory List<Float>
+  counter += 1;
+  if (!string) {
+    return null;
+  }
+  
+  if (typeof string === "object") {
+    return {
+      value: string.value,//string //
+      type: "List",
+      metadata: string.metadata//{}
+    };
+  }
+
+  if (string) {
+    let obj = [];
+    let meta = pos(counter);
+    if (meta) {
+      obj = [];
+      // meta = pos(counter);
+      let send = {
+        value: arrToNum(string),
+        type: "List",
+        metadata: JSON.parse(meta)
+      };
+      obj.push(send);
+    }
+
+    if (obj.length !== 0) {
+      return obj[0];
+    }
+    return {
+      value: arrToNum(string),
+      type: "List",
+      metadata: {}
+    };
+  } else {
+    obj = [];
+    let meta = pos(counter);
+    let send = {
+      value: [],
+      type: "List",
+      metadata: meta? JSON.parse(meta) : {}
+    };
+    obj.push(send);
+    if (obj.length !== 0) {
+      return obj[0];
+    }
+  }
+  return null;
+}
+
+function idCheck(attr) {//OK ID
     counter = 0;
     counter += 1;
     return attr;
 }
 
-function typeCheck(attr) {
+function typeCheck(attr) {//OK type
     counter += 1;
     return attr;
 }
 
-function locationCheck(location) {
+function locationCheck(location) {//OK Mandatory geo:json
     counter += 1;
   if (!location) {
     return null;
@@ -356,9 +541,12 @@ function locationCheck(location) {
 
   if (typeof location === 'object') {
     return {
-        value: location["value"].value,
+        // value: location["value"].value,
+        // type: "geo:json",
+        // metadata: location["value"].metadata
+        value: location.value,
         type: "geo:json",
-        metadata: location["value"].metadata
+        metadata: location.metadata
     }
 }
 
@@ -371,11 +559,12 @@ function locationCheck(location) {
   if (data.length === 0) {
     return null;
   }
-  if (typeof x === 'number' || typeof x === 'number') {
-      let obj = [];
-      if(pos(counter)) {
+  if (!isNaN(x) && typeof x === 'number' && !isNaN(y) && typeof y === 'number') { // x || x
+    let obj = [];
+    let meta = pos(counter);
+      if(meta) {
           obj = [];
-          meta = pos(counter);
+          // meta = pos(counter);
           let send =  {
               value: {
                   "type": "Point",
@@ -397,24 +586,30 @@ function locationCheck(location) {
                 "type": "Point",
                 "coordinates": [x, y]
             },
-            "type": "geo:json"
+            "type": "geo:json",
+            "metadata": {}
     }
   }
   return null;
 }
 
-function locationCheckNoMand(location) {
-    counter += 1; 
+function locationCheckNoMand(location) {// Optional geo:json
+  counter += 1; 
+  let meta = pos(counter);
   if (!location) {
     return {
         value: {},
-        type: "geo:json"
+        type: "geo:json",
+        metadata: meta? JSON.parse(meta):{}
     };
   }
 
   if(typeof location === "object") {
         return {
-            value: location["value"].geometry,
+            // value: location["value"].geometry,
+            // type: "geo:json",
+            // metadata: location.metadata || {}
+            value: location.value,
             type: "geo:json",
             metadata: location.metadata || {}
         } 
@@ -436,11 +631,12 @@ function locationCheckNoMand(location) {
   if (data.length === 0) {
     return null;
   }
-  if (typeof x === 'number' || typeof x === 'number') {
-      let obj = [];
-      if(pos(counter)) {
+  if (!isNaN(x) && typeof x === 'number' && !isNaN(y) && typeof y === 'number') {
+    let obj = [];
+    meta = pos(counter);
+      if(meta) {
           obj = [];
-          meta = pos(counter);
+          // meta = pos(counter);
           let send =  {
               value: {
                   "type": "Point",
@@ -462,7 +658,8 @@ function locationCheckNoMand(location) {
               "type": "Point",
               "coordinates": [x, y]
           },
-          "type": "geo:json"
+          "type": "geo:json",
+          metadata: {}
       };
   }
 
@@ -497,7 +694,7 @@ function removeForbidenStrict(string) {
   return data1;
 }
 
-function arrToNum(string) {
+function arrToNumOld(string) {
     let data = string.split(',').map(raw => raw.trim());
 
     const result = data.reduce((finalList, string) => {
@@ -507,6 +704,11 @@ function arrToNum(string) {
     },[]);
 
     return result;
+}
+
+function arrToNum(string) {
+  let data = string? string.split(',').map(raw => Number(raw.trim())):[];
+  return data;
 }
 
 function structuredValue(string) {
@@ -561,6 +763,22 @@ function structuredListMandatory(string) {
     }
 }
 
+function structuredList(string) {
+  counter += 1;
+  if (typeof string == "object") {
+    return {
+      value: string.value || {},
+      type: "List",
+      metadata: string.metadata || {}
+    };
+  }
+  return {
+    value: specCase(string) || "",
+    type: "List",
+    metadata: {}
+  };
+}
+
 function specCase(string) {
     if (!string) {
         return string;
@@ -589,9 +807,12 @@ module.exports = {
     typeCheck,
     idCheck,
     stringToArrayNum,
+    stringToArrayNumMandatory,
     structuredValue,
     structuredValueMandatory,
     dateCheck,
     commaNumToUnitsInt,
-    structuredListMandatory
+    commaNumToUnitsIntMandatory,
+    structuredListMandatory,
+    structuredList
 };
