@@ -10,9 +10,9 @@ function commaNumToUnits( oldNum ) {//OK Float Optional
 
     if(typeof oldNum === 'object') {
         return {
-            "value": oldNum.value,
+            "value": oldNum.value || 0,
             "type": "Float",
-            "metadata": oldNum.metadata
+            "metadata": oldNum.metadata || {}
         }
     }
 
@@ -48,9 +48,9 @@ function commaNumToUnitsInt( oldNum ) {//OK Opional Integer
 
     if(typeof oldNum === 'object') {
         return {
-            "value": oldNum.value,
+            "value": oldNum.value || 0,
             "type": "Integer",
-            "metadata": oldNum.metadata
+          "metadata": oldNum.metadata || {}
         }
     }
 
@@ -91,9 +91,9 @@ function commaNumToUnitsIntMandatory(oldNum) {//OK Mandatory Integer
   
   if (typeof oldNum === "object") {
     return {
-      value: oldNum.value,
+      value: oldNum.value || 0,
       type: "Integer",
-      metadata: oldNum.metadata
+      metadata: oldNum.metadata || {}
     };
   }
 
@@ -131,14 +131,14 @@ function commaNumToUnitsMandatory(oldNum) {//OK Mandatory Float
 
     if(typeof oldNum === 'object') {
         return {
-            "value": oldNum.value,
+            "value": oldNum.value || 0,
             "type": "Float",
-            "metadata": oldNum.metadata
+            "metadata": oldNum.metadata || {}
         }
     }
 
     // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
-    const newNum = oldNum ? oldNum : 0;
+  const newNum = oldNum ? oldNum : 0;
   let obj = [];
   let meta = pos(counter);
     if(meta) {
@@ -357,9 +357,9 @@ function mandatoryCheck( attribute ) {//OK Mandatory String
 
     if (typeof attribute === 'object') {
         return {
-            value: attribute.value,
+            value: attribute.value || "",
             type: "String",
-            metadata: attribute.metadata,
+            metadata: attribute.metadata || {},
         };
     }
 
@@ -376,7 +376,7 @@ function mandatoryCheck( attribute ) {//OK Mandatory String
         obj = [];
         // const meta = pos( counter );
         const send = {
-            value: attribute,
+            value: attribute || "",
             type: "String",
             metadata: JSON.parse( meta ),
         };
@@ -388,7 +388,7 @@ function mandatoryCheck( attribute ) {//OK Mandatory String
     }
 
     return {
-        value: attribute,
+        value: attribute || "",
         type: "String",
         metadata: {},
     };
@@ -400,9 +400,9 @@ function stringCheck(value) {//OK Optional String
 
     if(typeof value === 'object') {
         return {
-            "value": value.value,
+            "value": value.value || "",
             "type": "String",
-            "metadata": value.metadata
+            "metadata": value.metadata || {}
         }
     }
 
@@ -425,9 +425,9 @@ function stringToArrayNum(string) {//OK Optional List<Float>
     counter += 1;
   if (typeof string === 'object') {
     return {
-        value: string.value,//string,////
+        value: string.value || [],//string,////
         type: "List",
-        metadata: string.metadata//{}////
+        metadata: string.metadata || {}//{}////
     }
   }
 
@@ -477,9 +477,9 @@ function stringToArrayNumMandatory(string) {//OK Mandatory List<Float>
   
   if (typeof string === "object") {
     return {
-      value: string.value,//string //
+      value: string.value || [],//string //
       type: "List",
-      metadata: string.metadata//{}
+      metadata: string.metadata || {}//{}
     };
   }
 
@@ -543,9 +543,9 @@ function locationCheck(location) {//OK Mandatory geo:json
         // value: location["value"].value,
         // type: "geo:json",
         // metadata: location["value"].metadata
-        value: location.value,
+        value: location.value || {},
         type: "geo:json",
-        metadata: location.metadata
+        metadata: location.metadata || {}
     }
 }
 
@@ -608,7 +608,7 @@ function locationCheckNoMand(location) {// Optional geo:json
             // value: location["value"].geometry,
             // type: "geo:json",
             // metadata: location.metadata || {}
-            value: location.value,
+            value: location.value || {},
             type: "geo:json",
             metadata: location.metadata || {}
         } 
@@ -661,8 +661,6 @@ function locationCheckNoMand(location) {// Optional geo:json
           metadata: {}
       };
   }
-
-
 
   return null;
 }
