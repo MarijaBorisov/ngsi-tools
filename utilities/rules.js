@@ -78,7 +78,7 @@ function commaNumToUnitsInt( oldNum ) {//OK Opional Integer
           return {
               "value": newNum || 0,
             "type": "Integer",
-            metedata: {}
+            metadata: {}
           };
 }
 
@@ -159,7 +159,7 @@ function commaNumToUnitsMandatory(oldNum) {//OK Mandatory Float
     return {
         "value": newNum || 0,
       "type": "Float",
-      metedata: {}
+      metadata: {}
     };
 }
 
@@ -422,7 +422,6 @@ function stringCheck(value) {//OK Optional String
 }
 
 function stringToArrayNum(string) {//OK Optional List<Float>
-  console.log("stringToArrayNum", string);
     counter += 1;
   if (typeof string === 'object') {
     return {
