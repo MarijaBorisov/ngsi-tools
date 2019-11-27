@@ -10,14 +10,14 @@ function commaNumToUnits( oldNum ) {//OK Float Optional
 
     if(typeof oldNum === 'object') {
         return {
-            "value": oldNum.value || 0,
+            "value": Number(oldNum.value) || 0,
             "type": "Float",
             "metadata": oldNum.metadata || {}
         }
     }
 
   // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
-  const newNum = oldNum ? oldNum : 0;
+  const newNum = Number(oldNum) ? Number(oldNum) : 0;
   let obj = [];
   let meta = pos(counter);
     if ( meta ) {
@@ -48,14 +48,14 @@ function commaNumToUnitsInt( oldNum ) {//OK Opional Integer
 
     if(typeof oldNum === 'object') {
         return {
-            "value": oldNum.value || 0,
+            "value": Number(oldNum.value) || 0,
             "type": "Integer",
           "metadata": oldNum.metadata || {}
         }
     }
 
     // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
-    const newNum = oldNum ? oldNum : 0;
+    const newNum = Number(oldNum) ? Number(oldNum) : 0;
   let obj = [];
   let meta = pos(counter);
   // console.log( meta);
@@ -91,14 +91,14 @@ function commaNumToUnitsIntMandatory(oldNum) {//OK Mandatory Integer
   
   if (typeof oldNum === "object") {
     return {
-      value: oldNum.value || 0,
+      value: Number(oldNum.value) || 0,
       type: "Integer",
       metadata: oldNum.metadata || {}
     };
   }
 
   // const newNum = oldNum ? Number(oldNum.replace(".", "").replace(",", ".")) : 0;
-  const newNum = oldNum ? oldNum : 0;
+  const newNum = Number(oldNum) ? Number(oldNum) : 0;
   let obj = [];
   let meta = pos(counter);
   if (meta) {
@@ -131,14 +131,14 @@ function commaNumToUnitsMandatory(oldNum) {//OK Mandatory Float
 
     if(typeof oldNum === 'object') {
         return {
-            "value": oldNum.value || 0,
+            "value": Number(oldNum.value) || 0,
             "type": "Float",
             "metadata": oldNum.metadata || {}
         }
     }
 
     // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
-  const newNum = oldNum ? oldNum : 0;
+  const newNum = Number(oldNum) ? Number(oldNum) : 0;
   let obj = [];
   let meta = pos(counter);
     if(meta) {
