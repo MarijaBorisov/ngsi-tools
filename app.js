@@ -5,8 +5,11 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const request = require("request-promise");
+const mongoose = require("mongoose");
+const conf = require("./config");
 
 const entities = require("./routes/entities")();
+global.conn = mongoose.createConnection(conf.db.url, conf.db.options);
 
 const app = express();
 
