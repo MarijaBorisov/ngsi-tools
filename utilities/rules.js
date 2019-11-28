@@ -594,14 +594,6 @@ function locationCheck(location) {//OK Mandatory geo:json
 
 function locationCheckNoMand(location) {// Optional geo:json
   counter += 1; 
-  let meta = pos(counter);
-  if (!location) {
-    return {
-        value: {},
-        type: "geo:json",
-        metadata: meta? JSON.parse(meta):{}
-    };
-  }
 
   if(typeof location === "object") {
         return {
@@ -612,27 +604,24 @@ function locationCheckNoMand(location) {// Optional geo:json
             type: "geo:json",
             metadata: location.metadata || {}
         } 
-    }
+  }
 
-//   if (typeof location === 'object') {
-//       return {
-//           value: location,
-//           type: "geo:json"
-//       }
-//   }
+  const data = location ? location.substring(location.indexOf('[') + 1, location.indexOf(']')) : "";
+  const coordinates = data? data.split(',', 2) : [];
 
-  const data = location.substring(location.indexOf('[') + 1, location.indexOf(']'));
-  const coordinates = data.split(',', 2);
-  
+  let meta = pos(counter);
+  if (!data || data.length === 0 || coordinates.length < 2) {
+    return {
+        value: {},
+        type: "geo:json",
+        metadata: meta? JSON.parse(meta):{}
+    };
+  }
   const x = Number(coordinates[0]);
   const y = Number(coordinates[1]);
-
-  if (data.length === 0) {
-    return null;
-  }
   if (!isNaN(x) && typeof x === 'number' && !isNaN(y) && typeof y === 'number') {
     let obj = [];
-    meta = pos(counter);
+    // meta = pos(counter);
       if(meta) {
           obj = [];
           // meta = pos(counter);
@@ -662,7 +651,12 @@ function locationCheckNoMand(location) {// Optional geo:json
       };
   }
 
-  return null;
+  // return null;
+  return {
+    value: {},
+    type: "geo:json",
+    metadata: meta? JSON.parse(meta):{}
+  };
 }
 
 function extraCheck(data) {
@@ -764,13 +758,14 @@ function structuredList(string) {
   counter += 1;
   if (typeof string == "object") {
     return {
-      value: string.value || {},
+      value: string.value || {},//[]
       type: "List",
       metadata: string.metadata || {}
     };
   }
+  //add check if there is metadata
   return {
-    value: specCase(string) || "",
+    value: specCase(string) || "",//[]
     type: "List",
     metadata: {}
   };
