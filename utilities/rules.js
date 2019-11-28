@@ -711,11 +711,20 @@ function structuredValue(string) {
             "metadata": string.metadata || {}
         }
     }
-    return {
-        "value": specCase(string) || {},
+  
+  let meta = pos( counter );
+  if(meta) {
+      return  {
+        "value": string || {},// specCase(string) || {},
         "type": "StructuredValue",
-        "metadata": {}
-    }
+        metadata: JSON.parse(meta)
+      };
+  }
+  return {
+    "value": string || {},// specCase(string) || {},
+    "type": "StructuredValue",
+    "metadata": {}
+  }
 }
 
 function structuredValueMandatory(string) {
@@ -729,10 +738,11 @@ function structuredValueMandatory(string) {
             "metadata": string.metadata || {}
         }
     }
+    let meta = pos( counter );
     return {
-        "value": specCase(string) || "",
+        "value": string,//specCase(string) || "",
         "type": "StructuredValue",
-        "metadata": {}
+        "metadata": meta? JSON.parse(meta) : {}
     }
 }
 
@@ -742,15 +752,16 @@ function structuredListMandatory(string) {
         return null;
     if (typeof string == "object") {
         return {
-            "value": string.value || {},
+            "value": string.value || [],//{},
             "type": "List",
             "metadata": string.metadata || {}
         }
-    }
+  }
+  let meta = pos( counter );
     return {
-        "value": specCase(string) || "",
+        "value": string || [],//specCase(string) || "",
         "type": "List",
-        "metadata": {}
+        "metadata": meta? JSON.parse(meta) : {}
     }
 }
 
@@ -758,16 +769,17 @@ function structuredList(string) {
   counter += 1;
   if (typeof string == "object") {
     return {
-      value: string.value || {},//[]
+      value: string.value || [],
       type: "List",
       metadata: string.metadata || {}
     };
   }
-  //add check if there is metadata
+
+  let meta = pos( counter );
   return {
-    value: specCase(string) || "",//[]
+    value: string || [],//specCase(string) || [],
     type: "List",
-    metadata: {}
+    metadata: meta? JSON.parse(meta) : {}
   };
 }
 
