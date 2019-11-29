@@ -244,8 +244,7 @@ function addEntityType(req, res) {
     message: "Entity type: " +
       newType +
       " properly parsed and added to the system.",
-    description: typeDescription,
-    newObject: JSON.stringify(newEntities)
+    description: typeDescription
   });
 
 }
