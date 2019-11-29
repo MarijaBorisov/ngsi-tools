@@ -59,6 +59,14 @@ module.exports = () => {
     rootController.getTypeStructure(req, res);
   });
 
+  router.post("/v1/entitytype", headermid, upload.multer, (req, res) => {
+    if (req.body) {
+      rootController.addEntityType(req, res);
+    } else { 
+      sendJSONresponse(res, 400, {message: "Please send entity type structure in request body"});
+    }
+  });
+
   router.post("/v1/seriousgame", (req, res) => {
     let data = req.body;
     return request({

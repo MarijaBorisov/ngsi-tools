@@ -6,6 +6,12 @@ const responseMessages = require("../utilities/utils");
 const responseRules = require("../utilities/rules.json");
 const url = require("../config").orion_url;
 const defaultEntitiesAmount = require("../config").returnEntities;
+const rules = require("../utilities");
+
+var sendJSONresponse = function (res, status, content) {
+  res.status(status);
+  res.json(content);
+};
 
 function getEntities(req, res) {
   return request({
@@ -102,11 +108,161 @@ function getTypeStructure(req, res) {
   }
 }
 
+function addEntityType(req, res) {
+  var bodyObject = req.body;
+  console.log(bodyObject);
+  var newEntities = {};
+  var newType = Object.keys(bodyObject)[0];
+  console.log("New type", newType);
+  var typeDescription = bodyObject[newType];
+  console.log("typeDescription:");
+  console.log(typeDescription);
+  var properties = Object.keys(typeDescription);
+  newEntities[newType] = {};
+  newEntities[newType].properties = {};
+    console.log("First:");
+    console.log(newEntities);
+  for (let i = 0; i < properties.length; i++) {
+    console.log(properties[i]);
+      if (
+        typeDescription[properties[i]].type.toLowerCase() ==
+        "EntityID".toLowerCase()
+      ) {
+        newEntities[newType].properties["id"] = rules.idCheck;
+      } else if (
+        typeDescription[properties[i]].type.toLowerCase() ==
+        "EntityType".toLowerCase()
+      ) {
+        newEntities[newType].properties["type"] = rules.typeCheck;
+      } else if (
+        typeDescription[properties[i]].type.toLowerCase() ==
+        "Text".toLowerCase() ||
+        typeDescription[properties[i]].type.toLowerCase() ==
+        "Relationship".toLowerCase()
+      ) {
+        if (
+          typeDescription[properties[i]].mandatory.toLowerCase() ==
+          "YES".toLowerCase()
+        )
+          newEntities[newType].properties[properties[i]] = rules.mandatoryCheck;
+        else newEntities[newType].properties[properties[i]] = rules.stringCheck;
+      } else if (
+        typeDescription[properties[i]].type.toLowerCase() ==
+        "TextList(,)".toLowerCase()
+      ) {
+        if (
+          typeDescription[properties[i]].mandatory.toLowerCase() ==
+          "YES".toLowerCase()
+        )
+          newEntities[newType].properties[properties[i]] =
+            rules.stringToArrayMandatory;
+        else newEntities[newType].properties[properties[i]] = rules.stringToArray;
+      } else if (
+        typeDescription[properties[i]].type.toLowerCase() ==
+        "NumberList(,)".toLowerCase()
+      ) {
+        if (
+          typeDescription[properties[i]].mandatory.toLowerCase() ==
+          "YES".toLowerCase()
+        )
+          newEntities[newType].properties[properties[i]] =
+            rules.stringToArrayNumMandatory;
+        else
+          newEntities[newType].properties[properties[i]] = rules.stringToArrayNum;
+      } else if (
+        typeDescription[properties[i]].type.toLowerCase() ==
+        "GeoJSON(Point)".toLowerCase()
+      ) {
+        if (
+          typeDescription[properties[i]].mandatory.toLowerCase() ==
+          "YES".toLowerCase()
+        )
+          newEntities[newType].properties[properties[i]] = rules.locationCheck;
+        else
+          newEntities[newType].properties[properties[i]] =
+            rules.locationCheckNoMand;
+      } else if (
+        typeDescription[properties[i]].type.toLowerCase() ==
+        "Float".toLowerCase()
+      ) {
+        if (
+          typeDescription[properties[i]].mandatory.toLowerCase() ==
+          "YES".toLowerCase()
+        )
+          newEntities[newType].properties[properties[i]] =
+            rules.commaNumToUnitsMandatory;
+        else newEntities[newType].properties[properties[i]] = rules.commaNumToUnits;
+      } else if (
+        typeDescription[properties[i]].type.toLowerCase() ==
+        "Integer".toLowerCase()
+      ) {
+        if (
+          typeDescription[properties[i]].mandatory.toLowerCase() ==
+          "YES".toLowerCase()
+        )
+          newEntities[newType].properties[properties[i]] =
+            rules.commaNumToUnitsIntMandatory;
+        else
+          newEntities[newType].properties[properties[i]] = rules.commaNumToUnitsInt;
+      } else if (
+        typeDescription[properties[i]].type.toLowerCase() ==
+        "Datetime".toLowerCase()
+      ) {
+        if (
+          typeDescription[properties[i]].mandatory.toLowerCase() ==
+          "YES".toLowerCase()
+        )
+          newEntities[newType].properties[properties[i]] = rules.dateCheckMandatory;
+        else newEntities[newType].properties[properties[i]] = rules.dateCheck;
+      } else if (
+        typeDescription[properties[i]].type.toLowerCase() ==
+        "StructuredValue(JSON object)".toLowerCase()
+      ) {
+        if (
+          typeDescription[properties[i]].mandatory.toLowerCase() ==
+          "YES".toLowerCase()
+        )
+          newEntities[newType].properties[properties[i]] =
+            rules.structuredValueMandatory;
+        else newEntities[newType].properties[properties[i]] = rules.structuredValue;
+      } else if (
+        typeDescription[properties[i]].type.toLowerCase() ==
+        "StructuredList([JSON objects])".toLowerCase()
+      ) {
+        if (
+          typeDescription[properties[i]].mandatory.toLowerCase() ==
+          "YES".toLowerCase()
+        )
+          newEntities[newType].properties[properties[i]] =
+            rules.structuredListMandatory;
+        else newEntities[newType].properties[properties[i]] = rules.structuredList;
+      } else { 
+        console.log("Unknown property type exists: " + properties[i] + ", please check the structure");
+        sendJSONresponse(res, 400, {
+          message:
+            "Unknown property type exists: " +
+            properties[i] +
+            ", please check the structure"
+        });
+        return;
+      }
+    }
+    sendJSONresponse(res, 200, {
+      message: "Entity type: " +
+        newType +
+        " properly parsed and added to the system.",
+      description: typeDescription,
+      newObject: JSON.stringify(newEntities)
+    });
+
+}
+
 module.exports = {
   getEntityByType,
   getEntities,
   getEntity,
   getRules,
   getRule,
-  getTypeStructure
+  getTypeStructure,
+  addEntityType
 };
