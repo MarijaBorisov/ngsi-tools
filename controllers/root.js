@@ -179,7 +179,7 @@ function updateResEntityType(err, newEntities, typeDescription, res) {
     });
     return;
   }
-  console.log(newEntities);
+  // console.log(newEntities);
   EnityType.find({
     entityType: newEntities.entityType
   }, function (err, types) {

@@ -10,7 +10,7 @@ const mongoose = require("mongoose");
 var models_path = path.normalize(__dirname + '/models');
 var conf_path = path.normalize(__dirname + '/config');
 const conf = require(conf_path);
-console.log(conf);
+
 global.conn = mongoose.createConnection(conf.db.url, conf.db.options);
 require(models_path + "/entityType.js");
 
