@@ -16,7 +16,7 @@ const Route = {
   scheduledArrivalTimestamp: rules.stringCheck,
   realArrivalTimestamp: rules.stringCheck,
   scheduledStops: rules.stringToArray,
-  realStops: rules.stringToArrayMandatory,
+  realStops: rules.stringToArray,
   scheduledPath: rules.stringToArray,
   realPath: rules.stringToArray,
   refResourceTypes: rules.stringToArray
