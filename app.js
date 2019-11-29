@@ -7,9 +7,11 @@ const logger = require("morgan");
 const request = require("request-promise");
 const mongoose = require("mongoose");
 const conf = require("./config");
+var models_path = __dirname + '/models';
 
 const entities = require("./routes/entities")();
 global.conn = mongoose.createConnection(conf.db.url, conf.db.options);
+require(models_path + "/entityType.js");
 
 const app = express();
 
