@@ -1,12 +1,22 @@
 const express = require("express");
 
 const router = express.Router();
-const { entities } = require("../controllers/");
-const { upload, headermid } = require("../middlewares");
+const {
+  entities
+} = require("../controllers/");
+const {
+  upload,
+  headermid
+} = require("../middlewares");
 const rootController = require("../controllers/root");
 const url = require("../config").orion_url;
 
 const request = require("request-promise");
+const rules = require("../utilities");
+var sendJSONresponse = function (res, status, content) {
+  res.status(status);
+  res.json(content);
+};
 
 module.exports = () => {
   router.post("/v1/entities/", headermid, upload.multer, (req, res) => {
@@ -45,23 +55,27 @@ module.exports = () => {
     rootController.getRule(req, res);
   });
 
+  router.get("/v1/typestructure", headermid, (req, res) => {
+    rootController.getTypeStructure(req, res);
+  });
+
   router.post("/v1/seriousgame", (req, res) => {
     let data = req.body;
     return request({
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Fiware-Service": req.headers[ "fiware-service" ],
-        "Fiware-ServicePath": req.headers[ "fiware-servicepath" ],
-        "X-Auth-Token": req.headers[ "x-auth-token" ],
-      },
-      uri: `${url}v2/op/update`,
-      body: {
-        actionType: "append",
-        entities: data,
-      },
-      json: true,
-    })
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Fiware-Service": req.headers["fiware-service"],
+          "Fiware-ServicePath": req.headers["fiware-servicepath"],
+          "X-Auth-Token": req.headers["x-auth-token"],
+        },
+        uri: `${url}v2/op/update`,
+        body: {
+          actionType: "append",
+          entities: data,
+        },
+        json: true,
+      })
       .then((result) => {
         res.status(200).json()
       })

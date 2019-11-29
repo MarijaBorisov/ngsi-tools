@@ -1,4 +1,7 @@
 const request = require("request-promise");
+const fs = require('fs');
+var path = require('path');
+
 const responseMessages = require("../utilities/utils");
 const responseRules = require("../utilities/rules.json");
 const url = require("../config").orion_url;
@@ -88,10 +91,22 @@ function getRule(req, res) {
   }
 }
 
+function getTypeStructure(req, res) {
+  var path_to_structure = path.normalize(__dirname + "/../extern_types/");
+  let rawstructure = fs.readFileSync(path_to_structure + 'example.json');
+  let structure = JSON.parse(rawstructure);
+  if (!structure) {
+    res.status(404).json(responseMessages[ "404" ]);
+  } else {
+    res.status(200).json(structure);
+  }
+}
+
 module.exports = {
   getEntityByType,
   getEntities,
   getEntity,
   getRules,
   getRule,
+  getTypeStructure
 };
