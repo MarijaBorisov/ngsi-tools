@@ -113,20 +113,20 @@ function addEntityType(req, res) {
   var newType = Object.keys(bodyObject)[0];
   var typeDescription = bodyObject[newType];
   var properties = Object.keys(typeDescription);
-  newEntities[newType] = {};
-  newEntities[newType].properties = {};
+  newEntities.entityType = newType;
+  newEntities.properties = {};
   for (let i = 0; i < properties.length; i++) {
     // console.log(properties[i]);
     if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "EntityID".toLowerCase()
     ) {
-      newEntities[newType].properties["id"] = rules.idCheck;
+      newEntities.properties["id"] = "idCheck";//rules.idCheck;
     } else if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "EntityType".toLowerCase()
     ) {
-      newEntities[newType].properties["type"] = rules.typeCheck;
+      newEntities.properties["type"] = "typeCheck";//rules.typeCheck;
     } else if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "Text".toLowerCase() ||
@@ -137,8 +137,8 @@ function addEntityType(req, res) {
         typeDescription[properties[i]].mandatory.toLowerCase() ==
         "YES".toLowerCase()
       )
-        newEntities[newType].properties[properties[i]] = rules.mandatoryCheck;
-      else newEntities[newType].properties[properties[i]] = rules.stringCheck;
+        newEntities.properties[properties[i]] = "mandatoryCheck";//rules.mandatoryCheck;
+      else newEntities.properties[properties[i]] = "stringCheck";//rules.stringCheck;
     } else if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "TextList(,)".toLowerCase()
@@ -147,9 +147,9 @@ function addEntityType(req, res) {
         typeDescription[properties[i]].mandatory.toLowerCase() ==
         "YES".toLowerCase()
       )
-        newEntities[newType].properties[properties[i]] =
-        rules.stringToArrayMandatory;
-      else newEntities[newType].properties[properties[i]] = rules.stringToArray;
+        newEntities.properties[properties[i]] =
+          rules.stringToArrayMandatory;
+      else newEntities.properties[properties[i]] = "stringToArray";//rules.stringToArray;
     } else if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "NumberList(,)".toLowerCase()
@@ -158,10 +158,10 @@ function addEntityType(req, res) {
         typeDescription[properties[i]].mandatory.toLowerCase() ==
         "YES".toLowerCase()
       )
-        newEntities[newType].properties[properties[i]] =
-        rules.stringToArrayNumMandatory;
+        newEntities.properties[properties[i]] =
+          rules.stringToArrayNumMandatory;
       else
-        newEntities[newType].properties[properties[i]] = rules.stringToArrayNum;
+        newEntities.properties[properties[i]] = "stringToArrayNum";//rules.stringToArrayNum;
     } else if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "GeoJSON(Point)".toLowerCase()
@@ -170,10 +170,10 @@ function addEntityType(req, res) {
         typeDescription[properties[i]].mandatory.toLowerCase() ==
         "YES".toLowerCase()
       )
-        newEntities[newType].properties[properties[i]] = rules.locationCheck;
+        newEntities.properties[properties[i]] = "locationCheck";//rules.locationCheck;
       else
-        newEntities[newType].properties[properties[i]] =
-        rules.locationCheckNoMand;
+        newEntities.properties[properties[i]] =
+          "locationCheckNoMand";//rules.locationCheckNoMand;
     } else if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "Float".toLowerCase()
@@ -182,9 +182,9 @@ function addEntityType(req, res) {
         typeDescription[properties[i]].mandatory.toLowerCase() ==
         "YES".toLowerCase()
       )
-        newEntities[newType].properties[properties[i]] =
-        rules.commaNumToUnitsMandatory;
-      else newEntities[newType].properties[properties[i]] = rules.commaNumToUnits;
+        newEntities.properties[properties[i]] =
+          "commaNumToUnitsMandatory";//rules.commaNumToUnitsMandatory;
+      else newEntities.properties[properties[i]] = "commaNumToUnits";//rules.commaNumToUnits;
     } else if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "Integer".toLowerCase()
@@ -193,10 +193,10 @@ function addEntityType(req, res) {
         typeDescription[properties[i]].mandatory.toLowerCase() ==
         "YES".toLowerCase()
       )
-        newEntities[newType].properties[properties[i]] =
-        rules.commaNumToUnitsIntMandatory;
+        newEntities.properties[properties[i]] =
+          "commaNumToUnitsIntMandatory";//rules.commaNumToUnitsIntMandatory;
       else
-        newEntities[newType].properties[properties[i]] = rules.commaNumToUnitsInt;
+        newEntities.properties[properties[i]] = "commaNumToUnitsInt";//rules.commaNumToUnitsInt;
     } else if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "Datetime".toLowerCase()
@@ -205,8 +205,8 @@ function addEntityType(req, res) {
         typeDescription[properties[i]].mandatory.toLowerCase() ==
         "YES".toLowerCase()
       )
-        newEntities[newType].properties[properties[i]] = rules.dateCheckMandatory;
-      else newEntities[newType].properties[properties[i]] = rules.dateCheck;
+        newEntities.properties[properties[i]] = "dateCheckMandatory";//rules.dateCheckMandatory;
+      else newEntities.properties[properties[i]] = "dateCheck";//rules.dateCheck;
     } else if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "StructuredValue(JSON object)".toLowerCase()
@@ -215,9 +215,9 @@ function addEntityType(req, res) {
         typeDescription[properties[i]].mandatory.toLowerCase() ==
         "YES".toLowerCase()
       )
-        newEntities[newType].properties[properties[i]] =
-        rules.structuredValueMandatory;
-      else newEntities[newType].properties[properties[i]] = rules.structuredValue;
+        newEntities.properties[properties[i]] =
+          "structuredValueMandatory";//rules.structuredValueMandatory;
+      else newEntities.properties[properties[i]] = "structuredValue";//rules.structuredValue;
     } else if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "StructuredList([JSON objects])".toLowerCase()
@@ -226,9 +226,9 @@ function addEntityType(req, res) {
         typeDescription[properties[i]].mandatory.toLowerCase() ==
         "YES".toLowerCase()
       )
-        newEntities[newType].properties[properties[i]] =
-        rules.structuredListMandatory;
-      else newEntities[newType].properties[properties[i]] = rules.structuredList;
+        newEntities.properties[properties[i]] =
+          "structuredListMandatory";//rules.structuredListMandatory;
+      else newEntities.properties[properties[i]] = "structuredList";//rules.structuredList;
     } else {
       console.log("Unknown property type exists: " + properties[i] + ", please check the structure");
       sendJSONresponse(res, 400, {
@@ -244,7 +244,8 @@ function addEntityType(req, res) {
     message: "Entity type: " +
       newType +
       " properly parsed and added to the system.",
-    description: typeDescription
+    description: typeDescription,
+    "New entity": newEntities
   });
 
 }
