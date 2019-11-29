@@ -5,7 +5,7 @@ const fs = require('fs');
 log = config.log();
 
 if (!config.run_server_protocol === 'https' || !config.run_server_protocol === 'http')
-  throw new Error(`Invalid protocl passed in configurations expected HTTP or HTTPS bug got ${config.run_server_protocol}`);
+  throw new Error(`Invalid protocol passed in configurations expected HTTP or HTTPS bug got ${config.run_server_protocol}`);
 if (!config.ngsi_connector_port)
   log.info(`No port was specified via configurations, application running using defaul port 3000`);
 

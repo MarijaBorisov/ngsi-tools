@@ -5,13 +5,16 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const request = require("request-promise");
-const mongoose = require("mongoose");
-const conf = require("./config");
-var models_path = __dirname + '/models';
 
-const entities = require("./routes/entities")();
+const mongoose = require("mongoose");
+var models_path = path.normalize(__dirname + '/models');
+var conf_path = path.normalize(__dirname + '/config');
+const conf = require(conf_path);
+console.log(conf);
 global.conn = mongoose.createConnection(conf.db.url, conf.db.options);
 require(models_path + "/entityType.js");
+
+const entities = require("./routes/entities")();
 
 const app = express();
 

@@ -7,6 +7,7 @@ const responseRules = require("../utilities/rules.json");
 const url = require("../config").orion_url;
 const defaultEntitiesAmount = require("../config").returnEntities;
 const rules = require("../utilities");
+var EnityType = global.conn.model("EntityType");
 
 var sendJSONresponse = function (res, status, content) {
   res.status(status);
@@ -239,15 +240,37 @@ function addEntityType(req, res) {
       return;
     }
   }
-  console.log(newEntities);
-  sendJSONresponse(res, 200, {
-    message: "Entity type: " +
-      newType +
-      " properly parsed and added to the system.",
-    description: typeDescription,
-    "New entity": newEntities
-  });
 
+  console.log(newEntities);
+  EnityType.find({ entityType: newType }, function (err, types) { 
+    if (types && types.length!=0) { 
+      console.log("Entity type " + newType + " already exists in the database");
+      sendJSONresponse(res, 400, {
+        message: "Entity type " + newType + " already exists in the database",
+      });
+      return;
+    }
+    var entity = new EnityType();
+    entity.entityType = newType;
+    entity.properties = newEntities.properties;
+
+    entity.save(function (err) { 
+      if (err) { 
+        sendJSONresponse(res, 400, {
+          message: "error while saving in the database. Please try later.",
+        });
+        return;
+      }
+      sendJSONresponse(res, 200, {
+        message: "Entity type: " +
+          newType +
+          " properly parsed and added to the system.",
+        description: typeDescription,
+        "New entity": entity
+      });
+      return;
+    });
+  });
 }
 
 module.exports = {
