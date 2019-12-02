@@ -1,0 +1,26 @@
+{
+	"Vehicle":{
+		"id": {"type":"EntityID","mandatory":"YES"},
+		"type": {"type":"EntityType","mandatory":"YES"},
+		"family":{"type":"Text", "mandatory":"YES"},
+		"vehiclePlateIdentifier":{"type":"Text", "mandatory":"YES"},
+		"name":{"type":"Text", "mandatory":"NO"},
+		"location": {"type":"GeoJSON(Point)","mandatory":"NO", "metadata":{}},
+		"refType":{"type":"Text", "mandatory":"YES"},
+		"refInputs":{"type":"TextList(,)", "mandatory":"NO"},
+		"refOutputs":{"type":"TextList(,)", "mandatory":"NO"},
+		"owner":{"type":"Text", "mandatory":"NO"},
+		"category":{"type":"Text", "mandatory":"NO"},
+		"speed":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "KMH","type": "String"}}},
+		"cargoWeight ":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "KGM","type": "String"}}},
+		"purchaseDate":{"type":"Text", "mandatory":"NO"},
+		"mileageFromOdometer ":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "KMT","type": "String"}}},
+		"vehicleConfiguration":{"type":"Text", "mandatory":"NO"},
+		"color":{"type":"Text", "mandatory":"NO"},
+		"features":{"type":"TextList(,)", "mandatory":"NO"},
+		"serviceProvided":{"type":"Text", "mandatory":"NO"},
+		"vehicleSpecialUsage":{"type":"Text", "mandatory":"NO"},
+		"areaServed":{"type":"Text", "mandatory":"NO"},
+		"serviceStatus":{"type":"Text", "mandatory":"NO"}
+	}
+}

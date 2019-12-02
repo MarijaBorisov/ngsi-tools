@@ -1,0 +1,9 @@
+{
+	"TargetGroup":{
+		"id": {"type":"EntityID","mandatory":"YES"},
+		"type": {"type":"EntityType","mandatory":"YES"},
+		"name":{"type":"Text", "mandatory":"YES"},
+		"acronym":{"type":"Text", "mandatory":"YES"},
+		"description":{"type":"Text", "mandatory":"NO"}
+	}
+}
