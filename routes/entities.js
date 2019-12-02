@@ -75,6 +75,10 @@ module.exports = () => {
     }
   });
 
+  router.get("/v1/entitytype/:id", headermid, (req, res) => {
+    rootController.getEntityType(req, res);
+  });
+
   router.post("/v1/seriousgame", (req, res) => {
     let data = req.body;
     return request({

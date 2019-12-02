@@ -109,6 +109,39 @@ function getTypeStructure(req, res) {
   }
 }
 
+function getEntityType(req, res) {
+  if (!req.params.id) {
+    sendJSONresponse(res, 502, {
+      "message": "Bad Request"
+    });
+    return;
+  }
+  EntityType.findOne({
+      entityType: req.params.id
+    },
+    function (err, result) {
+      if (err) {
+        sendJSONresponse(res, 400, {
+          "message": "Error while quering database. Please try again."
+        });
+        return;
+      }
+      if (!result) {
+        sendJSONresponse(res, 400, {
+          "message": "There is no entity type " + req.params.id + " in the database. Please add its structure first."
+        });
+        return;
+      }
+      sendJSONresponse(res, 200, {
+        "Entyty type:": {
+          entityType: result.entityType,
+          properties: result.properties
+        }
+      });
+      return;
+    });
+}
+
 function addEntityType(req, res) {
   var bodyObject = req.body;
   var newEntities = {};
@@ -156,7 +189,7 @@ function addResEntityType(err, newEntities, typeDescription, res) {
     entity.save(function (err) {
       if (err) {
         sendJSONresponse(res, 400, {
-          message: "error while saving in the database. Please try it later.",
+          message: "Error while saving in the database. Please try it later.",
         });
         return;
       }
@@ -350,5 +383,6 @@ module.exports = {
   getRule,
   getTypeStructure,
   addEntityType,
-  updateEntityType
+  updateEntityType,
+  getEntityType
 };
