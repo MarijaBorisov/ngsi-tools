@@ -1,0 +1,22 @@
+{
+	"WasteCategory":{
+		"id": {"type":"EntityID","mandatory":"YES"},
+		"type": {"type":"EntityType","mandatory":"YES"},
+		"family":{"type":"Text", "mandatory":"YES"},
+		"name":{"type":"Text", "mandatory":"YES"},
+		"name:en":{"type":"Text", "mandatory":"NO"},
+		"name:es":{"type":"Text", "mandatory":"NO"},
+		"name:it":{"type":"Text", "mandatory":"NO"},
+		"name:pt":{"type":"Text", "mandatory":"NO"},
+		"name:eus":{"type":"Text", "mandatory":"NO"},
+		"name:gr":{"type":"Text", "mandatory":"NO"},
+		"refResources":{"type":"TextList(,)", "mandatory":"NO"},
+		"description":{"type":"Text", "mandatory":"NO"},
+		"description:en":{"type":"Text", "mandatory":"NO"},
+		"description:es":{"type":"Text", "mandatory":"NO"},
+		"description:it":{"type":"Text", "mandatory":"NO"},
+		"description:pt":{"type":"Text", "mandatory":"NO"},
+		"description:eus":{"type":"Text", "mandatory":"NO"},
+		"description:gr":{"type":"Text", "mandatory":"NO"}
+	}
+}

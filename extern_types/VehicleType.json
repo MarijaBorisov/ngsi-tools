@@ -1,0 +1,32 @@
+{
+	"VehicleType":{
+		"id": {"type":"EntityID","mandatory":"YES"},
+		"type": {"type":"EntityType","mandatory":"YES"},
+		"family":{"type":"Text", "mandatory":"YES"},
+		"refInputs":{"type":"TextList(,)", "mandatory":"NO"},
+		"refOutputs":{"type":"TextList(,)", "mandatory":"NO"},
+		"name":{"type":"Text", "mandatory":"YES"},
+		"description":{"type":"Text", "mandatory":"NO"},
+		"vehicleType":{"type":"Text", "mandatory":"YES"},
+		"brandName":{"type":"Text", "mandatory":"YES"},
+		"numberOfAxes":{"type":"Float", "mandatory":"NO"},
+		"maxCargoPerAxe ":{"type":"NumberList(,)", "mandatory":"NO", "metadata":{"unit": {"value": "KGM","type": "String"}}},
+		"engineType":{"type":"Text", "mandatory":"NO"},
+		"enginePower  ":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "KWH","type": "String"}}},
+		"tireTypes":{"type":"Text", "mandatory":"NO"},
+		"modelName":{"type":"Text", "mandatory":"NO"},
+		"manufacturerName":{"type":"Text", "mandatory":"NO"},
+		"vehicleModelDate":{"type":"Text", "mandatory":"NO"},
+		"maxCargoWeight ":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "KGM","type": "String"}}},
+		"maxCargoVolume":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "LTR","type": "String"}}},
+		"fuelDepositCapacity":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "LTR","type": "String"}}},
+		"compactingRatio":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "%","type": "String"}}},
+		"fuelType":{"type":"Text", "mandatory":"NO"},
+		"fuelConsumption":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "LTR/KMT","type": "String"}}},
+		"height":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "MTR","type": "String"}}},
+		"width":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "MTR","type": "String"}}},
+		"depth":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "MTR","type": "String"}}},
+		"weight":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "KGM","type": "String"}}},
+		"loadType":{"type":"Text", "mandatory":"NO"}		
+	}
+}
