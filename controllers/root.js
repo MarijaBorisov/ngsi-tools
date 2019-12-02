@@ -162,7 +162,7 @@ function addResEntityType(err, newEntities, typeDescription, res) {
       }
       sendJSONresponse(res, 200, {
         message: "Entity type: " +
-          newType +
+        newEntities.entityType +
           " properly parsed and added to the system.",
         description: typeDescription,
         "New entity": entity

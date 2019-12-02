@@ -6,14 +6,14 @@ const parseOperations = {
 
     getData: rawData => csv( { delimiter: ";" } ).fromString( rawData ),
 
-    getRules: ( parsedData, ext ) => {
+    getRules: async ( parsedData, ext ) => {
         let rules;
         try {
-            rules = ruleChecks( parsedData, ext );
+          rules = await ruleChecks(parsedData, ext);
+          return Promise.resolve( rules );
         } catch ( error ) {
             return Promise.reject( error.message );
         }
-        return Promise.resolve( rules );
     },
 
     getEntity: ( rules, parsedData, option, ext ) => {
