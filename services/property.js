@@ -1,4 +1,4 @@
-const entityRules = require("../rules");
+// const entityRules = require("../rules");
 const metawrite = require("./metadata").set;
 var EntityType = global.conn.model("EntityType");
 var rulesFunctions = require("../utilities");
@@ -119,7 +119,6 @@ async function rulesCheck(parsedData, ext) {
     const errors = [];
     var rules = {};
     var props;
-    // const rules = entityRules[ type ];
     if (ext === '.json') {
       var { type } = parsedData[0][0]
     } else {
