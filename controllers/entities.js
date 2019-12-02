@@ -41,12 +41,12 @@ function postEntities(req, res, file, headers) {
         else if (error.statusCode === 401) {
           res.status(401).json(error.error);
         } else {
-          res.json(error);
+          res.status(400).json(error);
         }
       });
   })
     .catch((error) => {
-      res.json(error);
+      res.status(400).json(error);
     });
   };
 
@@ -112,11 +112,11 @@ function updateEntitiesBody(req, res, file, headers, body) {
         if (error.statusCode === 401) {
           res.status(401).json(error.error);
         }
-         res.json(error);
+         res.status(400).json(error);
       });
   })
     .catch((error) => {
-      res.json(error);
+      res.status(400).json(error);
     });
 }
 
@@ -145,11 +145,11 @@ function updateEntities(req, res, file, headers) {
           ]);
         })
         .catch((error) => {
-          res.json(error);
+          res.status(400).json(error);
         });
     })
     .catch((error) => {
-      res.json(error);
+      res.status(400).json(error);
     });
 }
 
