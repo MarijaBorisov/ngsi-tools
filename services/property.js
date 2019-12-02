@@ -129,13 +129,13 @@ async function rulesCheck(parsedData, ext) {
       if (err) {
         console.log(err);
         // throw new Error("Error while getting data from database. Please try it later.");
-        reject("Error while getting data from database. Please try it later.");
+        return reject("Error while getting data from database. Please try it later.");
       }
       if (!result || result.length == 0) {
         console.log("No result");
         console.log(result);
         //throw new Error("There is no entity type " + type + " in the database. Please add new entity type structure.");
-        reject("There is no entity type " + type + " in the database. Please add new entity type structure.");
+        return reject("There is no entity type " + type + " in the database. Please add new entity type structure.");
       }
       console.log(result);
       props = Object.keys(result.properties);
@@ -149,7 +149,7 @@ async function rulesCheck(parsedData, ext) {
   
       if (!type) {
         // return new Error(`Failed to find type on ${parsedData[0].id}`);
-        reject(`Failed to find type on ${parsedData[0].id}`);
+        return reject(`Failed to find type on ${parsedData[0].id}`);
       }
     
       parsedData.forEach((element) => {
@@ -168,12 +168,12 @@ async function rulesCheck(parsedData, ext) {
 
       if (errors.length !== 0) {
         // throw new Error(`Invalid type attribute on: ${errors}`);
-        reject(`Invalid type attribute on: ${errors}`);
+        return reject(`Invalid type attribute on: ${errors}`);
       }
 
       if (!rules) {
         // throw new Error(`No rules have been found for: ${type}`);
-        reject(`No rules have been found for: ${type}`);
+        return reject(`No rules have been found for: ${type}`);
       }
 
       return resolve(rules);
