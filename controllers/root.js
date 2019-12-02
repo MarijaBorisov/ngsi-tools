@@ -282,7 +282,7 @@ function createEntityTypeObject(res, typeDescription, properties, newEntities, c
         "YES".toLowerCase()
       )
         newEntities.properties[properties[i]] =
-        rules.stringToArrayMandatory;
+        "stringToArrayMandatory";
       else newEntities.properties[properties[i]] = "stringToArray";
     } else if (
       typeDescription[properties[i]].type.toLowerCase() ==
@@ -293,7 +293,7 @@ function createEntityTypeObject(res, typeDescription, properties, newEntities, c
         "YES".toLowerCase()
       )
         newEntities.properties[properties[i]] =
-        rules.stringToArrayNumMandatory;
+        "stringToArrayNumMandatory";
       else
         newEntities.properties[properties[i]] = "stringToArrayNum";
     } else if (
