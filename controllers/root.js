@@ -7,7 +7,7 @@ const responseRules = require("../utilities/rules.json");
 const url = require("../config").orion_url;
 const defaultEntitiesAmount = require("../config").returnEntities;
 const rules = require("../utilities");
-var EnityType = global.conn.model("EntityType");
+var EntityType = global.conn.model("EntityType");
 
 var sendJSONresponse = function (res, status, content) {
   res.status(status);
@@ -139,7 +139,7 @@ function addResEntityType(err, newEntities, typeDescription, res) {
     return;
   }
   // console.log(newEntities);
-  EnityType.find({
+  EntityType.find({
     entityType: newEntities.entityType
   }, function (err, types) {
     if (types && types.length != 0) {
@@ -149,7 +149,7 @@ function addResEntityType(err, newEntities, typeDescription, res) {
       });
       return;
     }
-    var entity = new EnityType();
+    var entity = new EntityType();
     entity.entityType = newEntities.entityType;
     entity.properties = newEntities.properties;
 
@@ -180,7 +180,7 @@ function updateResEntityType(err, newEntities, typeDescription, res) {
     return;
   }
   // console.log(newEntities);
-  EnityType.find({
+  EntityType.find({
     entityType: newEntities.entityType
   }, function (err, types) {
     if (!types || types.length == 0) {
@@ -194,7 +194,7 @@ function updateResEntityType(err, newEntities, typeDescription, res) {
     entity.entityType = newEntities.entityType;
     entity.properties = newEntities.properties;
 
-    EnityType.updateOne({
+    EntityType.updateOne({
       entityType: newEntities.entityType
     }, entity, function (err, result) {
       if (err) {

@@ -1,6 +1,7 @@
 const entityRules = require("../rules");
 const metawrite = require("./metadata").set;
-
+var EntityType = global.conn.model("EntityType");
+var rulesFunctions = require("../utilities");
 function propertyChecks( rules, entity, operation, ext ) {
 
     const rulesProp = Object.getOwnPropertyNames( rules );
@@ -71,7 +72,7 @@ function propertyChecks( rules, entity, operation, ext ) {
     }
 }
 
-function rulesCheck( parsedData, ext ) {
+function rulesCheckOld( parsedData, ext ) {
 
     if (ext === '.json') {
         var { type } = parsedData[0][0]
@@ -111,6 +112,70 @@ function rulesCheck( parsedData, ext ) {
     }
 
     return rules;
+}
+
+function rulesCheck(parsedData, ext) {
+  console.log("In rules check");
+  const errors = [];
+  var rules = {};
+  var props;
+  // const rules = entityRules[ type ];
+  if (ext === '.json') {
+    var { type } = parsedData[0][0]
+  } else {
+    var { type } = parsedData[0];
+  }
+  console.log(type);
+
+  console.log("Before find one");
+  EntityType.findOne({ entityType: type }, function (err, result) {
+    if (err) {
+      console.log(err);
+      throw new Error("Error while getting data from database. Please try it later.");
+    }
+    if (!result || result.length == 0) {
+      console.log("No result");
+      console.log(result);
+      throw new Error("There is no entity type " + type + " in the database. Please add new entity type structure.");
+    }
+    console.log(result);
+    props = Object.keys(result.properties);
+    console.log("props");
+    console.log(props);
+    for (var i = 0; i < props.length; i++) {
+      rules[props[i]] = rulesFunctions[result.properties[props[i]]];
+    }
+    console.log("rules");
+    // console.log(rules);
+  
+    if (!type) {
+      return new Error(`Failed to find type on ${parsedData[0].id}`);
+    }
+    
+    parsedData.forEach((element) => {
+      if (ext === '.json') {
+        element.forEach((single) => {
+          if (!single.type || single.type !== type) {
+            errors.push(single.id);
+          }
+        })
+      } else {
+        if (!element.type || element.type !== type) {
+          errors.push(element.id);
+        }
+      }
+    });
+
+    if (errors.length !== 0) {
+      throw new Error(`Invalid type attribute on: ${errors}`);
+    }
+
+    if (!rules) {
+      throw new Error(`No rules have been found for: ${type}`);
+    }
+
+    return rules;
+  });
 }
 
 function processEntity( rules, entity, option, ext ) {
