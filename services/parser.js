@@ -11,8 +11,8 @@ const parseOperations = {
         try {
           rules = await ruleChecks(parsedData, ext);
           return Promise.resolve( rules );
-        } catch ( error ) {
-            return Promise.reject( error.message );
+        } catch (error) {
+          return Promise.reject( error );
         }
     },
 
