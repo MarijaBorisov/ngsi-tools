@@ -119,6 +119,15 @@ config.https = true;
 config.returnEntities = 20; 
 
 module.exports = config;
+
+config.db = {
+  url: "mongodb://localhost:27017/w4t-entities",
+  options: {
+    user: '',
+    pass: '',
+    useNewUrlParser: true
+  },
+}
 ```
 
 * **`config.orion_url`**
@@ -137,9 +146,15 @@ module.exports = config;
     - When getting all entities default value provided by Fiware Orion is 20, meaning a user can get only 20 entities. But this option
 allows users to specify the number of entities they will get in return max value is 1000. More on information on this in official Fiware Orion [Documentation](https://fiware-orion.readthedocs.io/en/master/user/pagination/index.html).
 
+* **`config.db`**
+    - Structures of entity types that can be uploaded via the Connector are saved in this database
+
+###### **Structures of Entity Types**
+In order to make the NGSI Connector more universal, the possibility for users to create and add various Entity Types and their structure is incorporated. Each structure sets the rules that will be used while parsing specific entities. It is mandatory to first upload the structure of each entity type that will be uploaded, otherwise upload of entities of unknown structure would not be possible.
+
 ###### **Rules**
 
-Ngsi Connector API has support for rules, they represent a key aspect of API by providing users with a platform for customizing aspect of data creation 
+NGSI Connector API has support for rules, they represent a key aspect of API by providing users with a platform for customizing aspect of data creation 
 before sending data to Fiware Orion.
 
 Rules make sure that data which is sent to Fiware Orion keep its integrity and structure, it becomes essentials when working with big files. Files can contain up to 3000 and more entities
@@ -248,12 +263,22 @@ All currently available endpoints are:
         * Get all rules currently supported in  Ngsi Connector API
     * **`rules/:ruleId`**
         * Get single rule description, users can very fast find all info what properties are mandatory and what type they return.
+    * **`typestructure`**
+        * Get the rules for creating structures of entity types that are going to be uploaded
+    * **`entitytype/:entityType`**
+        * Get the structure of specific entity type
 
 * **`POST`**
     * **`entities`**
         * Create entities from user file in Fiware-Service/Fiware-ServicePath
     * **`entities/update`**
         * Update entities from user file in Fiware-Service/Fiware-ServicePath
+    * **`entitytype`**
+        * Create a structure of specific entity type that will be setting the rules that are going to be used when uploading
+
+* **`PATCH`**
+    * **`entitytype`**
+        * Update a structure of specific entity type that will be setting the rules that are going to be used when uploading
 
 In description of API endpoints we mentioned Fiware-Service/Fiware-ServicePath more information regarding this topic can be found on its official
 [Documentation](https://fiware-orion.readthedocs.io/en/master/user/service_path/).
