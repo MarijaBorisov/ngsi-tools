@@ -9,7 +9,7 @@
 		"description":{"type":"Text", "mandatory":"NO"},
 		"vehicleType":{"type":"Text", "mandatory":"YES"},
 		"brandName":{"type":"Text", "mandatory":"YES"},
-		"numberOfAxes":{"type":"Float", "mandatory":"NO"},
+		"numberOfAxes":{"type":"Integer", "mandatory":"NO"},
 		"maxCargoPerAxe ":{"type":"NumberList(,)", "mandatory":"NO", "metadata":{"unit": {"value": "KGM","type": "String"}}},
 		"engineType":{"type":"Text", "mandatory":"NO"},
 		"enginePower  ":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "KWH","type": "String"}}},
