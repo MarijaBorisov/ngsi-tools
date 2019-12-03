@@ -127,13 +127,13 @@ function getEntityType(req, res) {
         return;
       }
       if (!result) {
-        sendJSONresponse(res, 400, {
+        sendJSONresponse(res, 404, {
           "message": "There is no entity type " + req.params.id + " in the database. Please add its structure first."
         });
         return;
       }
       sendJSONresponse(res, 200, {
-        "Entyty type:": {
+        "Entity type:": {
           entityType: result.entityType,
           properties: result.properties
         }
