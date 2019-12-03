@@ -1,0 +1,19 @@
+{
+  "nameOfNewType": {
+    "id": {
+      "type": "EntityID",
+      "mandatory": "YES"
+    },
+    "type": {
+      "type": "EntityType",
+      "mandatory": "YES"
+    },
+    "nameOfFirstProperty":{
+      "type": "Text|Relationship|TextList(,)|NumberList(,)|RelationshipList(,)|GeoJSON(Point)|Float|Integer|Datetime|StructuredValue(JSON object)|StructuredList([JSON objects])",
+      "mandatory": "YES|NO",
+      "metadata" :"{'name': 'EnterArbitraryName','value': 'EnterArbitraryValue','type': 'EnterArbitraryType'}||{}",
+      "description": "EnterArbitraryDescription"
+    },
+    "..." : {"...":"..."}
+  }
+}

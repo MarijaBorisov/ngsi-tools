@@ -1,9 +1,9 @@
 const request = require("request-promise");
 const fs = require('fs');
 var path = require('path');
-
+var path_to_structure = path.normalize(__dirname + "/../extern_types/");
 const responseMessages = require("../utilities/utils");
-const responseRules = require("../utilities/rules.json");
+// const responseRules = require("../utilities/rules.json");
 const url = require("../config").orion_url;
 const defaultEntitiesAmount = require("../config").returnEntities;
 const rules = require("../utilities");
@@ -82,21 +82,73 @@ function getEntityByType(req, res) {
     });
 }
 
-function getRules(req, res) {
-  if (!responseRules.rules) {
+// function getRules(req, res) {
+//   if (!responseRules.rules) {
+//     res.status(404).json(responseMessages["404"]);
+//   } else {
+//     res.status(200).json(responseRules.rules);
+//   }
+// }
+
+function getAllTypes(req, res) {
+  EntityType.distinct("entityType", {},
+    function (err, result) {
+      if (err) {
+        sendJSONresponse(res, 502, {
+          "message": "Error while querying database, please try later"
+        });
+        return;
+      }
+
+      if (!result || result.length == 0) {
+        sendJSONresponse(res, 200, {
+          "message": "There is no Rules, no Entity Type structeres inserted into the database"
+        });
+        return;
+      }
+      res.status(200).json(result);
+      return;
+    });
+}
+
+// function getRule(req, res) {
+//   if (!responseRules[req.params.id]) {
+//     res.status(404).json(responseMessages["404"]);
+//   } else {
+//     res.status(200).json(responseRules[req.params.id]);
+//   }
+// }
+
+function getEntityTypeStructure(req, res) {
+  if (!req.params.id) {
+    sendJSONresponse(res, 502, {
+      "message": "Bad Request, mising RuleId"
+    });
+    return;
+  }
+  let rawstructure;
+  try {
+    rawstructure = fs.readFileSync(path_to_structure + req.params.id + '.json');
+  } catch (err) { 
+    sendJSONresponse(res, 502, {
+      "message": "There is no Rule for Entity Type: " + req.params.id
+    });
+    return;
+  }
+  if (!rawstructure) { 
+    sendJSONresponse(res, 502, {
+      "message": "There is no Rule for Entity Type: " + req.params.id
+    });
+    return;
+  }
+  let structure = JSON.parse(rawstructure);
+  if (!structure) {
     res.status(404).json(responseMessages["404"]);
   } else {
-    res.status(200).json(responseRules.rules);
+    res.status(200).json(structure);
   }
 }
 
-function getRule(req, res) {
-  if (!responseRules[req.params.id]) {
-    res.status(404).json(responseMessages["404"]);
-  } else {
-    res.status(200).json(responseRules[req.params.id]);
-  }
-}
 
 function getTypeStructure(req, res) {
   var path_to_structure = path.normalize(__dirname + "/../extern_types/");
@@ -150,7 +202,7 @@ function addEntityType(req, res) {
   var properties = Object.keys(typeDescription);
   newEntities.entityType = newType;
   newEntities.properties = {};
-  createEntityTypeObject(res, typeDescription, properties, newEntities, addResEntityType);
+  createEntityTypeObject(res, typeDescription, properties, newEntities, bodyObject, addResEntityType);
 }
 
 function updateEntityType(req, res) {
@@ -161,17 +213,17 @@ function updateEntityType(req, res) {
   var properties = Object.keys(typeDescription);
   newEntities.entityType = newType;
   newEntities.properties = {};
-  createEntityTypeObject(res, typeDescription, properties, newEntities, updateResEntityType);
+  createEntityTypeObject(res, typeDescription, properties, newEntities, bodyObject, updateResEntityType);
 }
 
-function addResEntityType(err, newEntities, typeDescription, res) {
+function addResEntityType(err, newEntities, typeDescription, bodyObject, res) {
   if (err) {
     sendJSONresponse(res, 400, {
       message: err
     });
     return;
   }
-  // console.log(newEntities);
+
   EntityType.find({
     entityType: newEntities.entityType
   }, function (err, types) {
@@ -193,6 +245,15 @@ function addResEntityType(err, newEntities, typeDescription, res) {
         });
         return;
       }
+      let data = JSON.stringify(bodyObject);
+      try {
+        fs.writeFileSync(path_to_structure + newEntities.entityType + '.json', data,{encoding:'utf8',flag:'w'});
+      } catch (err) { 
+        sendJSONresponse(res, 400, {
+          message: "Error while saving a structure in the file. Please update this entity type again.",
+        });
+        return;
+      }
       sendJSONresponse(res, 200, {
         message: "Entity type: " +
         newEntities.entityType +
@@ -205,17 +266,23 @@ function addResEntityType(err, newEntities, typeDescription, res) {
   });
 }
 
-function updateResEntityType(err, newEntities, typeDescription, res) {
+function updateResEntityType(err, newEntities, typeDescription, bodyObject, res) {
   if (err) {
     sendJSONresponse(res, 400, {
       message: err
     });
     return;
   }
-  // console.log(newEntities);
+
   EntityType.find({
     entityType: newEntities.entityType
   }, function (err, types) {
+    if (err) {
+      sendJSONresponse(res, 400, {
+        message: "Error while querying the database. Please try it later.",
+      });
+      return;
+    }
     if (!types || types.length == 0) {
       console.log("Entity type " + newEntities.entityType + " does not exist in the database");
       sendJSONresponse(res, 400, {
@@ -235,7 +302,16 @@ function updateResEntityType(err, newEntities, typeDescription, res) {
           message: "Error while saving changes in the database. Please try it later.",
         });
         return;
-      }
+        }
+        let data = JSON.stringify(bodyObject);
+        try {
+          fs.writeFileSync(path_to_structure + newEntities.entityType + '.json', data);
+        } catch (err) { 
+          sendJSONresponse(res, 400, {
+            message: "Error while saving a structure in the file. Please update this entity type again.",
+          });
+          return;
+        }
       sendJSONresponse(res, 200, {
         message: "Entity type: " +
           entity.entityType +
@@ -249,7 +325,7 @@ function updateResEntityType(err, newEntities, typeDescription, res) {
   });
 }
 
-function createEntityTypeObject(res, typeDescription, properties, newEntities, callback) {
+function createEntityTypeObject(res, typeDescription, properties, newEntities, bodyObject, callback) {
   for (let i = 0; i < properties.length; i++) {
     if (
       typeDescription[properties[i]].type.toLowerCase() ==
@@ -365,13 +441,13 @@ function createEntityTypeObject(res, typeDescription, properties, newEntities, c
       else newEntities.properties[properties[i]] = "structuredList";
     } else {
       if (callback)
-        callback("Unknown property type exists: " + properties[i] + ", please check the structure", newEntities, typeDescription, res);
+        callback("Unknown property type exists: " + properties[i] + ", please check the structure", newEntities, typeDescription, bodyObject, res);
       console.log("Unknown property type exists: " + properties[i] + ", please check the structure");
       return;
     }
   }
   if (callback)
-    callback(null, newEntities, typeDescription, res);
+    callback(null, newEntities, typeDescription, bodyObject, res);
   return;
 }
 
@@ -379,10 +455,12 @@ module.exports = {
   getEntityByType,
   getEntities,
   getEntity,
-  getRules,
-  getRule,
+  // getRules,
+  // getRule,
   getTypeStructure,
   addEntityType,
   updateEntityType,
-  getEntityType
+  getEntityType,
+  getEntityTypeStructure,
+  getAllTypes
 };

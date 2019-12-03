@@ -48,11 +48,13 @@ module.exports = () => {
   });
 
   router.get("/v1/rules", (req, res) => {
-    rootController.getRules(req, res);
+    // rootController.getRules(req, res);
+    rootController.getAllTypes(req, res);
   });
 
   router.get("/v1/rules/:id", (req, res) => {
-    rootController.getRule(req, res);
+    // rootController.getRule(req, res);
+    rootController.getEntityTypeStructure(req, res);
   });
 
   router.get("/v1/typestructure", headermid, (req, res) => {
