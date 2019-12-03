@@ -248,7 +248,7 @@ Rules are customizable, users can create, remove or edit rules, at the moment of
 
 ###### API
 
-NGSI Connector API documentation can be found in its official [Swagger](backend.waste4think.eu:81) instance.
+NGSI Connector API documentation can be found in its official [Swagger](backend.waste4think.eu:8082) instance.
 
 All currently available endpoints are:
 
