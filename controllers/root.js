@@ -94,7 +94,7 @@ function getAllTypes(req, res) {
   EntityType.distinct("entityType", {},
     function (err, result) {
       if (err) {
-        sendJSONresponse(res, 502, {
+        sendJSONresponse(res, 500, {
           "message": "Error while querying database, please try later"
         });
         return;
@@ -121,7 +121,7 @@ function getAllTypes(req, res) {
 
 function getEntityTypeStructure(req, res) {
   if (!req.params.id) {
-    sendJSONresponse(res, 502, {
+    sendJSONresponse(res, 400, {
       "message": "Bad Request, mising RuleId"
     });
     return;
@@ -130,13 +130,13 @@ function getEntityTypeStructure(req, res) {
   try {
     rawstructure = fs.readFileSync(path_to_structure + req.params.id + '.json');
   } catch (err) { 
-    sendJSONresponse(res, 502, {
+    sendJSONresponse(res, 404, {
       "message": "There is no Rule for Entity Type: " + req.params.id
     });
     return;
   }
   if (!rawstructure) { 
-    sendJSONresponse(res, 502, {
+    sendJSONresponse(res, 404, {
       "message": "There is no Rule for Entity Type: " + req.params.id
     });
     return;
@@ -163,7 +163,7 @@ function getTypeStructure(req, res) {
 
 function getEntityType(req, res) {
   if (!req.params.id) {
-    sendJSONresponse(res, 502, {
+    sendJSONresponse(res, 400, {
       "message": "Bad Request"
     });
     return;
@@ -173,7 +173,7 @@ function getEntityType(req, res) {
     },
     function (err, result) {
       if (err) {
-        sendJSONresponse(res, 400, {
+        sendJSONresponse(res, 500, {
           "message": "Error while quering database. Please try again."
         });
         return;
@@ -195,22 +195,46 @@ function getEntityType(req, res) {
 }
 
 function addEntityType(req, res) {
+  if (!req.body || isEmpty(req.body)) { 
+    sendJSONresponse(res, 400, {
+      "message": "Please submit non-empty JSON object that represents the structure of a new entity type"
+    });
+    return;
+  }
   var bodyObject = req.body;
   var newEntities = {};
   var newType = Object.keys(bodyObject)[0];
   var typeDescription = bodyObject[newType];
   var properties = Object.keys(typeDescription);
+  if (!newType || !properties || properties.length<2) { 
+    sendJSONresponse(res, 400, {
+      "message": "Please follow the correct entity type structure available on /v1/typestructure"
+    });
+    return;
+  }
   newEntities.entityType = newType;
   newEntities.properties = {};
   createEntityTypeObject(res, typeDescription, properties, newEntities, bodyObject, addResEntityType);
 }
 
 function updateEntityType(req, res) {
+  if (!req.body || isEmpty(req.body)) { 
+    sendJSONresponse(res, 400, {
+      "message": "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded"
+    });
+    return;
+  }
   var bodyObject = req.body;
   var newEntities = {};
   var newType = Object.keys(bodyObject)[0];
   var typeDescription = bodyObject[newType];
   var properties = Object.keys(typeDescription);
+  if (!newType || !properties || properties.length<2) { 
+    sendJSONresponse(res, 400, {
+      "message": "Please follow the correct entity type structure available on /v1/typestructure"
+    });
+    return;
+  }
   newEntities.entityType = newType;
   newEntities.properties = {};
   createEntityTypeObject(res, typeDescription, properties, newEntities, bodyObject, updateResEntityType);
@@ -278,7 +302,7 @@ function updateResEntityType(err, newEntities, typeDescription, bodyObject, res)
     entityType: newEntities.entityType
   }, function (err, types) {
     if (err) {
-      sendJSONresponse(res, 400, {
+      sendJSONresponse(res, 500, {
         message: "Error while querying the database. Please try it later.",
       });
       return;
@@ -449,6 +473,14 @@ function createEntityTypeObject(res, typeDescription, properties, newEntities, b
   if (callback)
     callback(null, newEntities, typeDescription, bodyObject, res);
   return;
+}
+
+function isEmpty(obj) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key))
+      return false;
+  }
+  return true;
 }
 
 module.exports = {
