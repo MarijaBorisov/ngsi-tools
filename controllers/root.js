@@ -231,7 +231,7 @@ function getEntityType(req, res) {
 function addEntityType(req, res) {
   if (!req.body || isEmpty(req.body)) {
     sendJSONresponse(res, 400, {
-      "message": "Please submit non-empty JSON object that represents the structure of a new entity type"
+      "message": "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on /v1/typestructure"
     });
     return;
   }
@@ -242,7 +242,7 @@ function addEntityType(req, res) {
   var properties = Object.keys(typeDescription);
   if (!newType || !properties || properties.length < 2) {
     sendJSONresponse(res, 400, {
-      "message": "Please follow the correct entity type structure available on /v1/typestructure"
+      "message": "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on /v1/typestructure"
     });
     return;
   }
@@ -254,7 +254,7 @@ function addEntityType(req, res) {
 function updateEntityType(req, res) {
   if (!req.body || isEmpty(req.body)) {
     sendJSONresponse(res, 400, {
-      "message": "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded"
+      "message": "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on /v1/typestructure"
     });
     return;
   }
@@ -265,7 +265,7 @@ function updateEntityType(req, res) {
   var properties = Object.keys(typeDescription);
   if (!newType || !properties || properties.length < 2) {
     sendJSONresponse(res, 400, {
-      "message": "Please follow the correct entity type structure available on /v1/typestructure"
+      "message": "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on /v1/typestructure"
     });
     return;
   }
@@ -277,7 +277,7 @@ function updateEntityType(req, res) {
 function addResEntityType(err, newEntities, typeDescription, bodyObject, res) {
   if (err) {
     sendJSONresponse(res, 400, {
-      message: err
+      message: "Error while saving in the database. Please try it later."
     });
     return;
   }
@@ -287,7 +287,7 @@ function addResEntityType(err, newEntities, typeDescription, bodyObject, res) {
   }, function (err, types) {
     if (types && types.length != 0) {
       console.log("Entity type " + newEntities.entityType + " already exists in the database");
-      sendJSONresponse(res, 400, {
+      sendJSONresponse(res, 404, {
         message: "Entity type " + newEntities.entityType + " already exists in the database",
       });
       return;
@@ -301,7 +301,7 @@ function addResEntityType(err, newEntities, typeDescription, bodyObject, res) {
 
     entity.save(function (err) {
       if (err) {
-        sendJSONresponse(res, 400, {
+        sendJSONresponse(res, 500, {
           message: "Error while saving in the database. Please try it later.",
         });
         return;
@@ -337,7 +337,7 @@ function updateResEntityType(err, newEntities, typeDescription, bodyObject, res)
     }
     if (!types || types.length == 0) {
       console.log("Entity type " + newEntities.entityType + " does not exist in the database");
-      sendJSONresponse(res, 400, {
+      sendJSONresponse(res, 404, {
         message: "Entity type " + newEntities.entityType + " does not exist in the database",
       });
       return;
@@ -352,8 +352,8 @@ function updateResEntityType(err, newEntities, typeDescription, bodyObject, res)
       entityType: newEntities.entityType
     }, entity, function (err, result) {
       if (err) {
-        sendJSONresponse(res, 400, {
-          message: "Error while saving changes in the database. Please try it later.",
+        sendJSONresponse(res, 500, {
+          message: "Error while querying the database. Please try it later.",
         });
         return;
       }
