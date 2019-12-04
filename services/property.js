@@ -131,20 +131,14 @@ async function rulesCheck(parsedData, ext) {
         return reject("Error while getting data from database. Please try it later.");
       }
       if (!result || result.length == 0) {
-        console.log("No result");
-        console.log(result);
         //throw new Error("There is no entity type " + type + " in the database. Please add new entity type structure.");
         return reject("There is no entity type " + type + " in the database. Please add new entity type structure.");
       }
       // console.log(result);
       props = Object.keys(result.properties);
-      console.log("props");
-      // console.log(props);
       for (var i = 0; i < props.length; i++) {
         rules[props[i]] = rulesFunctions[result.properties[props[i]]];
       }
-      console.log("rules");
-      // console.log(rules);
   
       if (!type) {
         // return new Error(`Failed to find type on ${parsedData[0].id}`);

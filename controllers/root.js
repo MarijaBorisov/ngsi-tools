@@ -119,7 +119,7 @@ function getAllTypes(req, res) {
 //   }
 // }
 
-function getEntityTypeStructure(req, res) {
+function getEntityTypeStructureFiles(req, res) {
   if (!req.params.id) {
     sendJSONresponse(res, 400, {
       "message": "Bad Request, mising RuleId"
@@ -129,13 +129,13 @@ function getEntityTypeStructure(req, res) {
   let rawstructure;
   try {
     rawstructure = fs.readFileSync(path_to_structure + req.params.id + '.json');
-  } catch (err) { 
+  } catch (err) {
     sendJSONresponse(res, 404, {
       "message": "There is no Rule for Entity Type: " + req.params.id
     });
     return;
   }
-  if (!rawstructure) { 
+  if (!rawstructure) {
     sendJSONresponse(res, 404, {
       "message": "There is no Rule for Entity Type: " + req.params.id
     });
@@ -147,6 +147,40 @@ function getEntityTypeStructure(req, res) {
   } else {
     res.status(200).json(structure);
   }
+}
+
+function getEntityTypeStructure(req, res) {
+  if (!req.params.id) {
+    sendJSONresponse(res, 400, {
+      "message": "Bad Request, mising RuleId"
+    });
+    return;
+  }
+  EntityType.findOne({
+      entityType: req.params.id
+    },
+    function (err, result) {
+      if (err) {
+        sendJSONresponse(res, 500, {
+          "message": "Error while querying database. Please try later."
+        });
+        return;
+      }
+      if (!result) {
+        sendJSONresponse(res, 404, {
+          "message": "There is no Rule for Entity Type: " + req.params.id + " stored in the system."
+        });
+        return;
+      }
+      if (result.structure_description && !isEmpty(result.structure_description)) {
+        res.status(200).json(result.structure_description);
+      } else { 
+        sendJSONresponse(res, 404, {
+          "message": "There is no Rule for Entity Type: " + req.params.id + " stored in the system."
+        });
+        return;
+      }
+    });
 }
 
 
@@ -195,7 +229,7 @@ function getEntityType(req, res) {
 }
 
 function addEntityType(req, res) {
-  if (!req.body || isEmpty(req.body)) { 
+  if (!req.body || isEmpty(req.body)) {
     sendJSONresponse(res, 400, {
       "message": "Please submit non-empty JSON object that represents the structure of a new entity type"
     });
@@ -206,7 +240,7 @@ function addEntityType(req, res) {
   var newType = Object.keys(bodyObject)[0];
   var typeDescription = bodyObject[newType];
   var properties = Object.keys(typeDescription);
-  if (!newType || !properties || properties.length<2) { 
+  if (!newType || !properties || properties.length < 2) {
     sendJSONresponse(res, 400, {
       "message": "Please follow the correct entity type structure available on /v1/typestructure"
     });
@@ -218,7 +252,7 @@ function addEntityType(req, res) {
 }
 
 function updateEntityType(req, res) {
-  if (!req.body || isEmpty(req.body)) { 
+  if (!req.body || isEmpty(req.body)) {
     sendJSONresponse(res, 400, {
       "message": "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded"
     });
@@ -229,7 +263,7 @@ function updateEntityType(req, res) {
   var newType = Object.keys(bodyObject)[0];
   var typeDescription = bodyObject[newType];
   var properties = Object.keys(typeDescription);
-  if (!newType || !properties || properties.length<2) { 
+  if (!newType || !properties || properties.length < 2) {
     sendJSONresponse(res, 400, {
       "message": "Please follow the correct entity type structure available on /v1/typestructure"
     });
@@ -261,6 +295,9 @@ function addResEntityType(err, newEntities, typeDescription, bodyObject, res) {
     var entity = new EntityType();
     entity.entityType = newEntities.entityType;
     entity.properties = newEntities.properties;
+    entity.structure_description= {};
+    entity.structure_description[newEntities.entityType] = typeDescription;
+
 
     entity.save(function (err) {
       if (err) {
@@ -269,18 +306,9 @@ function addResEntityType(err, newEntities, typeDescription, bodyObject, res) {
         });
         return;
       }
-      let data = JSON.stringify(bodyObject);
-      try {
-        fs.writeFileSync(path_to_structure + newEntities.entityType + '.json', data,{encoding:'utf8',flag:'w'});
-      } catch (err) { 
-        sendJSONresponse(res, 400, {
-          message: "Error while saving a structure in the file. Please update this entity type again.",
-        });
-        return;
-      }
       sendJSONresponse(res, 200, {
         message: "Entity type: " +
-        newEntities.entityType +
+          newEntities.entityType +
           " properly parsed and added to the system.",
         description: typeDescription,
         "New entity": entity
@@ -317,7 +345,9 @@ function updateResEntityType(err, newEntities, typeDescription, bodyObject, res)
     var entity = types[0];
     entity.entityType = newEntities.entityType;
     entity.properties = newEntities.properties;
-
+    entity.structure_description = {};
+    entity.structure_description[newEntities.entityType] = typeDescription;
+      
     EntityType.updateOne({
       entityType: newEntities.entityType
     }, entity, function (err, result) {
@@ -326,16 +356,7 @@ function updateResEntityType(err, newEntities, typeDescription, bodyObject, res)
           message: "Error while saving changes in the database. Please try it later.",
         });
         return;
-        }
-        let data = JSON.stringify(bodyObject);
-        try {
-          fs.writeFileSync(path_to_structure + newEntities.entityType + '.json', data);
-        } catch (err) { 
-          sendJSONresponse(res, 400, {
-            message: "Error while saving a structure in the file. Please update this entity type again.",
-          });
-          return;
-        }
+      }
       sendJSONresponse(res, 200, {
         message: "Entity type: " +
           entity.entityType +
