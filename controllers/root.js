@@ -386,7 +386,7 @@ function createEntityTypeObject(res, typeDescription, properties, newEntities, b
       typeDescription[properties[i]].type.toLowerCase() ==
       "Text".toLowerCase() ||
       typeDescription[properties[i]].type.toLowerCase() ==
-      "Relationship".toLowerCase()
+      "ReferenceID".toLowerCase()
     ) {
       if (
         typeDescription[properties[i]].mandatory.toLowerCase() ==
@@ -396,7 +396,9 @@ function createEntityTypeObject(res, typeDescription, properties, newEntities, b
       else newEntities.properties[properties[i]] = "stringCheck";
     } else if (
       typeDescription[properties[i]].type.toLowerCase() ==
-      "TextList(,)".toLowerCase()
+      "TextList(,)".toLowerCase()||
+      typeDescription[properties[i]].type.toLowerCase() ==
+      "ReferenceIDList(,)".toLowerCase()
     ) {
       if (
         typeDescription[properties[i]].mandatory.toLowerCase() ==
