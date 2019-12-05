@@ -73,7 +73,7 @@ module.exports = () => {
     if (req.body) {
       rootController.updateEntityType(req, res);
     } else { 
-      sendJSONresponse(res, 400, {message: "Please send entity type structure in request body"});
+      sendJSONresponse(res, 400, { message: "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on /v1/typestructure"});
     }
   });
 
