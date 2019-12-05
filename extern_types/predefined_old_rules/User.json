@@ -6,9 +6,9 @@
 		"name":{"type":"Text", "mandatory":"NO"},
 		"location": {"type":"GeoJSON(Point)","mandatory":"NO", "metadata":{}},
 		"address":{"type":"Text", "mandatory":"NO"},
-		"refType":{"type":"Text", "mandatory":"NO"},
-		"refInputs":{"type":"TextList(,)", "mandatory":"NO"},
-		"refOutputs":{"type":"TextList(,)", "mandatory":"NO"},
-		"refAgentCollection":{"type":"Text", "mandatory":"NO"}
+		"refType":{"type":"ReferenceID", "mandatory":"NO"},
+		"refInputs":{"type":"ReferenceIDList(,)", "mandatory":"NO"},
+		"refOutputs":{"type":"ReferenceIDList(,)", "mandatory":"NO"},
+		"refAgentCollection":{"type":"ReferenceID", "mandatory":"NO"}
 	}
 }

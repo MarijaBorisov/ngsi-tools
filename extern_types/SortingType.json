@@ -18,7 +18,7 @@
 		"description:eus":{"type":"Text", "mandatory":"NO"},
 		"description:gr":{"type":"Text", "mandatory":"NO"},
 		"regulation":{"type":"Text", "mandatory":"NO"},
-		"refResources":{"type":"TextList(,)", "mandatory":"YES"},
+		"refResources":{"type":"ReferenceIDList(,)", "mandatory":"YES"},
 		"shape":{"type":"Text", "mandatory":"NO"},
 		"color":{"type":"Text", "mandatory":"YES"},
 		"annotations":{"type":"Text", "mandatory":"NO"},
