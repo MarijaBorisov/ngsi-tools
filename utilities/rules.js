@@ -774,18 +774,25 @@ function structuredListMandatory(string) {
         }
   }
   let meta = pos(counter);
-  let array;
+  let array=[];
   if (string.includes("[")) {
     string = string.substring(1, string.length-1)
   } 
-  array = string ? string.split(',').map(raw => raw.trim()) : [];
+
+  while (string.indexOf("},{") > -1) { 
+    array.push(string.substring(0, string.indexOf("},{") + 1));
+    string=substring(string.indexOf("},{") + 2, string.length)
+  }
+  if (string.indexOf("{")==0 && string.indexOf("}"==string.length)) { 
+    array.push(string);
+  }
+
   for (var i = 0; i < array.length; i++) { 
     if (IsJsonString(array[i])) {
       array[i] = JSON.parse(decodeURIComponent(array[i]));
       array[i] = urlEncodeForbiddenObj(array[i]);
     }
   }
-  
     return {
         "value": array || [],//specCase(string) || "",
         "type": "List",
@@ -804,17 +811,26 @@ function structuredList(string) {
   }
 
   let meta = pos(counter);
-  let array;
+  let array=[];
   if (string.includes("[")) {
     string = string.substring(1, string.length-1)
   } 
-  array = string ? string.split(',').map(raw => raw.trim()) : [];
+
+  while (string.indexOf("},{") > -1) { 
+    array.push(string.substring(0, string.indexOf("},{") + 1));
+    string=substring(string.indexOf("},{") + 2, string.length)
+  }
+  if (string.indexOf("{")==0 && string.indexOf("}"==string.length)) { 
+    array.push(string);
+  }
+
   for (var i = 0; i < array.length; i++) { 
     if (IsJsonString(array[i])) {
       array[i] = JSON.parse(decodeURIComponent(array[i]));
       array[i] = urlEncodeForbiddenObj(array[i]);
     }
   }
+  
   return {
     value: array || [],//specCase(string) || [],
     type: "List",
@@ -852,8 +868,8 @@ function urlEncodeForbiddenObj(obj) {
   return new_obj;  
 }
 
-function urlEncodeForbidden(str) { 
-  return (typeof str ==="string")? str.replace(/</g, "%3C").replace(/>/g, "%3E").replace(/"/g,"%22").replace(/'/g,"%27").replace(/=/g,"%3D").replace(/;/g,"%3B").replace(/\(/g,"%28").replace(/\)/g,"%29"):str;
+function urlEncodeForbidden(str) { //.replace(/"/g,"%22")
+  return (typeof str ==="string")? str.replace(/</g, "%3C").replace(/>/g, "%3E").replace(/'/g,"%27").replace(/=/g,"%3D").replace(/;/g,"%3B").replace(/\(/g,"%28").replace(/\)/g,"%29"):str;
 }
 
 
