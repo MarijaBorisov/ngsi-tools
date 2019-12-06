@@ -7,7 +7,7 @@
 		"name":{"type":"Text", "mandatory":"NO"},
 		"description":{"type":"Text", "mandatory":"NO"},
 		"features":{"type":"TextList(,)", "mandatory":"YES"},
-		"refDepositPoint":{"type":"TextList(,)", "mandatory":"YES"},
+		"refDepositPoint":{"type":"ReferenceIDList(,)", "mandatory":"YES"},
 		"areaServed":{"type":"Text", "mandatory":"NO"},
 		"dateModified":{"type":"Text", "mandatory":"NO"},
 		"dateCreated":{"type":"Text", "mandatory":"NO"}

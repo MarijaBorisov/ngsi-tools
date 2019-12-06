@@ -10,7 +10,7 @@
 		"name:pt":{"type":"Text", "mandatory":"NO"},
 		"name:eus":{"type":"Text", "mandatory":"NO"},
 		"name:gr":{"type":"Text", "mandatory":"NO"},
-		"refResources":{"type":"TextList(,)", "mandatory":"NO"},
+		"refResources":{"type":"ReferenceIDList(,)", "mandatory":"NO"},
 		"description":{"type":"Text", "mandatory":"NO"},
 		"description:en":{"type":"Text", "mandatory":"NO"},
 		"description:es":{"type":"Text", "mandatory":"NO"},

@@ -4,9 +4,9 @@
 		"type": {"type":"EntityType","mandatory":"YES"},
 		"family": {"type":"Text","mandatory":"YES", "metadata":{}},
 		"serialNumber": {"type":"Text","mandatory":"NO", "metadata":{}},
-		"refSortingType": {"type":"Text","mandatory":"YES", "metadata":{}},
+		"refSortingType": {"type":"ReferenceID","mandatory":"YES", "metadata":{}},
 		"description": {"type":"Text","mandatory":"NO", "metadata":{}},
-		"refType": {"type":"Text","mandatory":"YES", "metadata":{}},
+		"refType": {"type":"ReferenceID","mandatory":"YES", "metadata":{}},
 		"storedWasteOrigin": {"type":"Text","mandatory":"NO", "metadata":{}},
 		"location": {"type":"GeoJSON(Point)","mandatory":"YES", "metadata":{}},
 		"address": {"type":"Text","mandatory":"NO", "metadata":{}},
@@ -24,13 +24,13 @@
 		"openingHours": {"type":"TextList(,)","mandatory":"NO", "metadata":{}},
 		"dateLastCleaning": {"type":"Text","mandatory":"NO", "metadata":{}},
 		"nextCleaningDeadline": {"type":"Text","mandatory":"NO", "metadata":{}},
-		"refDepositPointIsle": {"type":"Text","mandatory":"NO", "metadata":{}},
+		"refDepositPointIsle": {"type":"ReferenceID","mandatory":"NO", "metadata":{}},
 		"status": {"type":"Text","mandatory":"NO", "metadata":{}},
 		"color": {"type":"Text","mandatory":"NO", "metadata":{}},
 		"image": {"type":"Text","mandatory":"NO", "metadata":{}},
 		"annotations": {"type":"Text","mandatory":"NO", "metadata":{}},
 		"areaServed": {"type":"Text","mandatory":"NO", "metadata":{}},
 		"dateModified": {"type":"Text","mandatory":"NO", "metadata":{}},
-		"refDevice": {"type":"Text","mandatory":"NO", "metadata":{}}
+		"refDevice": {"type":"ReferenceID","mandatory":"NO", "metadata":{}}
 	}
 }

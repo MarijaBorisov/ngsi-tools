@@ -38,7 +38,7 @@
 		"impact:pt":{"type":"Text", "mandatory":"NO"},
 		"impact:eus":{"type":"Text", "mandatory":"NO"},
 		"impact:gr":{"type":"Text", "mandatory":"NO"},
-		"refCategory":{"type":"TextList(,)", "mandatory":"NO"},
+		"refCategory":{"type":"ReferenceIDList(,)", "mandatory":"NO"},
 		"definitionSource":{"type":"Text", "mandatory":"NO"},
 		"image":{"type":"Text", "mandatory":"NO"},
 		"wasteCode":{"type":"Text", "mandatory":"NO"}	
