@@ -793,12 +793,16 @@ function structuredListMandatory(string) {
   let meta = pos(counter);
   let array = [];
   if (string.includes("[")) {
-    string = string.substring(1, string.length-1)
+    string = string.substring(1, string.length - 1).trim();
   } 
-  while (string.indexOf("},{") > -1) { 
-    array.push(string.substring(0, string.indexOf("},{") + 1));
-    string = string.substring(string.indexOf("},{") + 2, string.length).trim();
+  var search_delim = string.search(/}\s*,\s*{/);
+  while (search_delim > -1) { 
+    array.push(string.substring(0, search_delim + 1));
+    let match = string.match(/}\s*,\s*{/);
+    string = string.substring(search_delim + match[0].length-1, string.length).trim();
+    search_delim = string.search(/}\s*,\s*{/);
   }
+
   if (string.indexOf("{")==0 && string.indexOf("}")==string.length-1) { 
     array.push(string);
   }
@@ -831,10 +835,14 @@ function structuredList(string) {
   if (string.includes("[")) {
     string = string.substring(1, string.length-1)
   } 
-  while (string.indexOf("},{") > -1) { 
-    array.push(string.substring(0, string.indexOf("},{") + 1));
-    string = string.substring(string.indexOf("},{") + 2, string.length).trim();
+  var search_delim = string.search(/}\s*,\s*{/);
+  while (search_delim > -1) { 
+    array.push(string.substring(0, search_delim + 1));
+    let match = string.match(/}\s*,\s*{/);
+    string = string.substring(search_delim + match[0].length-1, string.length).trim();
+    search_delim = string.search(/}\s*,\s*{/);
   }
+  
   if (string.indexOf("{")==0 && string.indexOf("}")==string.length-1) { 
     array.push(string);
   }
