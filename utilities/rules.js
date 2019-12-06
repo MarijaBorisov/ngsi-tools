@@ -702,6 +702,7 @@ function arrToNum(string) {
   return data;
 }
 
+
 function structuredValue(string) {
     counter +=1
     if (typeof string == "object") {
@@ -712,16 +713,24 @@ function structuredValue(string) {
         }
     }
   
-  let meta = pos( counter );
+  let meta = pos(counter);
+  var string_obj;
+  if (IsJsonString(string)) {
+    string_obj = JSON.parse(decodeURIComponent(string));
+    string_obj = urlEncodeForbiddenObj(string_obj);
+  } else { 
+    string_obj = string;
+  }
+  
   if(meta) {
       return  {
-        "value": string || {},// specCase(string) || {},
+        "value": string_obj || {},// specCase(string) || {},
         "type": "StructuredValue",
         metadata: JSON.parse(meta)
       };
   }
   return {
-    "value": string || {},// specCase(string) || {},
+    "value": string_obj || {},// specCase(string) || {},
     "type": "StructuredValue",
     "metadata": {}
   }
@@ -738,9 +747,16 @@ function structuredValueMandatory(string) {
             "metadata": string.metadata || {}
         }
     }
-    let meta = pos( counter );
+    let meta = pos(counter);
+    var string_obj;
+    if (IsJsonString(string)) {
+      string_obj = JSON.parse(decodeURIComponent(string));
+      string_obj = urlEncodeForbiddenObj(string_obj);
+    } else { 
+      string_obj = string;
+    }
     return {
-        "value": string,//specCase(string) || "",
+        "value": string_obj,//specCase(string) || "",
         "type": "StructuredValue",
         "metadata": meta? JSON.parse(meta) : {}
     }
@@ -757,9 +773,21 @@ function structuredListMandatory(string) {
             "metadata": string.metadata || {}
         }
   }
-  let meta = pos( counter );
+  let meta = pos(counter);
+  let array;
+  if (string.includes("[")) {
+    string = string.substring(1, string.length-1)
+  } 
+  array = string ? string.split(',').map(raw => raw.trim()) : [];
+  for (var i = 0; i < array.length; i++) { 
+    if (IsJsonString(array[i])) {
+      array[i] = JSON.parse(decodeURIComponent(array[i]));
+      array[i] = urlEncodeForbiddenObj(array[i]);
+    }
+  }
+  
     return {
-        "value": string || [],//specCase(string) || "",
+        "value": array || [],//specCase(string) || "",
         "type": "List",
         "metadata": meta? JSON.parse(meta) : {}
     }
@@ -775,9 +803,20 @@ function structuredList(string) {
     };
   }
 
-  let meta = pos( counter );
+  let meta = pos(counter);
+  let array;
+  if (string.includes("[")) {
+    string = string.substring(1, string.length-1)
+  } 
+  array = string ? string.split(',').map(raw => raw.trim()) : [];
+  for (var i = 0; i < array.length; i++) { 
+    if (IsJsonString(array[i])) {
+      array[i] = JSON.parse(decodeURIComponent(array[i]));
+      array[i] = urlEncodeForbiddenObj(array[i]);
+    }
+  }
   return {
-    value: string || [],//specCase(string) || [],
+    value: array || [],//specCase(string) || [],
     type: "List",
     metadata: meta? JSON.parse(meta) : {}
   };
@@ -794,29 +833,54 @@ function specCase(string) {
     return JSON.parse(string.substring(1, string.length-1));
 }
 
+function IsJsonString(str) {
+  try {
+    JSON.parse(decodeURIComponent(str));
+  } catch (e) {
+      return false;
+  }
+  return true;
+}
+
+function urlEncodeForbiddenObj(obj) { 
+  var keys = Object.keys(obj);
+  var new_obj = {};
+  for (var i = 0; i < keys.length; i++) { 
+    if(obj.hasOwnProperty(keys[i]))
+      new_obj[urlEncodeForbidden(keys[i])] = (obj[keys[i]] !== null && typeof obj[keys[i]] === "object") ? urlEncodeForbiddenObj(obj[keys[i]]) : urlEncodeForbidden(obj[keys[i]]);
+  }
+  return new_obj;  
+}
+
+function urlEncodeForbidden(str) { 
+  return (typeof str ==="string")? str.replace(/</g, "%3C").replace(/>/g, "%3E").replace(/"/g,"%22").replace(/'/g,"%27").replace(/=/g,"%3D").replace(/;/g,"%3B").replace(/\(/g,"%28").replace(/\)/g,"%29"):str;
+}
+
+
+
 module.exports = {
-    locationCheck,
-    commaNumToUnits,
-    stringToArray,
-    dateCheckMandatory,
-    mandatoryCheck,
-    extraCheck,
-    maxCargoVolume,
-    stringToArrayMandatory,
-    commaNumToUnitsMandatory,
-    removeForbiden,
-    removeForbidenStrict,
-    locationCheckNoMand,
-    stringCheck,
-    typeCheck,
-    idCheck,
-    stringToArrayNum,
-    stringToArrayNumMandatory,
-    structuredValue,
-    structuredValueMandatory,
-    dateCheck,
-    commaNumToUnitsInt,
-    commaNumToUnitsIntMandatory,
-    structuredListMandatory,
-    structuredList
+  idCheck,
+  typeCheck,
+  stringCheck,
+  mandatoryCheck,
+  stringToArray,
+  stringToArrayMandatory,
+  stringToArrayNum,
+  stringToArrayNumMandatory,
+  locationCheckNoMand,
+  locationCheck,
+  commaNumToUnits,
+  commaNumToUnitsMandatory,
+  commaNumToUnitsInt,
+  commaNumToUnitsIntMandatory,
+  dateCheck,  
+  dateCheckMandatory,  
+  structuredValue,
+  structuredValueMandatory, 
+  structuredList, 
+  structuredListMandatory,  
+  extraCheck,
+  maxCargoVolume,
+  removeForbiden,
+  removeForbidenStrict
 };
