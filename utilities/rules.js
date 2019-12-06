@@ -286,11 +286,20 @@ function dateCheckMandatory(date) {// Not in use
   if (!date) {
     return null;
   }
-  //Missing objest check!!!
+
+  if (typeof date === 'object') {
+    return {
+        value: date.value || "",
+        type: "DateTime",
+        metadata: date.metadata || {},
+    };
+  }
+  let datetime = new Date(date) ? new Date(date) : "";
+  let meta = pos( counter );
   return {
-      value: date,
+      value: datetime,
       type: "DateTime",
-      metadata: {}
+      metadata: meta? meta: {}
   };
 }
 
@@ -337,14 +346,22 @@ function dateCheck(date) {// not in use
     if (!date)
         return {
             value: "",
-            type: "String",
+            type: "DateTime",
             metadata: {}
     }
-  //missing object check!!
+    if (typeof date === 'object') {
+      return {
+          value: date.value || "",
+          type: "DateTime",
+          metadata: date.metadata || {},
+      };
+  }
+  let datetime = new Date(date) ? new Date(date): "";
+  let meta = pos( counter );
     return {
-        value: date,
+        value: datetime,
         type: "DateTime",
-        metadata: {}
+        metadata: meta? meta : {}
     }
 }
 
@@ -774,16 +791,15 @@ function structuredListMandatory(string) {
         }
   }
   let meta = pos(counter);
-  let array=[];
+  let array = [];
   if (string.includes("[")) {
     string = string.substring(1, string.length-1)
   } 
-
   while (string.indexOf("},{") > -1) { 
     array.push(string.substring(0, string.indexOf("},{") + 1));
-    string=substring(string.indexOf("},{") + 2, string.length)
+    string = string.substring(string.indexOf("},{") + 2, string.length).trim();
   }
-  if (string.indexOf("{")==0 && string.indexOf("}"==string.length)) { 
+  if (string.indexOf("{")==0 && string.indexOf("}")==string.length-1) { 
     array.push(string);
   }
 
@@ -811,16 +827,15 @@ function structuredList(string) {
   }
 
   let meta = pos(counter);
-  let array=[];
+  let array = [];
   if (string.includes("[")) {
     string = string.substring(1, string.length-1)
   } 
-
   while (string.indexOf("},{") > -1) { 
     array.push(string.substring(0, string.indexOf("},{") + 1));
-    string=substring(string.indexOf("},{") + 2, string.length)
+    string = string.substring(string.indexOf("},{") + 2, string.length).trim();
   }
-  if (string.indexOf("{")==0 && string.indexOf("}"==string.length)) { 
+  if (string.indexOf("{")==0 && string.indexOf("}")==string.length-1) { 
     array.push(string);
   }
 
@@ -830,7 +845,7 @@ function structuredList(string) {
       array[i] = urlEncodeForbiddenObj(array[i]);
     }
   }
-  
+
   return {
     value: array || [],//specCase(string) || [],
     type: "List",
