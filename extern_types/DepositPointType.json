@@ -16,7 +16,7 @@
 		"category": {"type":"Text","mandatory":"YES"},
 		"insertHolesNumber":{"type":"Float", "mandatory":"YES", "metadata":{"unit": {"value": "C62","type": "String"}}},
 		"insertHoleWidth":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "MTR","type": "String"}}},
-		"insertHoleHeight ":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "MTR","type": "String"}}},
+		"insertHoleHeight":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "MTR","type": "String"}}},
 		"loadType":{"type":"Text", "mandatory":"NO"},
 		"madeOf":{"type":"Text", "mandatory":"NO"},
 		"madeOfCode":{"type":"Text", "mandatory":"NO"},
@@ -29,7 +29,7 @@
 		"accessLimitation":{"type":"Text", "mandatory":"NO"},
 		"userIdentification":{"type":"Text", "mandatory":"NO"},
 		"inputControl":{"type":"Text", "mandatory":"NO"},
-		"maximumInputVolume ":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "LTR","type": "String"}}},
+		"maximumInputVolume":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "LTR","type": "String"}}},
 		"features":{"type":"TextList(,)", "mandatory":"YES"}
 	}
 
