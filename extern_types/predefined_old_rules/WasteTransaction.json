@@ -7,8 +7,8 @@
 		"refReceiver":{"type":"ReferenceID", "mandatory":"YES"},
 		"refCapturer":{"type":"ReferenceID", "mandatory":"NO"},
 		"date":{"type":"Text", "mandatory":"YES"},
-		"emittedResources":{"type":"StructuredList([JSON objects])", "mandatory":"YES"},
-		"receivedResources":{"type":"StructuredList([JSON objects])", "mandatory":"YES"},
+		"emittedResources":{"type":"TextList(,)", "mandatory":"YES"},
+		"receivedResources":{"type":"TextList(,)", "mandatory":"YES"},
 		"incidence":{"type":"Text", "mandatory":"NO"},
 		"incidenceReason":{"type":"Text", "mandatory":"NO"}
 	}

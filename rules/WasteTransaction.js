@@ -8,8 +8,8 @@ const WasteTransaction = {
     refReceiver: rules.mandatoryCheck,
     refCapturer: rules.stringCheck,
     date: rules.mandatoryCheck,
-    emittedResources: rules.structuredListMandatory,
-    receivedResources: rules.structuredListMandatory,
+    emittedResources: rules.stringToArrayMandatory,//rules.structuredListMandatory,
+    receivedResources: rules.stringToArrayMandatory,//rules.structuredListMandatory,
     incidence: rules.stringCheck,
     incidenceReason: rules.stringCheck
 };
