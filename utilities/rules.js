@@ -299,7 +299,7 @@ function dateCheckMandatory(date) {// Not in use
   return {
       value: datetime,
       type: "DateTime",
-      metadata: meta? meta: {}
+      metadata: meta? JSON.parse(meta): {}
   };
 }
 
@@ -361,7 +361,7 @@ function dateCheck(date) {// not in use
     return {
         value: datetime,
         type: "DateTime",
-        metadata: meta? meta : {}
+        metadata: meta? JSON.parse(meta) : {}
     }
 }
 
