@@ -715,7 +715,7 @@ function arrToNumOld(string) {
 }
 
 function arrToNum(string) {
-  let data = string? string.split(',').map(raw => Number(raw.trim())):[];
+  let data = string ? string.split(',').map(raw => Number(raw.trim()) ? Number(raw.trim()) : 0) : [];
   return data;
 }
 
