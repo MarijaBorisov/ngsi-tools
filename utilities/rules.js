@@ -719,7 +719,6 @@ function arrToNum(string) {
   return data;
 }
 
-
 function structuredValue(string) {
     counter +=1
     if (typeof string == "object") {
