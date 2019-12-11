@@ -16,7 +16,8 @@ function commaNumToUnits( oldNum ) {
         }
     }
 
-    const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
+    // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
+    const newNum = Number(oldNum) ? Number(oldNum) : 0;
     let obj = [];
     if ( pos( counter ) ) {
         obj = [];
@@ -51,7 +52,8 @@ function commaNumToUnitsInt( oldNum ) {
         }
     }
 
-    const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
+    // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
+    const newNum = Number(oldNum) ? Number(oldNum) : 0;
     let obj = [];
     if ( pos( counter ) ) {
         obj = [];
@@ -89,7 +91,8 @@ function commaNumToUnitsMandatory(oldNum) {
         }
     }
 
-    const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
+    // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
+    const newNum = Number(oldNum) ? Number(oldNum) : 0;
     let obj = [];
     if(pos(counter)) {
         obj = [];
@@ -327,7 +330,7 @@ function stringToArrayNum(string) {
         let send =  {
             value: [],
             type: "List",
-            metadata: JSON.parse(meta) || {}
+            metadata: meta ? JSON.parse(meta) : {}
         };
         obj.push(send);
         if(obj.length !== 0) {
@@ -497,7 +500,7 @@ function removeForbidenStrict(string) {
   return data1;
 }
 
-function arrToNum(string) {
+function arrToNumOld(string) {
     let data = string.split(',').map(raw => raw.trim());
 
     const result = data.reduce((finalList, string) => {
@@ -507,6 +510,11 @@ function arrToNum(string) {
     },[]);
 
     return result;
+}
+
+function arrToNum(string) {
+  let data = string ? string.split(',').map(raw => Number(raw.trim()) ? Number(raw.trim()) : 0) : [];
+  return data;
 }
 
 function structuredValue(string) {
