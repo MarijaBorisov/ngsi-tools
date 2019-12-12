@@ -789,35 +789,52 @@ function structuredListMandatory(string) {
             "metadata": string.metadata || {}
         }
   }
+
   let meta = pos(counter);
   let array = [];
-  if (string.includes("[")) {
-    string = string.substring(1, string.length - 1);
+  string = string.trim();
+  if (string.indexOf("[")==0) {
+    string = string.substring(1, string.length - 1).trim();
   } 
-  string = string.trim();
-  var search_delim = string.search(/}\s*,\s*{/);
-  while (search_delim > -1) { 
-    array.push(string.substring(0, search_delim + 1));
-    let match = string.match(/}\s*,\s*{/);
-    string = string.substring(search_delim + match[0].length-1, string.length).trim();
-    search_delim = string.search(/}\s*,\s*{/);
-  }
-  string = string.trim();
-  if (string.indexOf("{")==0 && string.indexOf("}")==string.length-1) { 
-    array.push(string);
-  }
-
-  for (var i = 0; i < array.length; i++) { 
-    if (IsJsonString(array[i])) {
-      array[i] = JSON.parse(decodeURIComponent(array[i]));
-      array[i] = urlEncodeForbiddenObj(array[i]);
+  var j = 1;
+  let obj_start_index = string.indexOf("{");
+  var obj_end_index = getPosition(string, "}", j);
+  var test;
+  while (obj_start_index > -1 && obj_end_index > -1 && obj_start_index < string.length && obj_end_index < string.length) {
+    test = string.substring(obj_start_index, obj_end_index + 1);
+    if (IsJsonString(test)) {
+      test = JSON.parse(decodeURIComponent(test));
+      test = urlEncodeForbiddenObj(test);
+      array.push(test);
+      j = 0;
+      string = string.substring(obj_end_index + 1, string.length).trim();
+      obj_start_index = string.indexOf("{");
+      obj_end_index = getPosition(string, "}", j);
+    } else {
+      j++;
+      obj_end_index = getPosition(string, "}", j);
+      if (obj_end_index >= string.length)
+        break;
     }
   }
+  string = string.trim();
+  if (string.indexOf("{") == 0 && string.lastIndexOf("}") == string.length - 1) { 
+    if (IsJsonString(string)) {
+      string = JSON.parse(decodeURIComponent(string));
+      string = urlEncodeForbiddenObj(string);
+      array.push(string);
+    }
+  }
+
     return {
         "value": array || [],//specCase(string) || "",
         "type": "List",
         "metadata": meta? JSON.parse(meta) : {}
     }
+}
+
+function getPosition(string, subString, index) {
+  return string.split(subString, index).join(subString).length;
 }
 
 function structuredList(string) {
@@ -832,26 +849,37 @@ function structuredList(string) {
 
   let meta = pos(counter);
   let array = [];
-  if (string.includes("[")) {
-    string = string.substring(1, string.length - 1);
+  string = string.trim();
+  if (string.indexOf("[") == 0) {
+    string = string.substring(1, string.length - 1).trim();
   } 
-  string = string.trim();
-  var search_delim = string.search(/}\s*,\s*{/);
-  while (search_delim > -1) { 
-    array.push(string.substring(0, search_delim + 1));
-    let match = string.match(/}\s*,\s*{/);
-    string = string.substring(search_delim + match[0].length-1, string.length).trim();
-    search_delim = string.search(/}\s*,\s*{/);
+  var j = 1;
+  let obj_start_index = string.indexOf("{");
+  var obj_end_index = getPosition(string, "}", j);
+  var test;
+  while (obj_start_index > -1 && obj_end_index > -1 && obj_start_index < string.length && obj_end_index < string.length) {
+    test = string.substring(obj_start_index, obj_end_index + 1);
+    if (IsJsonString(test)) {
+      test = JSON.parse(decodeURIComponent(test));
+      test = urlEncodeForbiddenObj(test);
+      array.push(test);
+      j = 0;
+      string = string.substring(obj_end_index + 1, string.length).trim();
+      obj_start_index = string.indexOf("{");
+      obj_end_index = getPosition(string, "}", j);
+    } else {
+      j++;
+      obj_end_index = getPosition(string, "}", j);
+      if (obj_end_index >= string.length)
+        break;
+    }
   }
   string = string.trim();
-  if (string.indexOf("{")==0 && string.indexOf("}")==string.length-1) { 
-    array.push(string);
-  }
-
-  for (var i = 0; i < array.length; i++) { 
-    if (IsJsonString(array[i])) {
-      array[i] = JSON.parse(decodeURIComponent(array[i]));
-      array[i] = urlEncodeForbiddenObj(array[i]);
+  if (string.indexOf("{") == 0 && string.lastIndexOf("}") == string.length - 1) { 
+    if (IsJsonString(string)) {
+      string = JSON.parse(decodeURIComponent(string));
+      string = urlEncodeForbiddenObj(string);
+      array.push(string);
     }
   }
 
@@ -887,13 +915,21 @@ function urlEncodeForbiddenObj(obj) {
   var new_obj = {};
   for (var i = 0; i < keys.length; i++) { 
     if(obj.hasOwnProperty(keys[i]))
-      new_obj[urlEncodeForbidden(keys[i])] = (obj[keys[i]] !== null && typeof obj[keys[i]] === "object") ? urlEncodeForbiddenObj(obj[keys[i]]) : urlEncodeForbidden(obj[keys[i]]);
+      new_obj[urlEncodeForbidden(keys[i])] = (obj[keys[i]] !== null && typeof obj[keys[i]] === "object" && !Array.isArray(obj[keys[i]])) ? urlEncodeForbiddenObj(obj[keys[i]]) : Array.isArray(obj[keys[i]])?urlEncodeForbiddenArray(obj[keys[i]]):urlEncodeForbidden(obj[keys[i]]);
   }
   return new_obj;  
 }
 
 function urlEncodeForbidden(str) { //.replace(/"/g,"%22")
-  return (typeof str ==="string")? str.replace(/</g, "%3C").replace(/>/g, "%3E").replace(/'/g,"%27").replace(/=/g,"%3D").replace(/;/g,"%3B").replace(/\(/g,"%28").replace(/\)/g,"%29"):str;
+  return (typeof str === "string") ? str.replace(/</g, "%3C").replace(/>/g, "%3E").replace(/'/g, "%27").replace(/=/g, "%3D").replace(/;/g, "%3B").replace(/\(/g, "%28").replace(/\)/g, "%29") : (str!==null && typeof str === "object" && !Array.isArray(str)) ? urlEncodeForbiddenObj(str) : Array.isArray(str) ? urlEncodeForbiddenArray(str) : str;
+}
+
+function urlEncodeForbiddenArray(arr) {
+  if (arr)
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] = urlEncodeForbidden(arr[i]);
+    }
+  return arr;
 }
 
 
