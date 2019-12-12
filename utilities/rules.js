@@ -735,7 +735,7 @@ function structuredValue(string) {
     string_obj = JSON.parse(decodeURIComponent(string));
     string_obj = urlEncodeForbiddenObj(string_obj);
   } else { 
-    string_obj = string;
+    string_obj = "";
   }
   
   if(meta) {
@@ -769,7 +769,7 @@ function structuredValueMandatory(string) {
       string_obj = JSON.parse(decodeURIComponent(string));
       string_obj = urlEncodeForbiddenObj(string_obj);
     } else { 
-      string_obj = string;
+      string_obj = "";
     }
     return {
         "value": string_obj,//specCase(string) || "",
@@ -793,7 +793,7 @@ function structuredListMandatory(string) {
   let meta = pos(counter);
   let array = [];
   string = string.trim();
-  if (string.indexOf("[")==0) {
+  if (string.indexOf("[")==0 && string.indexOf("]") == string.length - 1) {
     string = string.substring(1, string.length - 1).trim();
   } 
   var j = 1;
@@ -806,7 +806,7 @@ function structuredListMandatory(string) {
       test = JSON.parse(decodeURIComponent(test));
       test = urlEncodeForbiddenObj(test);
       array.push(test);
-      j = 0;
+      j = 1;
       string = string.substring(obj_end_index + 1, string.length).trim();
       obj_start_index = string.indexOf("{");
       obj_end_index = getPosition(string, "}", j);
@@ -850,9 +850,9 @@ function structuredList(string) {
   let meta = pos(counter);
   let array = [];
   string = string.trim();
-  if (string.indexOf("[") == 0) {
+  if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1) {
     string = string.substring(1, string.length - 1).trim();
-  } 
+  }
   var j = 1;
   let obj_start_index = string.indexOf("{");
   var obj_end_index = getPosition(string, "}", j);
@@ -863,7 +863,7 @@ function structuredList(string) {
       test = JSON.parse(decodeURIComponent(test));
       test = urlEncodeForbiddenObj(test);
       array.push(test);
-      j = 0;
+      j = 1;
       string = string.substring(obj_end_index + 1, string.length).trim();
       obj_start_index = string.indexOf("{");
       obj_end_index = getPosition(string, "}", j);
