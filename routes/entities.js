@@ -69,7 +69,7 @@ module.exports = () => {
     }
   });
 
-  router.patch("/v1/entitytype", headermid, upload.multer, (req, res) => {
+  router.put("/v1/entitytype", headermid, upload.multer, (req, res) => {
     if (req.body) {
       rootController.updateEntityType(req, res);
     } else { 
