@@ -174,7 +174,7 @@ In order to make the NGSI Connector more universal, the possibility for users to
             "..." : {"...":"..."}
          }
        }
-     * Name of a entity type is very important. The user must name the entity type so that it is the same as property type that he expects from **`.csv/.json`** file.
+     * Name of a entity type is very important. The user must name the entity type so that it is the same as   property type that he expects from **`.csv/.json`** file.
      * Structures of entity types are saved in this database
      * Example of  entity type structure:
        {

@@ -11,7 +11,12 @@ var models_path = path.normalize(__dirname + '/models');
 var conf_path = path.normalize(__dirname + '/config');
 const conf = require(conf_path);
 
-global.conn = mongoose.createConnection(conf.db.url, conf.db.options);
+global.conn = mongoose.createConnection(conf.db.url, conf.db.options , (err, db) => {
+   if (err) {
+     return console.log("MongoNetworkError: failed to connect to server");
+   }
+   console.log("Connected successfully to mongo server");
+ });
 require(models_path + "/entityType.js");
 
 const entities = require("./routes/entities")();
