@@ -253,11 +253,11 @@ function deleteEntityType(req, res) {
         });
       else if (result && result.n == 0)
         sendJSONresponse(res, 200, {
-          "message": "Entity type " + req.params.id + " does not exist in database."
+          "message": "Structure of entity type " + req.params.id + " does not exist in database."
         });
       else
         sendJSONresponse(res, 200, {
-          "message": "Entity type " + req.params.id + " has not been deleted. Please try again."
+          "message": "Structure of entity type " + req.params.id + " has not been deleted. Please try again."
         });
       return;
     });
