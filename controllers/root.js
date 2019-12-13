@@ -14,6 +14,8 @@ var sendJSONresponse = function (res, status, content) {
   res.json(content);
 };
 
+const incorrectBodyObjMsg = "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on: GET /v1/typestructure";
+
 function getEntities(req, res) {
   return request({
       method: "GET",
@@ -95,14 +97,14 @@ function getAllTypes(req, res) {
     function (err, result) {
       if (err) {
         sendJSONresponse(res, 500, {
-          "message": "Error while querying database, please try later"
+          "message": "Error while querying database, please try later."
         });
         return;
       }
 
       if (!result || result.length == 0) {
         sendJSONresponse(res, 404, {
-          "message": "There is no Rules, no Entity Type structeres inserted into the database"
+          "message": "There is no Rules, no Entity Type structeres inserted into the database."
         });
         return;
       }
@@ -208,7 +210,7 @@ function getEntityType(req, res) {
     function (err, result) {
       if (err) {
         sendJSONresponse(res, 500, {
-          "message": "Error while quering database. Please try again."
+          "message": "Error while querying database. Please try again."
         });
         return;
       }
@@ -228,10 +230,43 @@ function getEntityType(req, res) {
     });
 }
 
-function addEntityType(req, res) {
-  if (!req.body || isEmpty(req.body)) {
+function deleteEntityType(req, res) {
+  if (!req.params.id) {
     sendJSONresponse(res, 400, {
-      "message": "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on /v1/typestructure"
+      "message": "Bad Request"
+    });
+    return;
+  }
+  EntityType.deleteOne({
+      entityType: req.params.id
+    },
+    function (err, result) {
+      if (err) {
+        sendJSONresponse(res, 500, {
+          "message": "Error while querying database. Please try again."
+        });
+        return;
+      }
+      if (result && result.deletedCount == 1)
+        sendJSONresponse(res, 200, {
+          "message": "Structure of entity type " + req.params.id + " is removed from database."
+        });
+      else if (result && result.n == 0)
+        sendJSONresponse(res, 200, {
+          "message": "Entity type " + req.params.id + " does not exist in database."
+        });
+      else
+        sendJSONresponse(res, 200, {
+          "message": "Entity type " + req.params.id + " has not been deleted. Please try again."
+        });
+      return;
+    });
+}
+
+function addEntityType(req, res) {
+  if (!req.body || !(typeof req.body === "object") || isEmpty(req.body)) {
+    sendJSONresponse(res, 400, {
+      "message": incorrectBodyObjMsg
     });
     return;
   }
@@ -242,7 +277,7 @@ function addEntityType(req, res) {
   var properties = Object.keys(typeDescription);
   if (!newType || !properties || properties.length < 2) {
     sendJSONresponse(res, 400, {
-      "message": "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on /v1/typestructure"
+      "message": incorrectBodyObjMsg
     });
     return;
   }
@@ -252,9 +287,9 @@ function addEntityType(req, res) {
 }
 
 function updateEntityType(req, res) {
-  if (!req.body || isEmpty(req.body)) {
+  if (!req.body || !(typeof req.body === "object") || isEmpty(req.body)) {
     sendJSONresponse(res, 400, {
-      "message": "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on /v1/typestructure"
+      "message": incorrectBodyObjMsg
     });
     return;
   }
@@ -265,7 +300,7 @@ function updateEntityType(req, res) {
   var properties = Object.keys(typeDescription);
   if (!newType || !properties || properties.length < 2) {
     sendJSONresponse(res, 400, {
-      "message": "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on /v1/typestructure"
+      "message": incorrectBodyObjMsg
     });
     return;
   }
@@ -277,7 +312,7 @@ function updateEntityType(req, res) {
 function addResEntityType(err, newEntities, typeDescription, bodyObject, res) {
   if (err) {
     sendJSONresponse(res, 400, {
-      message: "Error while saving in the database. Please try it later."
+      message: err
     });
     return;
   }
@@ -285,6 +320,12 @@ function addResEntityType(err, newEntities, typeDescription, bodyObject, res) {
   EntityType.find({
     entityType: newEntities.entityType
   }, function (err, types) {
+    if (err) {
+      sendJSONresponse(res, 500, {
+        message: "Error while saving in the database. Please try it later.",
+      });
+      return;
+    }
     if (types && types.length != 0) {
       console.log("Entity type " + newEntities.entityType + " already exists in the database");
       sendJSONresponse(res, 404, {
@@ -336,9 +377,9 @@ function updateResEntityType(err, newEntities, typeDescription, bodyObject, res)
       return;
     }
     if (!types || types.length == 0) {
-      console.log("Entity type " + newEntities.entityType + " does not exist in the database");
+      console.log("Entity type " + newEntities.entityType + " does not exist in the database.");
       sendJSONresponse(res, 404, {
-        message: "Entity type " + newEntities.entityType + " does not exist in the database",
+        message: "Entity type " + newEntities.entityType + " does not exist in the database.",
       });
       return;
     }
@@ -372,6 +413,10 @@ function updateResEntityType(err, newEntities, typeDescription, bodyObject, res)
 
 function createEntityTypeObject(res, typeDescription, properties, newEntities, bodyObject, callback) {
   for (let i = 0; i < properties.length; i++) {
+    if (!typeDescription[properties[i]].type || !typeDescription[properties[i]].mandatory) { 
+      callback("Fields 'type' and 'mandatory' are necessary for each property of the entity type. Follow the correct entity type structure available on: GET /v1/typestructure.", newEntities, typeDescription, bodyObject, res);     
+      return;
+    }
     if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "EntityID".toLowerCase()
@@ -493,6 +538,10 @@ function createEntityTypeObject(res, typeDescription, properties, newEntities, b
       return;
     }
   }
+  if (!newEntities.properties["id"] || !newEntities.properties["type"]) { 
+    callback("Fields 'EntityID' and 'EntityType' are mandatory. Follow the correct entity type structure available on: GET /v1/typestructure.", newEntities, typeDescription, bodyObject, res);
+    return;
+  }
   if (callback)
     callback(null, newEntities, typeDescription, bodyObject, res);
   return;
@@ -517,5 +566,6 @@ module.exports = {
   updateEntityType,
   getEntityType,
   getEntityTypeStructure,
-  getAllTypes
+  getAllTypes,
+  deleteEntityType
 };

@@ -65,7 +65,7 @@ module.exports = () => {
     if (req.body) {
       rootController.addEntityType(req, res);
     } else { 
-      sendJSONresponse(res, 400, {message: "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on /v1/typestructure"});
+      sendJSONresponse(res, 400, {message: "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on: GET /v1/typestructure"});
     }
   });
 
@@ -73,12 +73,16 @@ module.exports = () => {
     if (req.body) {
       rootController.updateEntityType(req, res);
     } else { 
-      sendJSONresponse(res, 400, { message: "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on /v1/typestructure"});
+      sendJSONresponse(res, 400, { message: "Please submit non-empty JSON object that represents the structure of an entity type that needs to be uploaded. Follow the correct entity type structure available on: GET /v1/typestructure"});
     }
   });
 
   router.get("/v1/entitytype/:id", headermid, (req, res) => {
     rootController.getEntityType(req, res);
+  });
+
+  router.delete("/v1/entitytype/:id", headermid, (req, res) => {
+    rootController.deleteEntityType(req, res);
   });
 
   router.post("/v1/seriousgame", (req, res) => {
