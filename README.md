@@ -1,8 +1,8 @@
 # <a name="top"></a>Waste4Think NGSI Connector Api
 <br />
 <br />
-Waste4Think NGSI Connector API is part of backend implementation of Waste4Think
-the project, providing an API interface for other participants in the project.
+Waste4Think NGSI Connector API is a part of backend implementation of the Waste4Think
+project, providing an API interface for other participants in the project.
 Using this interface, users can do several operations:
 * Create entities from a file. The NGSI Connector API allows users to create a large
 number of entities directly from .csv or .json files, it also has customizable

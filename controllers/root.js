@@ -104,7 +104,7 @@ function getAllTypes(req, res) {
 
       if (!result || result.length == 0) {
         sendJSONresponse(res, 404, {
-          "message": "There is no Rules, no Entity Type structeres inserted into the database."
+          "message": "There is no Rules, no Entity Type structures inserted into the database."
         });
         return;
       }
