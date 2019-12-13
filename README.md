@@ -89,11 +89,11 @@ NGSI Connector API can be installed from two sources, one of them is this reposi
   1. Clone/Download this gihtub repository
   2. Change **`config.js`** most critical information is Fiware Orion Url, more detail regarding this config can be found in [Configuration]() section.
   3. To have locally your Fiware Orion Context Broker instance, together with MongoDB database, go to `/extras/docker/orion_mongo` folder and issue 
-    * **`docker-compose up -d`**
+   **`docker-compose up -d`**
   4. Install dependencies for NGSI Connector API:
-    * **`npm install`**
+   **`npm install`**
   5. Start NGSI Connector API:
-    * **`npm start`**
+   **`npm start`**
   6. After these steps you can start using NGSI Connector API, more info about use of API can be found in [Usage](#usage) section.
 
 [Top](#waste4think-ngsi-connector-api)
@@ -179,10 +179,40 @@ In order to make the NGSI Connector more universal, the possibility for users to
        }
     ```
      * Name of a entity type is very important. The user must name the entity type so that it is the same as a property named 'type' that he expects in **`.csv/.json`** file.
-     * As it is shown, each property belonges to the one of 11 types. The expected format of the entities that are going to be uploaded is:
+     * As it is shown, each property belonges to the one of eleven types. The expected format of the entities that are going to be uploaded is:
         * Type `Text`:
           - Example in **`.csv`** file: `Transaction` (with the correct header with property names)
-          - Example in **`.json`** file: `"name":{"type": "String", "value": "SortingType", "metadata": {}}`
+          - Example in **`.json`** file: `"name":{"type": "String", "value": "Transaction", "metadata": {}}`
+        * Type `ReferenceID`:
+          - Example in **`.csv`** file: `DepositPoint:0001` (with the correct header with property names)
+          - Example in **`.json`** file: `"name": {"type": "String","value": "DepositPoint:0001","metadata": {}}`
+        * Type `TextList(,)`:
+          - Example in **`.csv`** file: `` (with the correct header with property names)
+          - Example in **`.json`** file: ``
+        * Type `NumberList(,)`:
+          - Example in **`.csv`** file: `` (with the correct header with property names)
+          - Example in **`.json`** file: ``
+        * Type `ReferenceIDList(,)`:
+          - Example in **`.csv`** file: `` (with the correct header with property names)
+          - Example in **`.json`** file: ``
+        * Type `GeoJSON(Point)`:
+          - Example in **`.csv`** file: `` (with the correct header with property names)
+          - Example in **`.json`** file: ``
+        * Type `Float`:
+          - Example in **`.csv`** file: `` (with the correct header with property names)
+          - Example in **`.json`** file: ``
+        * Type `Integer`:
+          - Example in **`.csv`** file: `` (with the correct header with property names)
+          - Example in **`.json`** file: ``
+        * Type `Datetime`:
+          - Example in **`.csv`** file: `` (with the correct header with property names)
+          - Example in **`.json`** file: ``
+        * Type `StructuredValue(JSON object)`:
+          - Example in **`.csv`** file: `{ "refResource":"SortingType:1" , "amount":1, "unit":"C62"}` (with the correct header with property names)
+          - Example in **`.json`** file:  `"name": {"type": "List","value": {"amount": 1,"refResource": "SortingType:1","unit": "C62"},"metadata": {}}`
+        * Type `StructuredList([JSON objects])`:
+          - Example in **`.csv`** file: `[{ "refResource":"SortingType:1" , "amount":1, "unit":"C62"}, { "refResource":"SortingType:2" , "amount":2, "unit":"C62"}]` (with the correct header with property names)
+          - Example in **`.json`** file: `"emittedResources": {"type": "List","value": [{"amount": 1,"refResource": "SortingType:1","unit": "C62"},{"amount": 2,"refResource": "SortingType:2","unit": "C62"}],"metadata": {}}`
      * Name of a entity type is very important. The user must name the entity type so that it is the same as   property type that he expects from **`.csv/.json`** file.
      * Structures of entity types are saved in this database
      * Example of  entity type structure:
