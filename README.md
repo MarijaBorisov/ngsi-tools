@@ -176,11 +176,15 @@ In order to make the NGSI Connector more universal, the possibility for users to
             "..." : {"...":"..."}
          }
        }
+<<<<<<< HEAD
      * Name of a entity type is very important. The user must name the entity type so that it is the same as a property named 'type' that he expects in **`.csv/.json`** file.
      * As it is shown, each property belonges to the one of 11 types. The expected format of the entities that are going to be uploaded is:
         * Type `Text`:
           - Example in **`.csv`** file: `Transaction` (with the correct header with property names)
           - Example in **`.json`** file: `"name":{"type": "String", "value": "SortingType", "metadata": {}}`
+=======
+     * Name of a entity type is very important. The user must name the entity type so that it is the same as   property type that he expects from **`.csv/.json`** file.
+>>>>>>> 35228833ce3c49e705580499b2c2c7592beeff60
      * Structures of entity types are saved in this database
      * Example of  entity type structure:
        {
