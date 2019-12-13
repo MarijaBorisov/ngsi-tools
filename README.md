@@ -92,6 +92,8 @@ NGSI Connector API can be installed from two sources, one of them is this reposi
     * **`npm install`**
   4. Start NGSI Connector API:
     * **`npm start`**
+  5. To have locally your Orion Context Broker instance, together with MongoDB database, go to /extras/docker/orion_mongo folder and issue 
+    * **`docker-compose up -d`**
   5. After these steps you can start using NGSI Connector API, more info about use of API can be found in [Usage](#usage) section.
 
 [Top](#waste4think-ngsi-connector-api)
@@ -147,7 +149,7 @@ config.db = {
 allows users to specify the number of entities they will get in return max value is 1000. More on information on this in official Fiware Orion [Documentation](https://fiware-orion.readthedocs.io/en/master/user/pagination/index.html).
 
 * **`config.db`**
-    - Structures of entity types that can be uploaded via the Connector are saved in this database
+    - Structures of entity types that can be uploaded via the Connector are saved in this database. It could be the same database that Orion Context Broker is using for saving its data.
 
 ###### **Structures of Entity Types**
 In order to make the NGSI Connector more universal, the possibility for users to create and add various Entity Types and their structure is incorporated. Each structure sets the rules that will be used while parsing specific entities. It is mandatory to first upload the structure of each entity type that will be uploaded, otherwise upload of entities of unknown structure would not be possible.
@@ -174,7 +176,11 @@ In order to make the NGSI Connector more universal, the possibility for users to
             "..." : {"...":"..."}
          }
        }
-     * Name of a entity type is very important. The user must name the entity type so that it is the same as property type that he expects from **`.csv/.json`** file.
+     * Name of a entity type is very important. The user must name the entity type so that it is the same as a property named 'type' that he expects in **`.csv/.json`** file.
+     * As it is shown, each property belonges to the one of 11 types. The expected format of the entities that are going to be uploaded is:
+        * Type `Text`:
+          - Example in **`.csv`** file: `Transaction` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{"type": "String", "value": "SortingType", "metadata": {}}`
      * Structures of entity types are saved in this database
      * Example of  entity type structure:
        {
@@ -190,7 +196,7 @@ In order to make the NGSI Connector more universal, the possibility for users to
 	        }
         }
      * The result of the previously created structure is the name of the rule for each entity:
-        properties" : {
+        "properties" : {
                 "id" : "idCheck",
                 "type" : "typeCheck",
                 "family" : "mandatoryCheck",
