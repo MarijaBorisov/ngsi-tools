@@ -88,13 +88,13 @@ NGSI Connector API can be installed from two sources, one of them is this reposi
 ###### Git Lab
   1. Clone/Download this gihtub repository
   2. Change **`config.js`** most critical information is Fiware Orion Url, more detail regarding this config can be found in [Configuration]() section.
-  3. Install dependencies for NGSI Connector API:
-    * **`npm install`**
-  4. Start NGSI Connector API:
-    * **`npm start`**
-  5. To have locally your Orion Context Broker instance, together with MongoDB database, go to /extras/docker/orion_mongo folder and issue 
+  3. To have locally your Fiware Orion Context Broker instance, together with MongoDB database, go to `/extras/docker/orion_mongo` folder and issue 
     * **`docker-compose up -d`**
-  5. After these steps you can start using NGSI Connector API, more info about use of API can be found in [Usage](#usage) section.
+  4. Install dependencies for NGSI Connector API:
+    * **`npm install`**
+  5. Start NGSI Connector API:
+    * **`npm start`**
+  6. After these steps you can start using NGSI Connector API, more info about use of API can be found in [Usage](#usage) section.
 
 [Top](#waste4think-ngsi-connector-api)
 
@@ -157,6 +157,7 @@ In order to make the NGSI Connector more universal, the possibility for users to
 * **`Create a structure of Entity Type`**
      * Upload structure  of entity type into the request body in JSON format
      * Structure must be added in the following format:
+    ```console
        {
         "nameOfNewType": {
             "id": {
@@ -176,6 +177,7 @@ In order to make the NGSI Connector more universal, the possibility for users to
             "..." : {"...":"..."}
          }
        }
+    ```
      * Name of a entity type is very important. The user must name the entity type so that it is the same as a property named 'type' that he expects in **`.csv/.json`** file.
      * As it is shown, each property belonges to the one of 11 types. The expected format of the entities that are going to be uploaded is:
         * Type `Text`:
@@ -184,7 +186,8 @@ In order to make the NGSI Connector more universal, the possibility for users to
      * Name of a entity type is very important. The user must name the entity type so that it is the same as   property type that he expects from **`.csv/.json`** file.
      * Structures of entity types are saved in this database
      * Example of  entity type structure:
-       {
+     ```console
+        {
             "Vehicle":{
                 "id": {"type":"EntityID","mandatory":"YES"},
                 "type": {"type":"EntityType","mandatory":"YES"},
@@ -196,7 +199,9 @@ In order to make the NGSI Connector more universal, the possibility for users to
                 "refInputs":{"type":"ReferenceIDList(,)", "mandatory":"NO"},
 	        }
         }
+     ```
      * The result of the previously created structure is the name of the rule for each entity:
+     ```console
         "properties" : {
                 "id" : "idCheck",
                 "type" : "typeCheck",
@@ -207,6 +212,7 @@ In order to make the NGSI Connector more universal, the possibility for users to
                 "refType" : "mandatoryCheck",
                 "refInputs" : "stringToArray",
         }
+     ```
 
 ###### **Rules**
 
