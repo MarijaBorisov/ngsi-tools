@@ -274,11 +274,15 @@ All currently available endpoints are:
     * **`entities/update`**
         * Update entities from user file in Fiware-Service/Fiware-ServicePath
     * **`entitytype`**
-        * Create a structure of specific entity type that will be setting the rules that are going to be used when uploading
+        * Create a structure of specific entity type that will be setting the rules that are going to be used when uploading entities
 
-* **`PATCH`**
+* **`PUT`**
     * **`entitytype`**
         * Update a structure of specific entity type that will be setting the rules that are going to be used when uploading
+
+* **`DELETE`**
+    * **`entitytype/:entityType`**
+        * Delete from he database a structure of a specific entity type
 
 In description of API endpoints we mentioned Fiware-Service/Fiware-ServicePath more information regarding this topic can be found on its official
 [Documentation](https://fiware-orion.readthedocs.io/en/master/user/service_path/).
