@@ -152,13 +152,62 @@ allows users to specify the number of entities they will get in return max value
 ###### **Structures of Entity Types**
 In order to make the NGSI Connector more universal, the possibility for users to create and add various Entity Types and their structure is incorporated. Each structure sets the rules that will be used while parsing specific entities. It is mandatory to first upload the structure of each entity type that will be uploaded, otherwise upload of entities of unknown structure would not be possible.
 
+* **`Create a structure of Entity Type`**
+     * Upload structure  of entity type into the request body in JSON format
+     * Structure must be added in the following format:
+       {
+        "nameOfNewType": {
+            "id": {
+            "type": "EntityID",
+            "mandatory": "YES"
+            },
+            "type": {
+            "type": "EntityType",
+            "mandatory": "YES"
+            },
+            "nameOfFirstProperty":{
+            "type": "Text|ReferenceID|TextList(,)|NumberList(,)|ReferenceIDList(,)|GeoJSON(Point)|Float|Integer|Datetime|StructuredValue(JSON object)|StructuredList([JSON objects])",
+            "mandatory": "YES|NO",
+            "metadata" :"{'name': 'EnterArbitraryName','value': 'EnterArbitraryValue','type': 'EnterArbitraryType'}||{}",
+            "description": "EnterArbitraryDescription"
+            },
+            "..." : {"...":"..."}
+         }
+       }
+     * Name of a entity type is very important. The user must name the entity type so that it is the same as property type that he expects from **`.csv/.json`** file.
+     * Structures of entity types are saved in this database
+     * Example of  entity type structure:
+       {
+            "Vehicle":{
+                "id": {"type":"EntityID","mandatory":"YES"},
+                "type": {"type":"EntityType","mandatory":"YES"},
+                "family":{"type":"Text", "mandatory":"YES"},
+                "vehiclePlateIdentifier":{"type":"Text", "mandatory":"YES"},
+                "name":{"type":"Text", "mandatory":"NO"},
+                "location": {"type":"GeoJSON(Point)","mandatory":"NO", "metadata":{}},
+                "refType":{"type":"ReferenceID", "mandatory":"YES"},
+                "refInputs":{"type":"ReferenceIDList(,)", "mandatory":"NO"},
+	        }
+        }
+     * The result of the previously created structure is the name of the rule for each entity:
+        properties" : {
+                "id" : "idCheck",
+                "type" : "typeCheck",
+                "family" : "mandatoryCheck",
+                "vehiclePlateIdentifier" : "mandatoryCheck",
+                "name" : "stringCheck",
+                "location" : "locationCheckNoMand",
+                "refType" : "mandatoryCheck",
+                "refInputs" : "stringToArray",
+        }
+
 ###### **Rules**
 
 NGSI Connector API has support for rules, they represent a key aspect of API by providing users with a platform for customizing aspect of data creation 
 before sending data to Fiware Orion.
 
 Rules make sure that data which is sent to Fiware Orion keep its integrity and structure, it becomes essentials when working with big files. Files can contain up to 3000 and more entities
-making sure that data is sent to Fiware Orion is of the right format, type, etc.. become an almost impossible task, rules solve this problem by adding this layer to NGSI Connector API.
+making sure that data is sent to Fiware Orion is of the right format, type, etc... become an almost impossible task, rules solve this problem by adding this layer to NGSI Connector API.
 
 Rules are customizable, users can create, remove or edit rules, at the moment of writing rules can be created only manually but REST option will be added in future.
 
@@ -229,10 +278,16 @@ Rules are customizable, users can create, remove or edit rules, at the moment of
             - Used for all id properties mandatory.
         * **`typeCheck`** 
             - Used for all types properties mandatory.
+        * **`stringCheck/mandatoryCheck`** 
+            - Used for all string properties, mandatory version requires value for that property.
         * **`commaToUnits/commaToUnitsMandatory`** 
             - Used for parse of string to a number, mandatory version requires value for that property.
+        * **`commaNumToUnitsInt/commaNumToUnitsIntMandatory`** 
+            - Used for parse of integer type value to a number, mandatory version requires value for that property.
         * **`locationCheck/locationCheckMandatory`** 
             - Used to parse **`geo:json`** values, mandatory version requires value for that property.
+        * **`dateCheck/dateCheckMandatory`** 
+            - Used for all DateTime values, mandatory version requires value for that property.
         * **`stringToArray/stringToArrayMandatory`** 
             - Used to parse string from files to array object, in **.csv** file these values are separated with **`,`**,
             mandatory version requires value for that property.
@@ -242,6 +297,9 @@ Rules are customizable, users can create, remove or edit rules, at the moment of
         * **`structuredValue/structuredValueMandatory`** 
             - Used to parse string from file to structure value, this value is a special type of Fiware Orion, 
             the mandatory version requires value for that property.
+         * **`structuredList/structuredListMandatory`** 
+            - Used to parse string from file to a list of structure value, this value is a special type of Fiware Orion, 
+            the mandatory version requires value for that property. 
 
 * **`Remove rule`**
     * To remove rule simply delete created file.
@@ -282,7 +340,7 @@ All currently available endpoints are:
 
 * **`DELETE`**
     * **`entitytype/:entityType`**
-        * Delete from he database a structure of a specific entity type
+        * Delete from the database a structure of a specific entity type
 
 In description of API endpoints we mentioned Fiware-Service/Fiware-ServicePath more information regarding this topic can be found on its official
 [Documentation](https://fiware-orion.readthedocs.io/en/master/user/service_path/).
