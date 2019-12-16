@@ -255,68 +255,11 @@ making sure that data is sent to Fiware Orion is of the right format, type, etc.
 Rules are customizable, users can create, remove or edit rules, at the moment of writing rules can be created only manually but REST option will be added in future.
 
 **Rule operations**:
-
-* **`Create Rule`**
-    * Navigate to rules folder.
-    * Make a new file, depending on server commands for this can differ most common one for Linux systems is **`sudo touch`** followed with the name of the rule.
-    * Name of a rule is very important, a user must name the file with type property that he expects from **`.csv/.json`** file.
-    * Example of **`.csv`** file
-    
-    ```console
-    id;type;temperature;pressure
-    10;Room;24.4;249
-    11;Room;33;200
-    12;Room;12;2500
-    ```
-    
-    * On this example we can notice that value for type is Room, so we must name our rule Room.js inside of rules folder.
-    
-* **`Add functions to rule`**
-    * Once we have Room.js created in rules folder then users must add structure to it.
-    * Open Room.js file, the first time it is empty, some aspect of each rule is same and we are going to cover it.
-    
-    ```console
-    const rules = require('../utilities');
-    
-    
-    module.exports = Room;
-    ```
-    
-    * **`const rules = require('../utilities');`**
-        * This line will never change in any rule user create, it is mandatory. What we are doing here is just importing functions that will be used later
-        for various checks.
-    * **`module.exports = Room;`**
-        * Here user exports rule to be used in other parts of system, important to mention is that export name is same as file name. This filed is mandatory.
-* **`Add properties to rule`**
-    
-    ```console
-    const rules = require('../utilities');
-    
-    const Room = {
-        id:
-        type:
-        temperature:
-        pressure:
-    }
-    
-    module.exports = Room;
-    ```
-    
-      * Here we expanded the previous example by creating a simple object with Room name, the name must be equal to file name. Then we add properties from **`.csv`**
-        file example above, each property must be equal to expected properties that will be on file.    
-      *, In short, you put the first line of **`.csv`** file or keys from **`.json`** files as properties.
       
 * **`Add functions to rule properties`**
     
-    ```console
-    const Room = {
-        id: rules.idCheck,
-        type: rules.typeCheck,
-        temperature: rules.stringCheck
-        pressure: rules.stringCheckMandatory
-    }
-    ```
-    * So we added function to rules, by typing **`rules.`** we have access to all functions available in rules object, those functions are:
+    * After the entity is created, the `properties` object  of that entity is dynamically assigned to values that are the same as the function names that will be used to validate the **`.csv/.json`** files
+    * The functions used to check the validity of the values obtained from the **`.csv/.json`** file are:
         * **`idCheck`** 
             - Used for all id properties mandatory.
         * **`typeCheck`** 
@@ -343,9 +286,6 @@ Rules are customizable, users can create, remove or edit rules, at the moment of
          * **`structuredList/structuredListMandatory`** 
             - Used to parse string from file to a list of structure value, this value is a special type of Fiware Orion, 
             the mandatory version requires value for that property. 
-
-* **`Remove rule`**
-    * To remove rule simply delete created file.
 
 ###### API
 
@@ -426,7 +366,7 @@ EOF
 ```
 
 * On first glance this looks very almost same as the creation of entities but there are few key differences:
-    * **`Create`** require that **`.csv`** file structure be same as defined in rules, meaning if a rule has 10 properties first line in the file(this line is also called header)
+    * **`Create`** require that **`.csv`** file structure be same as defined in rules, meaning if a rule has 10 properties first line in the file (this line is also called header)
     must have 10 properties separated with ";".
     * **`Update`** does not require that **`.csv`** file structure must be same as defined in rules, user can update all properties and provide the file as it would when creating
     * or just provide properties that want to be updated.
