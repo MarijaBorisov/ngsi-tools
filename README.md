@@ -99,7 +99,7 @@ NGSI Connector API can be installed from two sources, one of them is this reposi
 
 Usage section will cover how to configure NGSI Connector API but also what endpoints API has to offer as well rule management.
 
-###### **Configuration**
+#### **Configuration**
 
 Configuration for NGSI Connector API is responsible for how API will be started and run. 
 Bellow users can find a detail explanation regarding each setting from **`config.js`** file which is located in the root of this project.
@@ -148,7 +148,7 @@ allows users to specify the number of entities they will get in return max value
 * **`config.db`**
     - Structures of entity types that can be uploaded via the Connector are saved in this database. It could be the same MongoDB database that the Orion Context Broker is using for saving its data.
 
-###### **Rules/Structures of Entity Types**
+#### **Rules/Structures of Entity Types**
 NGSI Connector API has support for rules. They represent a key aspect of API by providing users with a platform for customizing aspects of data creation before sending data to Fiware Orion.
 
 Rules make sure that data which is sent to Fiware Orion keep its integrity and structure, and it becomes essentials when working with big files. Files can contain up to 3000 and more entities making sure that data is sent to Fiware Orion is of the right format, type, etc... become an almost impossible task, rules solve this problem by adding this layer to NGSI Connector API.
@@ -241,7 +241,7 @@ Rules are customizable, users can create, remove or edit rules via the REST.
             - Used to parse string from file to a list of structure value, this value is a special type of Fiware Orion, 
             the mandatory version requires value for that property. 
 
-###### **Entities**
+#### **Entities**
 * **`Add/Update entities`**
      * As it is shown, each entity property belonges to the one of eleven types. The expected format of the entities that are going to be uploaded is:
         * Type `Text`:
