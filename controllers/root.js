@@ -264,6 +264,12 @@ function deleteEntityType(req, res) {
 }
 
 function addEntityType(req, res) {
+  if (!req.get('content-type') || req.get('content-type').toLowerCase() != "application/json".toLowerCase()) { 
+    sendJSONresponse(res, 400, {
+      "message": "'Content-Type' header should be 'application/json'"
+    });
+    return;
+  }
   if (!req.body || !(typeof req.body === "object") || isEmpty(req.body)) {
     sendJSONresponse(res, 400, {
       "message": incorrectBodyObjMsg
@@ -287,6 +293,12 @@ function addEntityType(req, res) {
 }
 
 function updateEntityType(req, res) {
+  if (!req.get('content-type') || req.get('content-type').toLowerCase() != "application/json".toLowerCase()) { 
+    sendJSONresponse(res, 400, {
+      "message": "'Content-Type' header should be 'application/json'"
+    });
+    return;
+  }
   if (!req.body || !(typeof req.body === "object") || isEmpty(req.body)) {
     sendJSONresponse(res, 400, {
       "message": incorrectBodyObjMsg
