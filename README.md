@@ -85,7 +85,7 @@ NGSI Connector API can be installed from two sources, one of them is this reposi
   change header setting in config.js from 3 to 2 in order to test with a local instance of Fiware Orion.
 
 ###### Git Lab
-  1. Clone/Download this GitHub repository
+  1. Clone/Download this GitLab repository
   2. Change **`config.js`** most critical information is Fiware Orion Url, more detail regarding this config can be found in [Configuration]() section.
   3. To have locally your Fiware Orion Context Broker instance, together with MongoDB database, go to `/extras/docker/orion_mongo` folder and issue 
    **`docker-compose up -d`**
