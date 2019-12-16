@@ -41,7 +41,7 @@ More information regarding Fiware Orion can be found on it's official [documenta
 
 ###### NGSI Connector API work flow:
 
-NGSI Connector API is a NodeJs implementation of the NGSIv2 REST API binding developed as a part
+NGSI Connector API is a Node.js implementation of the NGSIv2 REST API binding developed as a part
 of the FIWARE platform.
 
 1) **`Parsing`**:
@@ -148,10 +148,10 @@ config.db = {
 allows users to specify the number of entities they will get in return max value is 1000. More on information on this in official Fiware Orion [Documentation](https://fiware-orion.readthedocs.io/en/master/user/pagination/index.html).
 
 * **`config.db`**
-    - Structures of entity types that can be uploaded via the Connector are saved in this database. It could be the same database that the Orion Context Broker is using for saving its data.
+    - Structures of entity types that can be uploaded via the Connector are saved in this database. It could be the same MongoDB database that the Orion Context Broker is using for saving its data.
 
 ###### **Structures of Entity Types**
-In order to make the NGSI Connector more universal, the possibility for users to create and add various Entity Types and their structure is incorporated. Each structure sets the rules that will be used while parsing specific entities. It is mandatory to first upload the structure of each entity type that will be uploaded, otherwise, upload of entities of unknown structure would not be possible.
+In order to make the NGSI Connector more universal, the possibility for users to create and add various Entity Types and their structure is incorporated. Each structure sets the rules that will be used while parsing specific entities. It is mandatory to first upload the structure of each entity type that will be uploaded. Otherwise, upload of entities of unknown structure would not be possible.
 
 * **`Create a structure of Entity Type`**
      * Upload structure  of entity type into the request body in JSON format
@@ -212,7 +212,6 @@ In order to make the NGSI Connector more universal, the possibility for users to
         * Type `StructuredList([JSON objects])`:
           - Example in **`.csv`** file: `[{ "refResource":"SortingType:1" , "amount":1, "unit":"C62"}, { "refResource":"SortingType:2" , "amount":2, "unit":"C62"}]` (with the correct header with property names)
           - Example in **`.json`** file: `"emittedResources": {"type": "List","value": [{"amount": 1,"refResource": "SortingType:1","unit": "C62"},{"amount": 2,"refResource": "SortingType:2","unit": "C62"}],"metadata": {}}`
-     * Name of a entity type is very important. The user must name the entity type so that it is the same as   property type that he expects from **`.csv/.json`** file.
      * Structures of entity types are saved in this database
      * Example of  entity type structure:
      ```console
@@ -264,7 +263,7 @@ Rules are customizable, users can create, remove or edit rules, and the REST opt
             - Used for all types properties mandatory.
         * **`stringCheck/mandatoryCheck`** 
             - Used for all string properties, mandatory version requires value for that property.
-        * **`commaToUnits/commaToUnitsMandatory`** 
+        * **`commaNumToUnits/commaNumToUnitsMandatory`** 
             - Used for parse of string to a number, mandatory version requires value for that property.
         * **`commaNumToUnitsInt/commaNumToUnitsIntMandatory`** 
             - Used for parse of integer type value to a number, mandatory version requires value for that property.
@@ -317,7 +316,7 @@ All currently available endpoints are:
 
 * **`PUT`**
     * **`entitytype`**
-        * Update a structure of specific entity type that will be setting the rules that are going to be used when uploading
+        * Update a structure of specific entity type that will be setting the rules that are going to be used when uploading entities
 
 * **`DELETE`**
     * **`entitytype/:entityType`**
