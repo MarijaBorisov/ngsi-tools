@@ -241,7 +241,9 @@ Rules are customizable, users can create, remove or edit rules via the REST.
             - Used to parse string from file to a list of structure value, this value is a special type of Fiware Orion, 
             the mandatory version requires value for that property. 
 
-     * As it is shown, each property belonges to the one of eleven types. The expected format of the entities that are going to be uploaded is:
+###### **Entities**
+* **`Add/Update entities`**
+     * As it is shown, each entity property belonges to the one of eleven types. The expected format of the entities that are going to be uploaded is:
         * Type `Text`:
           - Example in **`.csv`** file: `Transaction` (with the correct header with property names)
           - Example in **`.json`** file: `"name":{"type": "String", "value": "Transaction", "metadata": {}}`
@@ -276,6 +278,7 @@ Rules are customizable, users can create, remove or edit rules via the REST.
           - Example in **`.csv`** file: `[{ "refResource":"SortingType:1" , "amount":1, "unit":"C62"}, { "refResource":"SortingType:2" , "amount":2, "unit":"C62"}]` (with the correct header with property names)
           - Example in **`.json`** file: `"emittedResources": {"type": "List","value": [{"amount": 1,"refResource": "SortingType:1","unit": "C62"},{"amount": 2,"refResource": "SortingType:2","unit": "C62"}],"metadata": {}}`
 
+If property is mandatory, error will be reported if the property does not exists. If the wrong value is provided or a value is not provided when optional, a default value will be written. A default value for "Text" and "ReferenceID" types is an empty string **`""`**, for "TextList(,)", "NumberList(,)", "ReferenceIDList(,)" and "StructuredList([JSON objects])" it is an empty list **`[]`**. For "Float" and "Integer" default is zero value **`0`**, for "Datetime" the default value is a **`current date and time`**, for "GeoJSON(Point)" and "StructuredValue(JSON object)" it is an empty object **`"{}`**. 
 ###### API
 
 NGSI Connector API documentation can be found in its official [Swagger](backend.waste4think.eu:8082) instance.
