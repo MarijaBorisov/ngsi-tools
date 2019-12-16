@@ -286,18 +286,19 @@ function dateCheckMandatory(date) {// Not in use
   if (!date) {
     return null;
   }
-
+  let date_val;
   if (typeof date === 'object') {
+    date_val = isNaN(new Date(date.value).getTime()) ? new Date() : new Date(date.value);
     return {
-        value: date.value || "",
+        value: date_val,
         type: "DateTime",
         metadata: date.metadata || {},
     };
   }
-  let datetime = new Date(date) ? new Date(date) : "";
+  date_val = isNaN(new Date(date).getTime()) ? new Date() : new Date(date);
   let meta = pos( counter );
   return {
-      value: datetime,
+      value: date_val,
       type: "DateTime",
       metadata: meta? JSON.parse(meta): {}
   };
@@ -345,21 +346,23 @@ function dateCheck(date) {// not in use
     counter += 1;
     if (!date)
         return {
-            value: "",
+            value: new Date(),
             type: "DateTime",
             metadata: {}
     }
-    if (typeof date === 'object') {
+  let date_val;
+  if (typeof date === 'object') {
+    date_val = isNaN(new Date(date.value).getTime()) ? new Date() : new Date(date.value);
       return {
-          value: date.value || "",
+          value: date_val,
           type: "DateTime",
           metadata: date.metadata || {},
       };
   }
-  let datetime = new Date(date) ? new Date(date): "";
+  date_val = isNaN(new Date(date).getTime()) ? new Date() : new Date(date);
   let meta = pos( counter );
     return {
-        value: datetime,
+        value: date_val,
         type: "DateTime",
         metadata: meta? JSON.parse(meta) : {}
     }
