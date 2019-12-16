@@ -1,7 +1,7 @@
 # <a name="top"></a>Waste4Think NGSI Connector Api
 <br />
 <br />
-Waste4Think NGSI Connector API is a part of backend implementation of the Waste4Think
+Waste4Think NGSI Connector API is a part of the backend implementation of the Waste4Think
 project, providing an API interface for other participants in the project.
 Using this interface, users can do several operations:
 * Create entities from a file. The NGSI Connector API allows users to create a large
@@ -12,7 +12,7 @@ user configuration.
 * Supporting all Fiware Orion GET operations with queries, the goal is providing
 users with the ability to check data creation.
 This project is part of [Waste4Think](http://waste4think.eu/), for more
-infomation check the Waste4Think [Info](http://waste4think.eu/about-waste4think) section.
+information check the Waste4Think [Info](http://waste4think.eu/about-waste4think) section.
 
 ### Content
 *  [Description](#description)
@@ -31,10 +31,10 @@ infomation check the Waste4Think [Info](http://waste4think.eu/about-waste4think)
 ### Description
 
 NGSI Connector API allows you to create or update entities in Fiware Orion instance from files, add rules and query entity information. Using the NGSI Connector API,
-you are able to create a large number of entities while internal setting rules which make sure data integrity stay intact. The connector is providing a quick and safe
+users are able to create a large number of entities while internal setting rules which make sure data integrity stays intact. The connector is providing a quick and safe
 way of adding data to Fiware Orion instance from different sources, at the moment of writing supporting file formats are **`.csv`** and **`.json`**.
 
-With Connector, you are able to also query data in Fiware Orion this part of its structure is set up to act like proxy witch fully support all Fiware Orion GET and query methods regarding entities. 
+With Connector, you are able to also query data in Fiware Orion this part of its structure is set up to act like proxy witch fully supports all Fiware Orion GET and query methods regarding entities. 
 
 More information regarding Fiware Orion can be found on it's official [documentation](https://fiware-orion.readthedocs.io/en/master/).
 <br />
@@ -46,11 +46,11 @@ of the FIWARE platform.
 
 1) **`Parsing`**:
 
-- Parse input file, by converting it into a plain json object.
+- Parse input file, by converting it into a plain JSON object.
 
 2) **`Checking`**:
 
-- Checking parsed json object structure.
+- Checking parsed JSON object structure.
 - Converting a parsed object to NGSI v2 API data structure, according to predefined rules.
 
 3) **`Writing`**:
@@ -68,25 +68,24 @@ entities with errors and detail of each entity created including id, type, and s
 
 ## Install
 
-NGSI Connector API can be installed from two sources, one of them is this repository and other is Docker Hub wich can be found on
+NGSI Connector API can be installed from two sources, one of them is this repository and other is Docker Hub which can be found on
 [Docker](https://cloud.docker.com/u/waste4think/repository/docker/waste4think/ngsi-connector) repository.
 
 ###### Docker Hub
-  1. Make sure you have Docker and Docker-Compose installed on you server/machine, more info about this can be found on following [Documentation](https://docs.docker.com/docker-for-windows/install/)
+  1. Make sure you have Docker and Docker-Compose installed on your server/machine, more info about this can be found on following [Documentation](https://docs.docker.com/docker-for-windows/install/)
   2. Go to Waste4think official [Docker](https://cloud.docker.com/u/waste4think/repository/docker/waste4think/ngsi-connector) repository.
   3. Example of running NGSI Connector API from Docker Hub would be:
     * **`docker run -p port_map:3002 --name <container-name> waste4think/ngsi-connector`**
-  6. This method of running connector will start with default configuration, meaning it expect Fiware Orion to be running locally on port 1026. In order to avoid this and add your
-  configuration Docker volumes mapping must be used. More info in officiall [Volume](https://docs.docker.com/storage/volumes/) documentation.
-  7. Example of running NGSI Connector APi from Docker Hub using volumes would be:
+  6. This method of the running connector will start with a default configuration, meaning it expects Fiware Orion to be running locally on port 1026. In order to avoid this and add your configuration Docker volumes mapping must be used. More info in official [Volume](https://docs.docker.com/storage/volumes/) documentation.
+  7. Example of running NGSI Connector API from Docker Hub using volumes would be:
     * **`docker run -p port_map:3002 -v config.js:/opt/nconnector/config.js --name <container-name> waste4think/ngsi-connector`**
   8. In config.js you have some vital configuration settings, but most important Fiware Orion instance URL, more information on about this can be found in [Configuration]() section.
-  9. After these steps you can start using NGSI Connector API, more info about use of API can be found in [Usage](#usage) section.
+  9. After these steps you can start using NGSI Connector API, more info about the use of API can be found in [Usage](#usage) section.
     * **`important`** Fiware Orion default instance is secured by Fiware Pep-Proxy and it will require token in order to start testing
-  change header setting in config.js from 3 to 2 in order to test with local instance of Fiware Orion.
+  change header setting in config.js from 3 to 2 in order to test with a local instance of Fiware Orion.
 
 ###### Git Lab
-  1. Clone/Download this gihtub repository
+  1. Clone/Download this GitHub repository
   2. Change **`config.js`** most critical information is Fiware Orion Url, more detail regarding this config can be found in [Configuration]() section.
   3. To have locally your Fiware Orion Context Broker instance, together with MongoDB database, go to `/extras/docker/orion_mongo` folder and issue 
    **`docker-compose up -d`**
@@ -94,18 +93,18 @@ NGSI Connector API can be installed from two sources, one of them is this reposi
    **`npm install`**
   5. Start NGSI Connector API:
    **`npm start`**
-  6. After these steps you can start using NGSI Connector API, more info about use of API can be found in [Usage](#usage) section.
+  6. After these steps you can start using NGSI Connector API, more info about the use of API can be found in [Usage](#usage) section.
 
 [Top](#waste4think-ngsi-connector-api)
 
 ## Usage
 
-Usage section will cover how to configure NGSI Connector API but also what endpoints API have to offer as well rule managment.
+Usage section will cover how to configure NGSI Connector API but also what endpoints API have to offer as well rule management.
 
 ###### **Configuration**
 
 Configuration for NGSI Connector API is responsible for how API will be started and run. 
-Bellow users can found detail explanation regarding each setting from **`config.js`** file which is located in the root of this project.
+Bellow users can find a detail explanation regarding each setting from **`config.js`** file which is located in the root of this project.
 
 ```console
 const config = {}; 
@@ -139,7 +138,7 @@ config.db = {
      - NGSI Connector Port, this is port on with Connector will run.
 
 * **`config.ext`** 
-    - Allowed file extentions, some users want to limit which file type will be allowed due to their system request.
+    - Allowed file extensions, some users want to limit which file type will be allowed due to their system requests.
     
 * **`config.https`** 
     - How to run NGSI Connector, if set to the true server will be started in https.
@@ -149,10 +148,10 @@ config.db = {
 allows users to specify the number of entities they will get in return max value is 1000. More on information on this in official Fiware Orion [Documentation](https://fiware-orion.readthedocs.io/en/master/user/pagination/index.html).
 
 * **`config.db`**
-    - Structures of entity types that can be uploaded via the Connector are saved in this database. It could be the same database that Orion Context Broker is using for saving its data.
+    - Structures of entity types that can be uploaded via the Connector are saved in this database. It could be the same database that the Orion Context Broker is using for saving its data.
 
 ###### **Structures of Entity Types**
-In order to make the NGSI Connector more universal, the possibility for users to create and add various Entity Types and their structure is incorporated. Each structure sets the rules that will be used while parsing specific entities. It is mandatory to first upload the structure of each entity type that will be uploaded, otherwise upload of entities of unknown structure would not be possible.
+In order to make the NGSI Connector more universal, the possibility for users to create and add various Entity Types and their structure is incorporated. Each structure sets the rules that will be used while parsing specific entities. It is mandatory to first upload the structure of each entity type that will be uploaded, otherwise, upload of entities of unknown structure would not be possible.
 
 * **`Create a structure of Entity Type`**
      * Upload structure  of entity type into the request body in JSON format
@@ -246,13 +245,12 @@ In order to make the NGSI Connector more universal, the possibility for users to
 
 ###### **Rules**
 
-NGSI Connector API has support for rules, they represent a key aspect of API by providing users with a platform for customizing aspect of data creation 
+NGSI Connector API has support for rules, they represent a key aspect of API by providing users with a platform for customizing aspects of data creation 
 before sending data to Fiware Orion.
 
-Rules make sure that data which is sent to Fiware Orion keep its integrity and structure, it becomes essentials when working with big files. Files can contain up to 3000 and more entities
-making sure that data is sent to Fiware Orion is of the right format, type, etc... become an almost impossible task, rules solve this problem by adding this layer to NGSI Connector API.
+Rules make sure that data which is sent to Fiware Orion keep its integrity and structure, it becomes essentials when working with big files. Files can contain up to 3000 and more entities making sure that data is sent to Fiware Orion is of the right format, type, etc... become an almost impossible task, rules solve this problem by adding this layer to NGSI Connector API.
 
-Rules are customizable, users can create, remove or edit rules, at the moment of writing rules can be created only manually but REST option will be added in future.
+Rules are customizable, users can create, remove or edit rules, and the REST option is added.
 
 **Rule operations**:
       
@@ -325,14 +323,14 @@ All currently available endpoints are:
     * **`entitytype/:entityType`**
         * Delete from the database a structure of a specific entity type
 
-In description of API endpoints we mentioned Fiware-Service/Fiware-ServicePath more information regarding this topic can be found on its official
+In the description of API endpoints, we mentioned Fiware-Service/Fiware-ServicePath more information regarding this topic can be found on its official
 [Documentation](https://fiware-orion.readthedocs.io/en/master/user/service_path/).
 <br />
 <br />
 
-This manual wont cover each endpoint in depth but will focus on key **`POST`** routes because they are backbone of entire system.
+This manual won't cover each endpoint in-depth but will focus on key **`POST`** routes because they are the backbone of the entire system.
 
-1. Creating entities from user file, bellow is example of typical CURL POST call to NGSI Connector API.
+1. Creating entities from user files, bellow is an example of a typical CURL POST call to NGSI Connector API.
 
 ```console
 curl -X POST \
@@ -351,7 +349,7 @@ EOF
     * **`userFIle`** Represent form name, can be any named user want to the user in this example we used `userFile`.
     * **`@C:\Users\deposit_point.csv`** Represent file location on the server/operating system, in this example widows path is used.
 
-2. Update entities from user file, below are an example of typical CURL POST call to NGSI Connector API.
+2. Update entities from user file, below are an example of a typical CURL POST call to NGSI Connector API.
 
 ```console
 curl -X POST \
@@ -379,8 +377,7 @@ EOF
     11;Room;33;200;Belgrade
     12;Room;12;2500;Belgrade
 ```
-As mentioned in rules section we assume that user created rule object with following properties (id,type,temperature,pressure,location) more about this can be found in rules
-section. So if we send this file to API no error will be raised because its first line(header) have same properties as defined in rule.
+As mentioned in rules section we assume that user created rule object with following properties (id,type,temperature,pressure,location) more about this can be found in rules section. So if we send this file to API no error will be raised because its first line(header) have same properties as defined in rule.
 
 * Error example
 
@@ -390,8 +387,7 @@ section. So if we send this file to API no error will be raised because its firs
     11;Room;200;Belgrade
     12;Room;2500;Belgrade
 ```
-This will raise an error when the user tries to upload the file, the reason is clear in rules we defined 5 properties but in the file we supply only 4. This is important to notice because
-creation is very strict but it makes sure the integrity of the system by following user-supplied rules.
+This will raise an error when the user tries to upload the file, the reason is clear in rules we defined 5 properties but in the file we supply only 4. This is important to notice because creation is very strict but it makes sure the integrity of the system by following user-supplied rules.
 
 * **`Examples update`**
 
@@ -423,7 +419,7 @@ This structure is also correct, only difference would be updating all entities i
 
 The project seeks to design tools for the best design and implementation of different technological and non-technological solutions that would enable the improvement of all waste management stages, adopting a global approach and particularly focusing on citizen participation in order to build more sustainable, eco-friendly cities.
 
-These 20 highly innovative solutions will be validated in 4 European pilots. The village of Zamudio in Spain, the southerly Greek city of Halandri, the Portuguese municipality of Cascais and the Italian city of Seveso. They are directed towards the monitoring, collection and processing of real data, the creation of decision making tools, the launch of innovative awareness-raising campaigns and prevention campaigns, the introduction of serious games and innovative educational materials to ease the co-creation of new solutions (citizen science), the design of mobile applications to foster collaboration, transparency and mutual learning and the construction of two pilot plants for the treatment of organic waste and nappies with the aim of making progress in the construction of smart cities and laying the foundations of the circular economy.
+These 20 highly innovative solutions will be validated in 4 European pilots. The village of Zamudio in Spain, the southerly Greek city of Halandri, the Portuguese municipality of Cascais and the Italian city of Seveso. They are directed towards the monitoring, collection, and processing of real data, the creation of decision-making tools, the launch of innovative awareness-raising campaigns and prevention campaigns, the introduction of serious games and innovative educational materials to ease the co-creation of new solutions (citizen science), the design of mobile applications to foster collaboration, transparency, and mutual learning and the construction of two pilot plants for the treatment of organic waste and nappies with the aim of making progress in the construction of smart cities and laying the foundations of the circular economy.
 
 The Circular Economy is one of the seven emblematic initiatives that are part of the Europe 2020 strategy, which aims to generate smart, sustainable and conciliatory growth. Today it is Europe’s main strategy for generating growth and jobs, with the backing of the European Parliament and the European Council.
 
