@@ -4,7 +4,7 @@
 Waste4Think NGSI Connector API is a part of the backend implementation of the Waste4Think project, providing an API interface for other participants in the project.
 Using this interface, users can do several operations:
 
-* Create/Update Entity Type structure which defines rules to be applied in order to create entities
+* Create/update entity type structure which defines rules to be applied in order to create entities.
 
 * Create entities from a file. The NGSI Connector API allows users to create a large number of entities directly from .csv or .json files, it also has customizable rules for defining how data from files will be checked.
 
@@ -148,14 +148,14 @@ allows users to specify the number of entities they will get in return max value
 * **`config.db`**
     - Structures of entity types that can be uploaded via the Connector are saved in this database. It could be the same MongoDB database that the Orion Context Broker is using for saving its data.
 
-###### **Structures of Entity Types**
+###### **Rules/Structures of Entity Types**
 NGSI Connector API has support for rules. They represent a key aspect of API by providing users with a platform for customizing aspects of data creation before sending data to Fiware Orion.
 
 Rules make sure that data which is sent to Fiware Orion keep its integrity and structure, and it becomes essentials when working with big files. Files can contain up to 3000 and more entities making sure that data is sent to Fiware Orion is of the right format, type, etc... become an almost impossible task, rules solve this problem by adding this layer to NGSI Connector API.
 
-Rules are customizable, users can create, remove or edit rules, and the REST option is added.
-
 In order to make the NGSI Connector more universal, the possibility for users to dynamically create and update various Entity Types and their structure is incorporated. Each structure sets the rules that will be used while parsing specific entities. It is mandatory to first upload the structure of each entity type that will be uploaded. Otherwise, the upload of entities of unknown structure would not be possible.
+
+Rules are customizable, users can create, remove or edit rules via the REST.
 
 * **`Create a structure of Entity Type (Rule)`**
      * Upload a structure of entity type into the request body in JSON format
@@ -370,7 +370,7 @@ EOF
 ```
 As mentioned in the rules section, we assume that a user has created a rule object (entity type structure) with the following properties (id, type, temperature, pressure, location). So if we send this file to API no error will be raised because its first line (header) has the same properties as defined in the rule (in the structure of the specific entity type).
 
-* Error example
+* **`Error example`**
 
  ```console
     id;type;pressure;location
