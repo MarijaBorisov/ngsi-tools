@@ -1,18 +1,18 @@
 # <a name="top"></a>Waste4Think NGSI Connector Api
 <br />
 <br />
-Waste4Think NGSI Connector API is a part of the backend implementation of the Waste4Think
-project, providing an API interface for other participants in the project.
+Waste4Think NGSI Connector API is a part of the backend implementation of the Waste4Think project, providing an API interface for other participants in the project.
 Using this interface, users can do several operations:
-* Create entities from a file. The NGSI Connector API allows users to create a large
-number of entities directly from .csv or .json files, it also has customizable
-rules for defining how data from files will be checked.
-* Update entities from a file, it can support full or partial update depending on
-user configuration.
-* Supporting all Fiware Orion GET operations with queries, the goal is providing
-users with the ability to check data creation.
-This project is part of [Waste4Think](http://waste4think.eu/), for more
-information check the Waste4Think [Info](http://waste4think.eu/about-waste4think) section.
+
+* Create/Update Entity Type structure which defines rules to be applied in order to create entities
+
+* Create entities from a file. The NGSI Connector API allows users to create a large number of entities directly from .csv or .json files, it also has customizable rules for defining how data from files will be checked.
+
+* Update entities from a file, it can support full or partial update depending on user configuration.
+
+* Supporting all Fiware Orion GET operations with queries, the goal is providing users with the ability to check data creation.
+
+This project is part of [Waste4Think](http://waste4think.eu/), for more information check the Waste4Think [Info](http://waste4think.eu/about-waste4think) section.
 
 ### Content
 *  [Description](#description)
@@ -30,16 +30,14 @@ information check the Waste4Think [Info](http://waste4think.eu/about-waste4think
 
 ### Description
 
-NGSI Connector API allows you to create or update entities in Fiware Orion instance from files, add rules and query entity information. Using the NGSI Connector API,
-users are able to create a large number of entities while internal setting rules which make sure data integrity stays intact. The connector is providing a quick and safe
-way of adding data to Fiware Orion instance from different sources, at the moment of writing supporting file formats are **`.csv`** and **`.json`**.
+NGSI Connector API allows you to add rules for entity types, create or update entities in Fiware Orion instance from files, and query entity information. Using the NGSI Connector API, users are able to create a large number of entities while internal setting rules which make sure data integrity stays intact. The connector is providing a quick and safe way of adding data to Fiware Orion instance from different sources, at the moment of writing supporting file formats are **`.csv`** and **`.json`**.
 
-With Connector, you are able to also query data in Fiware Orion this part of its structure is set up to act like proxy witch fully supports all Fiware Orion GET and query methods regarding entities. 
+With Connector, you are able to also query data in Fiware Orion. This part of its structure is set up to act like proxy witch fully supports all Fiware Orion GET and query methods regarding entities. 
 
 More information regarding Fiware Orion can be found on it's official [documentation](https://fiware-orion.readthedocs.io/en/master/).
 <br />
 
-###### NGSI Connector API work flow:
+###### NGSI Connector API workflow:
 
 NGSI Connector API is a Node.js implementation of the NGSIv2 REST API binding developed as a part
 of the FIWARE platform.
@@ -99,7 +97,7 @@ NGSI Connector API can be installed from two sources, one of them is this reposi
 
 ## Usage
 
-Usage section will cover how to configure NGSI Connector API but also what endpoints API have to offer as well rule management.
+Usage section will cover how to configure NGSI Connector API but also what endpoints API has to offer as well rule management.
 
 ###### **Configuration**
 
@@ -151,10 +149,16 @@ allows users to specify the number of entities they will get in return max value
     - Structures of entity types that can be uploaded via the Connector are saved in this database. It could be the same MongoDB database that the Orion Context Broker is using for saving its data.
 
 ###### **Structures of Entity Types**
-In order to make the NGSI Connector more universal, the possibility for users to create and add various Entity Types and their structure is incorporated. Each structure sets the rules that will be used while parsing specific entities. It is mandatory to first upload the structure of each entity type that will be uploaded. Otherwise, upload of entities of unknown structure would not be possible.
+NGSI Connector API has support for rules. They represent a key aspect of API by providing users with a platform for customizing aspects of data creation before sending data to Fiware Orion.
 
-* **`Create a structure of Entity Type`**
-     * Upload structure  of entity type into the request body in JSON format
+Rules make sure that data which is sent to Fiware Orion keep its integrity and structure, and it becomes essentials when working with big files. Files can contain up to 3000 and more entities making sure that data is sent to Fiware Orion is of the right format, type, etc... become an almost impossible task, rules solve this problem by adding this layer to NGSI Connector API.
+
+Rules are customizable, users can create, remove or edit rules, and the REST option is added.
+
+In order to make the NGSI Connector more universal, the possibility for users to dynamically create and update various Entity Types and their structure is incorporated. Each structure sets the rules that will be used while parsing specific entities. It is mandatory to first upload the structure of each entity type that will be uploaded. Otherwise, the upload of entities of unknown structure would not be possible.
+
+* **`Create a structure of Entity Type (Rule)`**
+     * Upload a structure of entity type into the request body in JSON format
      * Structure must be added in the following format:
     ```console
        {
@@ -177,7 +181,66 @@ In order to make the NGSI Connector more universal, the possibility for users to
          }
        }
     ```
-     * Name of a entity type is very important. The user must name the entity type so that it is the same as a property named 'type' that he expects in **`.csv/.json`** file.
+     * Name of an entity type is very important. The user must name the entity type so that it is the same as a property named 'type' of entities that are going to be uploaded via **`.csv/.json`** file.
+     * Structures of entity types are saved in this database
+     * Example of entity type structure:
+     ```console
+        {
+            "Vehicle":{
+                "id": {"type":"EntityID","mandatory":"YES"},
+                "type": {"type":"EntityType","mandatory":"YES"},
+                "family":{"type":"Text", "mandatory":"YES"},
+                "vehiclePlateIdentifier":{"type":"Text", "mandatory":"YES"},
+                "name":{"type":"Text", "mandatory":"NO"},
+                "location": {"type":"GeoJSON(Point)","mandatory":"NO", "metadata":{}},
+                "refType":{"type":"ReferenceID", "mandatory":"YES"},
+                "refInputs":{"type":"ReferenceIDList(,)", "mandatory":"NO"},
+	        }
+        }
+     ```
+     * The result of the previously created structure is the name of the rule for each entity:
+     ```console
+        "properties" : {
+                "id" : "idCheck",
+                "type" : "typeCheck",
+                "family" : "mandatoryCheck",
+                "vehiclePlateIdentifier" : "mandatoryCheck",
+                "name" : "stringCheck",
+                "location" : "locationCheckNoMand",
+                "refType" : "mandatoryCheck",
+                "refInputs" : "stringToArray",
+        }
+     ```
+    
+    * After the entity is created, the `properties` object of that entity is dynamically assigned to values that are the same as the function names that will be used to validate the **`.csv/.json`** files
+    * The functions used to check the validity of the values obtained from the **`.csv/.json`** file are:
+        * **`idCheck`** 
+            - Used for all id properties mandatory.
+        * **`typeCheck`** 
+            - Used for all types properties mandatory.
+        * **`stringCheck/mandatoryCheck`** 
+            - Used for all string properties, mandatory version requires value for that property.
+        * **`commaNumToUnits/commaNumToUnitsMandatory`** 
+            - Used for parse of string to a number, mandatory version requires value for that property.
+        * **`commaNumToUnitsInt/commaNumToUnitsIntMandatory`** 
+            - Used for parse of integer type value to a number, mandatory version requires value for that property.
+        * **`locationCheck/locationCheckMandatory`** 
+            - Used to parse **`geo:json`** values, mandatory version requires value for that property.
+        * **`dateCheck/dateCheckMandatory`** 
+            - Used for all DateTime values, mandatory version requires value for that property.
+        * **`stringToArray/stringToArrayMandatory`** 
+            - Used to parse string from files to array object, in **.csv** file these values are separated with **`,`**,
+            mandatory version requires value for that property.
+        * **`stringToArryNum/stringToArryNumMandatory`** 
+            - Used to parse string from file to array of Numbers, in **.csv** file these values are separated with **`,`**,
+            mandatory version requires value for that property. 
+        * **`structuredValue/structuredValueMandatory`** 
+            - Used to parse string from file to structure value, this value is a special type of Fiware Orion, 
+            the mandatory version requires value for that property.
+         * **`structuredList/structuredListMandatory`** 
+            - Used to parse string from file to a list of structure value, this value is a special type of Fiware Orion, 
+            the mandatory version requires value for that property. 
+
      * As it is shown, each property belonges to the one of eleven types. The expected format of the entities that are going to be uploaded is:
         * Type `Text`:
           - Example in **`.csv`** file: `Transaction` (with the correct header with property names)
@@ -212,77 +275,6 @@ In order to make the NGSI Connector more universal, the possibility for users to
         * Type `StructuredList([JSON objects])`:
           - Example in **`.csv`** file: `[{ "refResource":"SortingType:1" , "amount":1, "unit":"C62"}, { "refResource":"SortingType:2" , "amount":2, "unit":"C62"}]` (with the correct header with property names)
           - Example in **`.json`** file: `"emittedResources": {"type": "List","value": [{"amount": 1,"refResource": "SortingType:1","unit": "C62"},{"amount": 2,"refResource": "SortingType:2","unit": "C62"}],"metadata": {}}`
-     * Structures of entity types are saved in this database
-     * Example of  entity type structure:
-     ```console
-        {
-            "Vehicle":{
-                "id": {"type":"EntityID","mandatory":"YES"},
-                "type": {"type":"EntityType","mandatory":"YES"},
-                "family":{"type":"Text", "mandatory":"YES"},
-                "vehiclePlateIdentifier":{"type":"Text", "mandatory":"YES"},
-                "name":{"type":"Text", "mandatory":"NO"},
-                "location": {"type":"GeoJSON(Point)","mandatory":"NO", "metadata":{}},
-                "refType":{"type":"ReferenceID", "mandatory":"YES"},
-                "refInputs":{"type":"ReferenceIDList(,)", "mandatory":"NO"},
-	        }
-        }
-     ```
-     * The result of the previously created structure is the name of the rule for each entity:
-     ```console
-        "properties" : {
-                "id" : "idCheck",
-                "type" : "typeCheck",
-                "family" : "mandatoryCheck",
-                "vehiclePlateIdentifier" : "mandatoryCheck",
-                "name" : "stringCheck",
-                "location" : "locationCheckNoMand",
-                "refType" : "mandatoryCheck",
-                "refInputs" : "stringToArray",
-        }
-     ```
-
-###### **Rules**
-
-NGSI Connector API has support for rules, they represent a key aspect of API by providing users with a platform for customizing aspects of data creation 
-before sending data to Fiware Orion.
-
-Rules make sure that data which is sent to Fiware Orion keep its integrity and structure, it becomes essentials when working with big files. Files can contain up to 3000 and more entities making sure that data is sent to Fiware Orion is of the right format, type, etc... become an almost impossible task, rules solve this problem by adding this layer to NGSI Connector API.
-
-Rules are customizable, users can create, remove or edit rules, and the REST option is added.
-
-**Rule operations**:
-      
-* **`Add functions to rule properties`**
-    
-    * After the entity is created, the `properties` object  of that entity is dynamically assigned to values that are the same as the function names that will be used to validate the **`.csv/.json`** files
-    * The functions used to check the validity of the values obtained from the **`.csv/.json`** file are:
-        * **`idCheck`** 
-            - Used for all id properties mandatory.
-        * **`typeCheck`** 
-            - Used for all types properties mandatory.
-        * **`stringCheck/mandatoryCheck`** 
-            - Used for all string properties, mandatory version requires value for that property.
-        * **`commaNumToUnits/commaNumToUnitsMandatory`** 
-            - Used for parse of string to a number, mandatory version requires value for that property.
-        * **`commaNumToUnitsInt/commaNumToUnitsIntMandatory`** 
-            - Used for parse of integer type value to a number, mandatory version requires value for that property.
-        * **`locationCheck/locationCheckMandatory`** 
-            - Used to parse **`geo:json`** values, mandatory version requires value for that property.
-        * **`dateCheck/dateCheckMandatory`** 
-            - Used for all DateTime values, mandatory version requires value for that property.
-        * **`stringToArray/stringToArrayMandatory`** 
-            - Used to parse string from files to array object, in **.csv** file these values are separated with **`,`**,
-            mandatory version requires value for that property.
-        * **`stringToArryNum/stringToArryNumMandatory`** 
-            - Used to parse string from file to array of Numbers, in **.csv** file these values are separated with **`,`**,
-            mandatory version requires value for that property. 
-        * **`structuredValue/structuredValueMandatory`** 
-            - Used to parse string from file to structure value, this value is a special type of Fiware Orion, 
-            the mandatory version requires value for that property.
-         * **`structuredList/structuredListMandatory`** 
-            - Used to parse string from file to a list of structure value, this value is a special type of Fiware Orion, 
-            the mandatory version requires value for that property. 
 
 ###### API
 
@@ -300,7 +292,7 @@ All currently available endpoints are:
     * **`rules`**
         * Get all rules currently supported in  NGSI Connector API
     * **`rules/:ruleId`**
-        * Get single rule description, users can very fast find all info what properties are mandatory and what type they return.
+        * Get a single rule description, users can very fast find all info what properties are mandatory and what type they return.
     * **`typestructure`**
         * Get the rules for creating structures of entity types that are going to be uploaded
     * **`entitytype/:entityType`**
@@ -376,7 +368,7 @@ EOF
     11;Room;33;200;Belgrade
     12;Room;12;2500;Belgrade
 ```
-As mentioned in rules section we assume that user created rule object with following properties (id,type,temperature,pressure,location) more about this can be found in rules section. So if we send this file to API no error will be raised because its first line(header) have same properties as defined in rule.
+As mentioned in the rules section, we assume that a user has created a rule object (entity type structure) with the following properties (id, type, temperature, pressure, location). So if we send this file to API no error will be raised because its first line (header) has the same properties as defined in the rule (in the structure of the specific entity type).
 
 * Error example
 
@@ -392,7 +384,7 @@ This will raise an error when the user tries to upload the file, the reason is c
 
 Error example when creating entities will work when updating because when updating we can provide full properties (5 in the example above) or only properties we want to update
 
-This is correct file structure for an update but would result in failure when creating.
+This is the correct file structure for an update but would result in failure when creating.
 
  ```console
     id;type;pressure
@@ -400,7 +392,7 @@ This is correct file structure for an update but would result in failure when cr
     11;Room;200
     12;Room;2500
 ```
-This structure is also correct, only difference would be updating all entities instead of only few.
+This structure is also correct, the only difference would be updating all entities instead of only a few.
 
  ```console
     id;type;temperature;pressure;location
