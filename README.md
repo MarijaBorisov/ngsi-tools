@@ -4,7 +4,7 @@
 Waste4Think NGSI Connector API is a part of the backend implementation of the Waste4Think project, providing an API interface for other participants in the project.
 Using this interface, users can do several operations:
 
-* Create/update entity type structure which defines rules to be applied in order to create entities.
+* Create/update entity type structure which defines rules to be applied in order to create/update entities.
 
 * Create entities from a file. The NGSI Connector API allows users to create a large number of entities directly from .csv or .json files, it also has customizable rules for defining how data from files will be checked.
 
@@ -37,7 +37,7 @@ With Connector, you are able to also query data in Fiware Orion. This part of it
 More information regarding Fiware Orion can be found on it's official [documentation](https://fiware-orion.readthedocs.io/en/master/).
 <br />
 
-###### NGSI Connector API workflow:
+#### NGSI Connector API workflow:
 
 NGSI Connector API is a Node.js implementation of the NGSIv2 REST API binding developed as a part
 of the FIWARE platform.
@@ -69,7 +69,7 @@ entities with errors and detail of each entity created including id, type, and s
 NGSI Connector API can be installed from two sources, one of them is this repository and other is Docker Hub which can be found on
 [Docker](https://cloud.docker.com/u/waste4think/repository/docker/waste4think/ngsi-connector) repository.
 
-###### Docker Hub
+#### Docker Hub
   1. Make sure you have Docker and Docker-Compose installed on your server/machine, more info about this can be found on following [Documentation](https://docs.docker.com/docker-for-windows/install/)
   2. Go to Waste4think official [Docker](https://cloud.docker.com/u/waste4think/repository/docker/waste4think/ngsi-connector) repository.
   3. Example of running NGSI Connector API from Docker Hub would be:
@@ -82,7 +82,7 @@ NGSI Connector API can be installed from two sources, one of them is this reposi
     * **`important`** Fiware Orion default instance is secured by Fiware Pep-Proxy and it will require token in order to start testing
   change header setting in config.js from 3 to 2 in order to test with a local instance of Fiware Orion.
 
-###### Git Lab
+#### Git Lab
   1. Clone/Download this GitLab repository
   2. Change **`config.js`** most critical information is Fiware Orion Url, more detail regarding this config can be found in [Configuration]() section.
   3. To have locally your Fiware Orion Context Broker instance, together with MongoDB database, go to `/extras/docker/orion_mongo` folder and issue 
@@ -279,6 +279,7 @@ Rules are customizable, users can create, remove or edit rules via the REST.
           - Example in **`.json`** file: `"emittedResources": {"type": "List","value": [{"amount": 1,"refResource": "SortingType:1","unit": "C62"},{"amount": 2,"refResource": "SortingType:2","unit": "C62"}],"metadata": {}}`
 
 If property is mandatory, error will be reported if the property does not exists. If the wrong value is provided or a value is not provided when it is optional, a default value will be written. A default value for `"Text"` and `"ReferenceID"` types is an empty string **`""`**, for `"TextList(,)"`, `"NumberList(,)"`, `"ReferenceIDList(,)"` and `"StructuredList([JSON objects])"` it is an empty list **`[]`**. For `"Float"` and `"Integer"` default is zero value **`0`**, for `"Datetime"` the default value is a **`current date and time`**, for `"GeoJSON(Point)"` and `"StructuredValue(JSON object)"` it is an empty object **`"{}"`**. 
+
 #### API
 
 NGSI Connector API documentation can be found in its official [Swagger](backend.waste4think.eu:8082) instance.
