@@ -187,26 +187,26 @@ In order to make the NGSI Connector more universal, the possibility for users to
           - Example in **`.csv`** file: `DepositPoint:0001` (with the correct header with property names)
           - Example in **`.json`** file: `"name": {"type": "String","value": "DepositPoint:0001","metadata": {}}`
         * Type `TextList(,)`:
-          - Example in **`.csv`** file: `` (with the correct header with property names)
-          - Example in **`.json`** file: ``
+          - Example in **`.csv`** file: `Value1,Value2,Value3` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{"type": "List", "value": ["Value1","Value2","Value:3"], "metadata": {}}`
         * Type `NumberList(,)`:
-          - Example in **`.csv`** file: `` (with the correct header with property names)
-          - Example in **`.json`** file: ``
+          - Example in **`.csv`** file: `1000.34,1001.45,1002.12` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{"type": "List", "value": [1000.34,1001.45,1002.12], "metadata": {}}`
         * Type `ReferenceIDList(,)`:
-          - Example in **`.csv`** file: `` (with the correct header with property names)
-          - Example in **`.json`** file: ``
+          - Example in **`.csv`** file: `Waste:1,Waste:2,Waste:3` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{"type": "List", "value": ["Waste:1","Waste:2","Waste:3"], "metadata": {}}`
         * Type `GeoJSON(Point)`:
-          - Example in **`.csv`** file: `` (with the correct header with property names)
-          - Example in **`.json`** file: ``
+          - Example in **`.csv`** file: `"geometry": { "type": "Point", "coordinates": [ 45.645752, 9.1475983 ] } }` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{ "type": "geo:json","value": {"type": "Point","coordinates": [-2.812263201,43.26375754]},"metadata": {}}`
         * Type `Float`:
-          - Example in **`.csv`** file: `` (with the correct header with property names)
-          - Example in **`.json`** file: ``
+          - Example in **`.csv`** file: `123.45` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{"type": "List", "value": 123.45, "metadata": {}}`
         * Type `Integer`:
-          - Example in **`.csv`** file: `` (with the correct header with property names)
-          - Example in **`.json`** file: ``
+          - Example in **`.csv`** file: `123` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{"type": "List", "value": 123, "metadata": {}}`
         * Type `Datetime`:
-          - Example in **`.csv`** file: `` (with the correct header with property names)
-          - Example in **`.json`** file: ``
+          - Example in **`.csv`** file: `2019-12-31T10:10:10+01:00` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{ "type": "DateTime","value": "2019-12-31T10:10:10+01:00","metadata": {}}`
         * Type `StructuredValue(JSON object)`:
           - Example in **`.csv`** file: `{ "refResource":"SortingType:1" , "amount":1, "unit":"C62"}` (with the correct header with property names)
           - Example in **`.json`** file:  `"name": {"type": "List","value": {"amount": 1,"refResource": "SortingType:1","unit": "C62"},"metadata": {}}`
