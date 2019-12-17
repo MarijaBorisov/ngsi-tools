@@ -385,7 +385,8 @@ function mandatoryCheck( attribute ) {//OK Mandatory String
         return null;
     }
 
-    if (typeof attribute === 'object') {
+  if (typeof attribute === 'object') {
+    attribute.value = typeof attribute.value === "string" ? attribute.value : "";
         return {
             value: attribute.value || "",
             type: "String",
@@ -428,7 +429,8 @@ function mandatoryCheck( attribute ) {//OK Mandatory String
 function stringCheck(value) {//OK Optional String
     counter += 1;
 
-    if(typeof value === 'object') {
+  if (typeof value === 'object') {
+    value.value = typeof value.value === "string" ? value.value : "";
         return {
             "value": value.value || "",
             "type": "String",
@@ -788,7 +790,7 @@ function structuredValueMandatory(string) {
       string_obj = JSON.parse(decodeURIComponent(string));
       string_obj = urlEncodeForbiddenObj(string_obj);
     } else { 
-      string_obj = "";
+      string_obj = {};
     }
     return {
         "value": string_obj,//specCase(string) || "",
