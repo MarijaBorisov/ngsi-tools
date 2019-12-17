@@ -273,7 +273,7 @@ Rules are customizable, users can create, remove or edit rules via the REST.
 
 If property is mandatory, error will be reported if the property does not exist. If the wrong value is provided or a value is not provided when it is optional, a default value will be written. A default value for `"Text"` and `"ReferenceID"` types is an empty string **`""`**, for `"TextList(,)"`, `"NumberList(,)"`, `"ReferenceIDList(,)"` and `"StructuredList([JSON objects])"` it is an empty list **`[]`**. For `"Float"` and `"Integer"` default is zero value **`0`**, for `"Datetime"` the default value is a **`current date and time`**, for `"GeoJSON(Point)"` and `"StructuredValue(JSON object)"` it is an empty object **`"{}"`**. 
 
-Metadata in `csv` file are sent in the header, like in the following example for property "width": **`width%%"metadata": {"unit": {"value": "MTR","type": "Text"}}%%`**
+Metadata in `csv` file can be sent in the header, like in the following example for property "width": **`width%%"metadata": {"unit": {"value": "MTR","type": "Text"}}%%`**
 
 #### API
 

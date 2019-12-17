@@ -511,9 +511,9 @@ function stringToArrayNumMandatory(string) {//OK Mandatory List<Float>
     string.value = Array.isArray(string.value) ? string.value : [];
     string.value = string.value.map(raw => Number(raw.trim()) ? Number(raw.trim()) : 0);
     return {
-      value: string.value || [],//string //
+      value: string.value || [],
       type: "List",
-      metadata: string.metadata || {}//{}
+      metadata: string.metadata || {}
     };
   }
 
