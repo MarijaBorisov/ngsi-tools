@@ -459,7 +459,7 @@ function stringToArrayNum(string) {//OK Optional List<Float>
     counter += 1;
   if (typeof string === 'object') {
     string.value = Array.isArray(string.value) ? string.value : [];
-    string.value = string.value.map(raw => Number(raw.trim()) ? Number(raw.trim()) : 0);
+    string.value = string.value.map(raw => Number(raw) ? Number(raw) : 0);
     return {
         value: string.value || [],
         type: "List",
@@ -513,7 +513,7 @@ function stringToArrayNumMandatory(string) {//OK Mandatory List<Float>
   
   if (typeof string === "object") {
     string.value = Array.isArray(string.value) ? string.value : [];
-    string.value = string.value.map(raw => Number(raw.trim()) ? Number(raw.trim()) : 0);
+    string.value = string.value.map(raw => Number(raw) ? Number(raw) : 0);
     return {
       value: string.value || [],
       type: "List",
