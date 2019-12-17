@@ -211,6 +211,7 @@ function stringToArray(string) {//OK Optional List Float or String
   counter += 1;
 
   if (typeof string === "object") {
+    string.value = Array.isArray(string.value) ? string.value : [];
     return {
       value: string.value || [],
       type: "List",
@@ -219,6 +220,11 @@ function stringToArray(string) {//OK Optional List Float or String
   }
   let obj = [];
   let meta = pos(counter);
+  if (string) { 
+    string = string.trim();
+    if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1)
+      string = string.substring(1, string.length - 1);
+  }
   if (meta) {
     obj = [];
     // meta = pos(counter);
@@ -248,6 +254,7 @@ function stringToArrayMandatory(string) {//OK Mandatory List Float or String
   }
 
   if (typeof string === 'object') {
+    string.value = Array.isArray(string.value) ? string.value : [];
     return {
         value: string.value || [],
         type: "List",
@@ -256,6 +263,9 @@ function stringToArrayMandatory(string) {//OK Mandatory List Float or String
   }
 
   if (string) {
+    string = string.trim();
+    if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1)
+      string = string.substring(1, string.length - 1);
     let obj = [];
     let meta = pos(counter);
     if(meta) {
@@ -444,10 +454,12 @@ function stringCheck(value) {//OK Optional String
 function stringToArrayNum(string) {//OK Optional List<Float>
     counter += 1;
   if (typeof string === 'object') {
+    string.value = Array.isArray(string.value) ? string.value : [];
+    string.value = string.value.map(raw => Number(raw.trim()) ? Number(raw.trim()) : 0);
     return {
-        value: string.value || [],//string,////
+        value: string.value || [],
         type: "List",
-        metadata: string.metadata || {}//{}////
+        metadata: string.metadata || {}
     }
   }
 
@@ -496,6 +508,8 @@ function stringToArrayNumMandatory(string) {//OK Mandatory List<Float>
   }
   
   if (typeof string === "object") {
+    string.value = Array.isArray(string.value) ? string.value : [];
+    string.value = string.value.map(raw => Number(raw.trim()) ? Number(raw.trim()) : 0);
     return {
       value: string.value || [],//string //
       type: "List",
@@ -724,7 +738,8 @@ function arrToNum(string) {
 
 function structuredValue(string) {
     counter +=1
-    if (typeof string == "object") {
+  if (typeof string == "object") {
+    string.value = typeof string.value === "object" ? string.value : {};
         return {
             "value": string.value || {},
             "type": "StructuredValue",
@@ -738,7 +753,7 @@ function structuredValue(string) {
     string_obj = JSON.parse(decodeURIComponent(string));
     string_obj = urlEncodeForbiddenObj(string_obj);
   } else { 
-    string_obj = "";
+    string_obj = {};
   }
   
   if(meta) {
@@ -759,7 +774,8 @@ function structuredValueMandatory(string) {
     counter +=1
     if (!string)
         return null;
-    if (typeof string == "object") {
+  if (typeof string == "object") {
+    string.value = typeof string.value === "object" ? string.value : {};
         return {
             "value": string.value || {},
             "type": "StructuredValue",
@@ -785,9 +801,11 @@ function structuredListMandatory(string) {
     counter +=1
     if (!string)
         return null;
-    if (typeof string == "object") {
+  if (typeof string == "object") {
+    string.value = Array.isArray(string.value) ? string.value : [];
+    string.value = string.value.map(raw => typeof raw === "object" ? raw : {});
         return {
-            "value": string.value || [],//{},
+            "value": string.value || [],
             "type": "List",
             "metadata": string.metadata || {}
         }
@@ -843,6 +861,8 @@ function getPosition(string, subString, index) {
 function structuredList(string) {
   counter += 1;
   if (typeof string == "object") {
+    string.value = Array.isArray(string.value) ? string.value : [];
+    string.value = string.value.map(raw => typeof raw === "object" ? raw : {});
     return {
       value: string.value || [],
       type: "List",
