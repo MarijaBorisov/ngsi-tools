@@ -145,7 +145,7 @@ config.db = {
 allows users to specify the number of entities they will get in return max value is 1000. More on information on this in official Fiware Orion [Documentation](https://fiware-orion.readthedocs.io/en/master/user/pagination/index.html).
 
 * **`config.db`**
-    - Structures of entity types that can be uploaded via the Connector are saved in this database. It could be the same MongoDB database that the Orion Context Broker is using for saving its data.
+    - Structures of entity types that can be uploaded via the Connector are saved in this database. It could be the same MongoDB instance that the Orion Context Broker is using for saving its data, just the new "w4t-entities" database.
 
 #### **Rules/Structures of Entity Types**
 NGSI Connector API has support for rules. They represent a key aspect of API by providing users with a platform for customizing aspects of data creation before sending data to Fiware Orion.
@@ -154,7 +154,7 @@ Rules make sure that data that is sent to Fiware Orion keep its integrity and st
 
 In order to make the NGSI Connector more universal, the possibility for users to dynamically create and update various Entity Types and their structure is incorporated. Each structure sets the rules that will be used while parsing specific entities. It is mandatory to first upload the structure of each entity type that will be uploaded. Otherwise, the upload of entities of unknown structure would not be possible.
 
-Rules are customizable, users can create, remove or edit rules via the REST.
+Rules are customizable, users can create, remove or edit rules (entity type structures) via the RESTful API.
 
 * **`Create a structure of Entity Type (Rule)`**
      * Upload a structure of entity type into the request body in JSON format
