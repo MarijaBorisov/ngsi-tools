@@ -133,7 +133,7 @@ config.db = {
      - Fiware Orion Url, Connector API will use this URL for all Fiware Orion calls.
 
 * **`config.api_port`**
-     - NGSI Connector Port, this is port on with Connector will run.
+     - NGSI Connector Port, this is a port on which the Connector will run.
 
 * **`config.ext`** 
     - Allowed file extensions, some users want to limit which file type will be allowed due to their system requests.
@@ -215,31 +215,31 @@ Rules are customizable, users can create, remove or edit rules via the REST.
     * After the entity is created, the `properties` object of that entity is dynamically assigned to values that are the same as the function names that will be used to validate the **`.csv/.json`** files
     * The functions used to check the validity of the values obtained from the **`.csv/.json`** file are:
         * **`idCheck`** 
-            - Used for all id properties mandatory.
+            - Used for id property, mandatory.
         * **`typeCheck`** 
-            - Used for all types properties mandatory.
+            - Used for type property, mandatory.
         * **`stringCheck/mandatoryCheck`** 
-            - Used for all string properties, mandatory version requires value for that property.
+            - Used for all string properties, the mandatory version requires a value for that property.
         * **`commaNumToUnits/commaNumToUnitsMandatory`** 
-            - Used for parse of string to a number, mandatory version requires value for that property.
+            - Used for parsing a value to a float number, the mandatory version requires a value for that property.
         * **`commaNumToUnitsInt/commaNumToUnitsIntMandatory`** 
-            - Used for parse of integer type value to a number, mandatory version requires value for that property.
+            - Used for parsing a value to an integer number, the mandatory version requires a value for that property.
         * **`locationCheck/locationCheckMandatory`** 
-            - Used to parse **`geo:json`** values, mandatory version requires value for that property.
+            - Used to parse **`geo:json`** values, the mandatory version requires a value for that property.
         * **`dateCheck/dateCheckMandatory`** 
-            - Used for all DateTime values, mandatory version requires value for that property.
+            - Used for all DateTime values, the mandatory version requires a value for that property.
         * **`stringToArray/stringToArrayMandatory`** 
-            - Used to parse string from files to array object, in **.csv** file these values are separated with **`,`**,
-            mandatory version requires value for that property.
+            - Used to parse a value to an array object, in **.csv** file these values are separated with a comma **`,`**,
+            the mandatory version requires a value for that property.
         * **`stringToArryNum/stringToArryNumMandatory`** 
-            - Used to parse string from file to array of Numbers, in **.csv** file these values are separated with **`,`**,
-            mandatory version requires value for that property. 
+            - Used to parse a value to an array of numbers, in **.csv** file these values are separated with a comma **`,`**,
+           the mandatory version requires a value for that property. 
         * **`structuredValue/structuredValueMandatory`** 
-            - Used to parse string from file to structure value, this value is a special type of Fiware Orion, 
-            the mandatory version requires value for that property.
+            - Used to parse a value to a structured value - JSON object, this value is a special type of Fiware Orion, 
+            the mandatory version requires a value for that property.
          * **`structuredList/structuredListMandatory`** 
-            - Used to parse string from file to a list of structure value, this value is a special type of Fiware Orion, 
-            the mandatory version requires value for that property. 
+            - Used to parse a value to a structured list of JSON objects, this value is a special type of Fiware Orion, 
+            the mandatory version requires a value for that property. 
 
 #### **Entities**
 * **`Add/Update entities`**
