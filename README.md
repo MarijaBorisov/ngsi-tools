@@ -23,7 +23,7 @@ This project is part of [Waste4Think](http://waste4think.eu/). For more informat
     * [Configuration](#configuration)
     * [Rules](#rules)
     * [Metadata](#metadata)
-    * [Api](#api)
+    * [API](#api)
 *  [Project](#project)
 *  [License](#license)
   
@@ -34,7 +34,7 @@ NGSI Connector API allows you to add rules for entity types by defining their st
 
 With Connector, you are able to also query data in Fiware Orion. This part of its structure is set up to act like proxy witch fully supports all Fiware Orion GET and query methods regarding entities. 
 
-More information regarding Fiware Orion can be found on it's official [documentation](https://fiware-orion.readthedocs.io/en/master/).
+More information regarding Fiware Orion can be found on its official [documentation](https://fiware-orion.readthedocs.io/en/master/).
 <br />
 
 #### NGSI Connector API workflow:
@@ -66,32 +66,32 @@ entities with errors and detail of each entity created including id, type, and s
 
 ## Install
 
-NGSI Connector API can be installed from two sources, one of them is this repository and other is Docker Hub which can be found on
+NGSI Connector API can be installed from two sources, one of them is this repository and the other is Docker Hub which can be found on
 [Docker](https://cloud.docker.com/u/waste4think/repository/docker/waste4think/ngsi-connector) repository.
 
 #### Docker Hub
-  1. Make sure you have Docker and Docker-Compose installed on your server/machine, more info about this can be found on following [Documentation](https://docs.docker.com/docker-for-windows/install/)
+  1. Make sure you have Docker and Docker-Compose installed on your server/machine, more info about this can be found on the following [Documentation](https://docs.docker.com/docker-for-windows/install/)
   2. Go to Waste4think official [Docker](https://cloud.docker.com/u/waste4think/repository/docker/waste4think/ngsi-connector) repository.
   3. Example of running NGSI Connector API from Docker Hub would be:
     * **`docker run -p port_map:3002 --name <container-name> waste4think/ngsi-connector`**
   6. This method of the running connector will start with a default configuration, meaning it expects Fiware Orion to be running locally on port 1026. In order to avoid this and add your configuration Docker volumes mapping must be used. More info in official [Volume](https://docs.docker.com/storage/volumes/) documentation.
   7. Example of running NGSI Connector API from Docker Hub using volumes would be:
     * **`docker run -p port_map:3002 -v config.js:/opt/nconnector/config.js --name <container-name> waste4think/ngsi-connector`**
-  8. In config.js you have some vital configuration settings, but most important Fiware Orion instance URL, more information on about this can be found in [Configuration]() section.
-  9. After these steps you can start using NGSI Connector API, more info about the use of API can be found in [Usage](#usage) section.
+  8. In config.js you have some vital configuration settings, but most important Fiware Orion instance URL, more information on about this can be found in the [Configuration]() section.
+  9. After these steps you can start using NGSI Connector API, more info about the use of API can be found in the [Usage](#usage) section.
     * **`important`** Fiware Orion default instance is secured by Fiware Pep-Proxy and it will require token in order to start testing
   change header setting in config.js from 3 to 2 in order to test with a local instance of Fiware Orion.
 
 #### Git Lab
   1. Clone/Download this GitLab repository
-  2. Change **`config.js`** most critical information is Fiware Orion Url, more detail regarding this config can be found in [Configuration]() section.
+  2. Change **`config.js`** most critical information is Fiware Orion Url, more detail regarding this config can be found in the [Configuration]() section.
   3. To have locally your Fiware Orion Context Broker instance, together with MongoDB database, go to `/extras/docker/orion_mongo` folder and issue 
    **`docker-compose up -d`**
   4. Install dependencies for NGSI Connector API:
    **`npm install`**
   5. Start NGSI Connector API:
    **`npm start`**
-  6. After these steps you can start using NGSI Connector API, more info about the use of API can be found in [Usage](#usage) section.
+  6. After these steps you can start using NGSI Connector API, more info about the use of API can be found in the [Usage](#usage) section.
 
 [Top](#waste4think-ngsi-connector-api)
 
@@ -102,7 +102,7 @@ Usage section will cover how to configure NGSI Connector API but also what endpo
 #### **Configuration**
 
 Configuration for NGSI Connector API is responsible for how API will be started and run. 
-Bellow users can find a detail explanation regarding each setting from **`config.js`** file which is located in the root of this project.
+Bellow users can find a detail explanation regarding each setting from the **`config.js`** file which is located in the root of this project.
 
 ```console
 const config = {}; 
@@ -159,7 +159,7 @@ Rules are customizable, users can create, remove or edit rules via the REST.
 
 * **`Create a structure of Entity Type (Rule)`**
      * Upload a structure of entity type into the request body in JSON format
-     * Structure must be added in the following format:
+     * A structure must be added in the following format:
     ```console
        {
         "nameOfNewType": {
@@ -290,13 +290,13 @@ All currently available endpoints are:
     * **`entities`** 
         * Get all entities for Fiware-Service/Fiware-ServicePath
     * **`entities/:entitiyId`**
-        * Get single entity for Fiware-Service/Fiware-ServicePath
+        * Get a single entity for Fiware-Service/Fiware-ServicePath
     * **`entities/:entityType`**
         * Get entities for required type, as for previous 2 routes result depend on Fiware-Service/Fiware-ServicePath
     * **`rules`**
         * Get all rules currently supported in  NGSI Connector API
     * **`rules/:ruleId`**
-        * Get a single rule description, users can very fast find all info what properties are mandatory and what type they return.
+        * Get a single rule description, users can very fast find all info about what properties are mandatory and what type they return.
     * **`typestructure`**
         * Get the rules for creating structures of entity types that are going to be uploaded
     * **`entitytype/:entityType`**
@@ -361,7 +361,7 @@ EOF
 * On first glance this looks very almost same as the creation of entities but there are few key differences:
     * **`Create`** require that **`.csv`** file structure be same as defined in rules, meaning if a rule has 10 properties first line in the file (this line is also called header)
     must have 10 properties separated with ";".
-    * **`Update`** does not require that **`.csv`** file structure must be same as defined in rules, user can update all properties and provide the file as it would when creating
+    * An **`update`** does not require that **`.csv`** file structure must be same as defined in rules, user can update all properties and provide the file as it would when creating
     * or just provide properties that want to be updated.
 
 * **`Examples Create`**
