@@ -32,7 +32,7 @@ This project is part of [Waste4Think](http://waste4think.eu/). For more informat
 
 NGSI Connector API allows you to add rules for entity types by defining their structure, create or update entities in Fiware Orion instance from files, and query entity information. Using the NGSI Connector API, users can create a large number of entities while internal setting rules which make sure data integrity stays intact. The connector is providing a quick and safe way of adding data to Fiware Orion instance from different sources, at the moment of writing supporting file formats are **`.csv`** and **`.json`**.
 
-With Connector, you are able to also query data in Fiware Orion. This part of its structure is set up to act like proxy witch fully supports all Fiware Orion GET and query methods regarding entities. 
+With Connector, you are able to also query data in Fiware Orion. This part of its structure is set up to act like proxy which fully supports all Fiware Orion GET and query methods regarding entities. 
 
 More information regarding Fiware Orion can be found on its official [documentation](https://fiware-orion.readthedocs.io/en/master/).
 <br />
@@ -74,13 +74,12 @@ NGSI Connector API can be installed from two sources, one of them is this reposi
   2. Go to Waste4think official [Docker](https://cloud.docker.com/u/waste4think/repository/docker/waste4think/ngsi-connector) repository.
   3. Example of running NGSI Connector API from Docker Hub would be:
     * **`docker run -p port_map:3002 --name <container-name> waste4think/ngsi-connector`**
-  6. This method of the running connector will start with a default configuration, meaning it expects Fiware Orion to be running locally on port 1026. In order to avoid this and add your configuration Docker volumes mapping must be used. More info in official [Volume](https://docs.docker.com/storage/volumes/) documentation.
+  6. This method of running the connector will start with a default configuration, meaning it expects Fiware Orion to be running locally on port 1026. In order to avoid this and add your configuration, Docker volumes mapping must be used. More info in official [Volume](https://docs.docker.com/storage/volumes/) documentation.
   7. Example of running NGSI Connector API from Docker Hub using volumes would be:
     * **`docker run -p port_map:3002 -v config.js:/opt/nconnector/config.js --name <container-name> waste4think/ngsi-connector`**
   8. In config.js you have some vital configuration settings, but most important Fiware Orion instance URL, more information on about this can be found in the [Configuration]() section.
   9. After these steps you can start using NGSI Connector API, more info about the use of API can be found in the [Usage](#usage) section.
-    * **`important`** Fiware Orion default instance is secured by Fiware Pep-Proxy and it will require token in order to start testing
-  change header setting in config.js from 3 to 2 in order to test with a local instance of Fiware Orion.
+    * **`important`** Fiware Orion default instance is secured by Fiware Pep-Proxy and it will require a token in order to start testing. Change header setting in config.js from 3 to 2 in order to test with a local instance of Fiware Orion.
 
 #### Git Lab
   1. Clone/Download this GitLab repository
@@ -97,7 +96,7 @@ NGSI Connector API can be installed from two sources, one of them is this reposi
 
 ## Usage
 
-Usage section will cover how to configure NGSI Connector API but also what endpoints API has to offer as well rule management.
+Usage section will cover not only how to configure NGSI Connector API but also what endpoints API has to offer as well as rule management.
 
 #### **Configuration**
 
