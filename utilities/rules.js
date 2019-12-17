@@ -745,7 +745,7 @@ function arrToNum(string) {
 function structuredValue(string) {
     counter +=1
   if (typeof string == "object") {
-    string.value = typeof string.value === "object" ? string.value : {};
+    string.value = typeof string.value === "object" && !Array.isArray(string.value) ? string.value : {};
         return {
             "value": string.value || {},
             "type": "StructuredValue",
@@ -781,7 +781,7 @@ function structuredValueMandatory(string) {
     if (!string)
         return null;
   if (typeof string == "object") {
-    string.value = typeof string.value === "object" ? string.value : {};
+    string.value = typeof string.value === "object" && !Array.isArray(string.value) ? string.value : {};
         return {
             "value": string.value || {},
             "type": "StructuredValue",
