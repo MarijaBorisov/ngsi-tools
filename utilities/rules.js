@@ -577,6 +577,7 @@ function locationCheck(location) {//OK Mandatory geo:json
   }
 
   if (typeof location === 'object') {
+    location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
     return {
         // value: location["value"].value,
         // type: "geo:json",
@@ -633,7 +634,8 @@ function locationCheck(location) {//OK Mandatory geo:json
 function locationCheckNoMand(location) {// Optional geo:json
   counter += 1; 
 
-  if(typeof location === "object") {
+  if (typeof location === "object") {
+    location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
         return {
             // value: location["value"].geometry,
             // type: "geo:json",
