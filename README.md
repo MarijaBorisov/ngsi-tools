@@ -6,7 +6,7 @@ Using this interface, users can do several operations:
 
 * Create/update entity type structure which defines rules to be applied in order to create/update entities.
 
-* Create entities from a file. The NGSI Connector API allows users to create a large number of entities directly from .csv or .json files, it also has customizable rules for defining how data from files will be checked.
+* Create entities from a file. The NGSI Connector API allows users to create a large number of entities directly from .csv or .json files As stated before, it also has customizable rules for defining how data from files will be checked.
 
 * Update entities from a file, it can support full or partial update depending on user configuration.
 
@@ -30,7 +30,7 @@ This project is part of [Waste4Think](http://waste4think.eu/). For more informat
 
 ### Description
 
-NGSI Connector API allows you to add rules for entity types by defining their structure, create or update entities in Fiware Orion instance from files, and query entity information. Using the NGSI Connector API, users can create a large number of entities while internal setting rules which make sure data integrity stays intact. The connector is providing a quick and safe way of adding data to Fiware Orion instance from different sources, at the moment of writing supporting file formats are **`.csv`** and **`.json`**.
+NGSI Connector API allows you to add rules for entity types by defining their structure, create or update entities in Fiware Orion instance from files, and query entity information. Using the NGSI Connector API, users can create a large number of entities while internal setting rules make sure data integrity stays intact. The connector is providing a quick and safe way of adding data to Fiware Orion instance from different sources, at the moment of writing supporting file formats are **`.csv`** and **`.json`**.
 
 With Connector, you are able to also query data in Fiware Orion. This part of its structure is set up to act like proxy which fully supports all Fiware Orion GET and query methods regarding entities. 
 
@@ -39,8 +39,7 @@ More information regarding Fiware Orion can be found on its official [documentat
 
 #### NGSI Connector API workflow:
 
-NGSI Connector API is a Node.js implementation of the NGSIv2 REST API binding developed as a part
-of the FIWARE platform.
+NGSI Connector API is a Node.js implementation of the NGSIv2 REST API binding developed as a part of the FIWARE platform.
 
 1) **`Parsing`**:
 
@@ -48,8 +47,8 @@ of the FIWARE platform.
 
 2) **`Checking`**:
 
-- Checking parsed JSON object structure.
-- Converting a parsed object to NGSI v2 API data structure, according to predefined rules.
+- Check parsed JSON object structure.
+- Convert a parsed object to NGSI v2 API data structure, according to predefined rules.
 
 3) **`Writing`**:
 
