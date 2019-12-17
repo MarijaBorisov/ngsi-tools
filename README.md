@@ -311,7 +311,7 @@ All currently available endpoints are:
 
 * **`DELETE`**
     * **`entitytype/:entityType`**
-        * Delete from the database a structure of a specific entity type
+        * Delete from the database a structure of a specific entity type (delete rule)
 
 In the description of API endpoints, we mentioned Fiware-Service/Fiware-ServicePath more information regarding this topic can be found on its official
 [Documentation](https://fiware-orion.readthedocs.io/en/master/user/service_path/).

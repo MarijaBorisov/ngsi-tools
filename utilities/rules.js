@@ -212,6 +212,7 @@ function stringToArray(string) {//OK Optional List Float or String
 
   if (typeof string === "object") {
     string.value = Array.isArray(string.value) ? string.value : [];
+    string.value = string.value.map(raw => typeof raw === "string" ? raw.trim() : "");
     return {
       value: string.value || [],
       type: "List",
@@ -255,6 +256,7 @@ function stringToArrayMandatory(string) {//OK Mandatory List Float or String
 
   if (typeof string === 'object') {
     string.value = Array.isArray(string.value) ? string.value : [];
+    string.value = string.value.map(raw => typeof raw === "string" ? raw.trim() : "");
     return {
         value: string.value || [],
         type: "List",
