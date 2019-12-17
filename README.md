@@ -185,15 +185,12 @@ Rules are customizable, users can create, remove or edit rules via the REST.
      * Example of entity type structure:
      ```console
         {
-            "Vehicle":{
+            "Room":{
                 "id": {"type":"EntityID","mandatory":"YES"},
                 "type": {"type":"EntityType","mandatory":"YES"},
-                "family":{"type":"Text", "mandatory":"YES"},
-                "vehiclePlateIdentifier":{"type":"Text", "mandatory":"YES"},
-                "name":{"type":"Text", "mandatory":"NO"},
-                "location": {"type":"GeoJSON(Point)","mandatory":"NO", "metadata":{}},
-                "refType":{"type":"ReferenceID", "mandatory":"YES"},
-                "refInputs":{"type":"ReferenceIDList(,)", "mandatory":"NO"},
+                "temperature":{"type":"Float", "mandatory":"YES"},
+                "pressure":{"type":"Float", "mandatory":"YES"},
+                "location": {"type":"Text","mandatory":"NO", "metadata":{}}
 	        }
         }
      ```
@@ -202,12 +199,9 @@ Rules are customizable, users can create, remove or edit rules via the REST.
         "properties" : {
                 "id" : "idCheck",
                 "type" : "typeCheck",
-                "family" : "mandatoryCheck",
-                "vehiclePlateIdentifier" : "mandatoryCheck",
-                "name" : "stringCheck",
-                "location" : "locationCheckNoMand",
-                "refType" : "mandatoryCheck",
-                "refInputs" : "stringToArray",
+                "temperature" : "commaNumToUnitsMandatory",
+                "pressure":"commaNumToUnitsMandatory"
+                "location" : "stringCheck"
         }
      ```
     
