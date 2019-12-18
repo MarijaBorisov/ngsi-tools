@@ -256,10 +256,10 @@ Rules are customizable, users can create, remove or edit rules (entity type stru
           - Example in **`.json`** file: `"name":{ "type": "geo:json","value": {"type": "Point","coordinates": [-2.812263201,43.26375754]},"metadata": {}}`
         * Type `Float`:
           - Example in **`.csv`** file: `123.45` (with the correct header with property names)
-          - Example in **`.json`** file: `"name":{"type": "List", "value": 123.45, "metadata": {}}`
+          - Example in **`.json`** file: `"name":{"type": "Float", "value": 123.45, "metadata": {}}`
         * Type `Integer`:
           - Example in **`.csv`** file: `123` (with the correct header with property names)
-          - Example in **`.json`** file: `"name":{"type": "List", "value": 123, "metadata": {}}`
+          - Example in **`.json`** file: `"name":{"type": "Integer", "value": 123, "metadata": {}}`
         * Type `Datetime`:
           - Example in **`.csv`** file: `2019-12-31T10:10:10+01:00` (with the correct header with property names)
           - Example in **`.json`** file: `"name":{ "type": "DateTime","value": "2019-12-31T10:10:10+01:00","metadata": {}}`
