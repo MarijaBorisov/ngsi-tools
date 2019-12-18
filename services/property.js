@@ -68,7 +68,7 @@ function propertyChecks( rules, entity, operation, ext ) {
     } );
 
     if ( invalidProp.length !== 0 ) {
-        throw new Error( `Invalid properties found in csv header:${ invalidProp }` );
+        throw new Error( `Invalid properties found: ${ invalidProp }` );
     }
 }
 
