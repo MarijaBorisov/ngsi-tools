@@ -32,7 +32,7 @@ This project is part of [Waste4Think](http://waste4think.eu/). For more informat
 
 NGSI Connector API allows you to add rules for entity types by defining their structure, create or update entities in Fiware Orion instance from files, and query entity information. Using the NGSI Connector API, users can create a large number of entities while internal setting rules make sure data integrity stays intact. The connector is providing a quick and safe way of adding data to Fiware Orion instance from different sources, at the moment of writing supporting file formats are **`.csv`** and **`.json`**.
 
-With Connector, you are able to also query data in Fiware Orion. This part of its structure is set up to act like proxy which fully supports all Fiware Orion GET and query methods regarding entities. 
+With Connector, you are able to also query data in Fiware Orion. This part of its structure is set up to act like a proxy that fully supports all Fiware Orion GET and query methods regarding entities. 
 
 More information regarding Fiware Orion can be found on its official [documentation](https://fiware-orion.readthedocs.io/en/master/).
 <br />
@@ -376,7 +376,7 @@ As mentioned in the rules section, we assume that a user has created a rule obje
     11;Room;200;Belgrade
     12;Room;2500;Belgrade
 ```
-This will raise an error when the user tries to upload the file, the reason is clear in rules we defined 5 properties but in the file we supply only 4. This is important to notice because creation is very strict but it makes sure the integrity of the system by following user-supplied rules.
+This will raise an error when the user tries to upload the file, the reason is clear in rules we defined 5 properties but in the file, we supply only 4. This is important to notice because creation is very strict but it makes sure the integrity of the system by following user-supplied rules.
 
 * **`Examples update`**
 
