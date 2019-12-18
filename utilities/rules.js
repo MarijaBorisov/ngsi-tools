@@ -8,7 +8,7 @@ let counter = 0;
 function commaNumToUnits( oldNum, ext ) {//OK Float Optional
     counter += 1;
   if (ext && ext.toLowerCase() != ".csv") { 
-    if (typeof oldNum === 'object') {
+    if (typeof oldNum === 'object' && oldNum !== null) {
       return {
         "value": Number(oldNum.value) || 0,
         "type": "Float",
@@ -53,7 +53,7 @@ function commaNumToUnits( oldNum, ext ) {//OK Float Optional
 function commaNumToUnitsInt( oldNum, ext ) {//OK Opional Integer
     counter += 1;
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof oldNum === 'object') {
+    if (typeof oldNum === 'object' && oldNum !== null) {
       oldNum.value = Number(oldNum.value) ? parseInt(Number(oldNum.value)) : 0;
       return {
         "value": oldNum.value || 0,
@@ -102,7 +102,7 @@ function commaNumToUnitsIntMandatory(oldNum, ext) {//OK Mandatory Integer
     return null;
   }
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof oldNum === "object") {
+    if (typeof oldNum === "object" && oldNum !== null) {
       oldNum.value = Number(oldNum.value) ? parseInt(Number(oldNum.value)) : 0;
       return {
         "value": oldNum.value || 0,
@@ -150,7 +150,7 @@ function commaNumToUnitsMandatory(oldNum, ext) {//OK Mandatory Float
         return null;
     }
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof oldNum === 'object') {
+    if (typeof oldNum === 'object' && oldNum !== null) {
       return {
         "value": Number(oldNum.value) || 0,
         "type": "Float",
@@ -238,7 +238,7 @@ function commaNumToUnitsMandatory(oldNum, ext) {//OK Mandatory Float
 function stringToArray(string, ext) {//OK Optional List Float or String
   counter += 1;
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof string === "object") {
+    if (typeof string === "object" && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
       string.value = string.value.map(raw => typeof raw === "string" ? raw.trim() : "");
       return {
@@ -290,7 +290,7 @@ function stringToArrayMandatory(string, ext) {//OK Mandatory List Float or Strin
     return null;
   }
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof string === 'object') {
+    if (typeof string === 'object' && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
       string.value = string.value.map(raw => typeof raw === "string" ? raw.trim() : "");
       return {
@@ -343,7 +343,7 @@ function dateCheckMandatory(date, ext) {// Not in use
   }
   let date_val;
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof date === 'object') {
+    if (typeof date === 'object' && date !== null) {
       date_val = isNaN(new Date(date.value).getTime()) ? new Date() : new Date(date.value);
       return {
         value: date_val,
@@ -415,7 +415,7 @@ function dateCheck(date, ext) {// not in use
     }
   let date_val;
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof date === 'object') {
+    if (typeof date === 'object' && date !== null) {
       date_val = isNaN(new Date(date.value).getTime()) ? new Date() : new Date(date.value);
       return {
         value: date_val,
@@ -446,7 +446,7 @@ function mandatoryCheck( attribute, ext ) {//OK Mandatory String
         return null;
     }
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof attribute === 'object') {
+    if (typeof attribute === 'object' && attribute !== null) {
       attribute.value = typeof attribute.value === "string" ? attribute.value : "";
       return {
         value: attribute.value || "",
@@ -498,7 +498,7 @@ function stringCheck(value, ext) {//OK Optional String
     counter += 1;
 
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof value === 'object') {
+    if (typeof value === 'object' && value !== null) {
       value.value = typeof value.value === "string" ? value.value : "";
       return {
         "value": value.value || "",
@@ -532,7 +532,7 @@ function stringCheck(value, ext) {//OK Optional String
 function stringToArrayNum(string, ext) {//OK Optional List<Float>
   counter += 1;
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof string === 'object') {
+    if (typeof string === 'object' && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
       string.value = string.value.map(raw => Number(raw) ? Number(raw) : 0);
       return {
@@ -593,7 +593,7 @@ function stringToArrayNumMandatory(string, ext) {//OK Mandatory List<Float>
     return null;
   }
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof string === "object") {
+    if (typeof string === "object" && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
       string.value = string.value.map(raw => Number(raw) ? Number(raw) : 0);
       return {
@@ -669,7 +669,7 @@ function locationCheck(location, ext) {//OK Mandatory geo:json
     return null;
   }
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof location === 'object') {
+    if (typeof location === 'object' && location !== null) {
       location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
       return {
         // value: location["value"].value,
@@ -734,7 +734,7 @@ function locationCheck(location, ext) {//OK Mandatory geo:json
 function locationCheckNoMand(location, ext) {// Optional geo:json
   counter += 1; 
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof location === "object") {
+    if (typeof location === "object" && location !== null) {
       location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
       return {
         // value: location["value"].geometry,
@@ -852,7 +852,7 @@ function arrToNum(string) {
 function structuredValue(string, ext) {
   counter += 1
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof string == "object") {
+    if (typeof string === "object" && string !== null) {
       string.value = typeof string.value === "object" && !Array.isArray(string.value) ? string.value : {};
       return {
         "value": string.value || {},
@@ -896,7 +896,7 @@ function structuredValueMandatory(string, ext) {
     if (!string)
     return null;
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof string == "object") {
+    if (typeof string === "object" && string !== null) {
       string.value = typeof string.value === "object" && !Array.isArray(string.value) ? string.value : {};
       return {
         "value": string.value || {},
@@ -931,7 +931,7 @@ function structuredListMandatory(string, ext) {
   if (!string)
     return null;
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof string == "object") {
+    if (typeof string === "object" && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
       string.value = string.value.map(raw => typeof raw === "object" ? raw : {});
       return {
@@ -998,7 +998,7 @@ function getPosition(string, subString, index) {
 function structuredList(string, ext) {
   counter += 1;
   if (ext && ext.toLowerCase() != ".csv") {
-    if (typeof string == "object") {
+    if (typeof string === "object" && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
       string.value = string.value.map(raw => typeof raw === "object" ? raw : {});
       return {
