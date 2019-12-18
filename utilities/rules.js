@@ -651,12 +651,16 @@ function stringToArrayNumMandatory(string, ext) {//OK Mandatory List<Float>
 function idCheck(attr, ext) {//OK ID
     counter = 0;
   counter += 1;
+  if (typeof attr === 'string')
     return attr;
+  else return null;
 }
 
 function typeCheck(attr, ext) {//OK type
   counter += 1;
+  if (typeof attr === 'string')
     return attr;
+  else return null;
 }
 
 function locationCheck(location, ext) {//OK Mandatory geo:json
