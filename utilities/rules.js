@@ -5,16 +5,23 @@ const moment = require( "moment" );
 
 let counter = 0;
 
-function commaNumToUnits( oldNum ) {//OK Float Optional
+function commaNumToUnits( oldNum, ext ) {//OK Float Optional
     counter += 1;
-
-    if(typeof oldNum === 'object') {
-        return {
-            "value": Number(oldNum.value) || 0,
-            "type": "Float",
-            "metadata": oldNum.metadata || {}
-        }
+  if (ext && ext.toLowerCase() != ".csv") { 
+    if (typeof oldNum === 'object') {
+      return {
+        "value": Number(oldNum.value) || 0,
+        "type": "Float",
+        "metadata": oldNum.metadata || {}
+      }
+    } else { 
+      return {
+        "value": 0,
+        "type": "Float",
+        "metadata": {}
+      }
     }
+  }
 
   // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
   const newNum = Number(oldNum) ? Number(oldNum) : 0;
@@ -43,18 +50,24 @@ function commaNumToUnits( oldNum ) {//OK Float Optional
           };
 }
 
-function commaNumToUnitsInt( oldNum ) {//OK Opional Integer
+function commaNumToUnitsInt( oldNum, ext ) {//OK Opional Integer
     counter += 1;
-
-  if (typeof oldNum === 'object') {
-    oldNum.value = Number(oldNum.value) ? parseInt(Number(oldNum.value)) : 0;
-        return {
-            "value": oldNum.value || 0,
-            "type": "Integer",
-          "metadata": oldNum.metadata || {}
-        }
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof oldNum === 'object') {
+      oldNum.value = Number(oldNum.value) ? parseInt(Number(oldNum.value)) : 0;
+      return {
+        "value": oldNum.value || 0,
+        "type": "Integer",
+        "metadata": oldNum.metadata || {}
+      }
+    } else { 
+      return {
+        "value": 0,
+        "type": "Integer",
+        "metadata": {}
+      }
     }
-
+  }
     // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
     const newNum = Number(oldNum) ? parseInt(Number(oldNum)) : 0;
   let obj = [];
@@ -83,20 +96,26 @@ function commaNumToUnitsInt( oldNum ) {//OK Opional Integer
           };
 }
 
-function commaNumToUnitsIntMandatory(oldNum) {//OK Mandatory Integer
+function commaNumToUnitsIntMandatory(oldNum, ext) {//OK Mandatory Integer
   counter += 1;
-
   if (!oldNum) {
     return null;
   }
-  
-  if (typeof oldNum === "object") {
-    oldNum.value = Number(oldNum.value) ? parseInt(Number(oldNum.value)) : 0;
-    return {
-      value: oldNum.value || 0,
-      type: "Integer",
-      metadata: oldNum.metadata || {}
-    };
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof oldNum === "object") {
+      oldNum.value = Number(oldNum.value) ? parseInt(Number(oldNum.value)) : 0;
+      return {
+        "value": oldNum.value || 0,
+        "type": "Integer",
+        "metadata": oldNum.metadata || {}
+      };
+    } else { 
+      return {
+        "value": 0,
+        "type": "Integer",
+        "metadata": {}
+      };
+    }
   }
 
   // const newNum = oldNum ? Number(oldNum.replace(".", "").replace(",", ".")) : 0;
@@ -125,19 +144,26 @@ function commaNumToUnitsIntMandatory(oldNum) {//OK Mandatory Integer
   };
 }
 
-function commaNumToUnitsMandatory(oldNum) {//OK Mandatory Float
-    counter += 1;
+function commaNumToUnitsMandatory(oldNum, ext) {//OK Mandatory Float
+  counter += 1;
     if(!oldNum) {
         return null;
     }
-
-    if(typeof oldNum === 'object') {
-        return {
-            "value": Number(oldNum.value) || 0,
-            "type": "Float",
-            "metadata": oldNum.metadata || {}
-        }
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof oldNum === 'object') {
+      return {
+        "value": Number(oldNum.value) || 0,
+        "type": "Float",
+        "metadata": oldNum.metadata || {}
+      }
+    } else { 
+      return {
+        "value": 0,
+        "type": "Float",
+        "metadata": {}
+      }
     }
+  }
 
     // const newNum = oldNum ? Number(oldNum.replace('.', '').replace(',', '.')) : 0;
   const newNum = Number(oldNum) ? Number(oldNum) : 0;
@@ -209,17 +235,25 @@ function commaNumToUnitsMandatory(oldNum) {//OK Mandatory Float
 //   return null;
 // }
 
-function stringToArray(string) {//OK Optional List Float or String
+function stringToArray(string, ext) {//OK Optional List Float or String
   counter += 1;
-
-  if (typeof string === "object") {
-    string.value = Array.isArray(string.value) ? string.value : [];
-    string.value = string.value.map(raw => typeof raw === "string" ? raw.trim() : "");
-    return {
-      value: string.value || [],
-      type: "List",
-      metadata: string.metadata || {}
-    };
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof string === "object") {
+      string.value = Array.isArray(string.value) ? string.value : [];
+      string.value = string.value.map(raw => typeof raw === "string" ? raw.trim() : "");
+      return {
+        value: string.value || [],
+        type: "List",
+        metadata: string.metadata || {}
+      };
+    } else { 
+      return {
+        "value":  [],
+        "type": "List",
+        "metadata": {}
+      };
+    }
+    
   }
   let obj = [];
   let meta = pos(counter);
@@ -250,19 +284,26 @@ function stringToArray(string) {//OK Optional List Float or String
   };
 }
 
-function stringToArrayMandatory(string) {//OK Mandatory List Float or String
-    counter += 1;
+function stringToArrayMandatory(string, ext) {//OK Mandatory List Float or String
+  counter += 1;
   if (!string) {
     return null;
   }
-
-  if (typeof string === 'object') {
-    string.value = Array.isArray(string.value) ? string.value : [];
-    string.value = string.value.map(raw => typeof raw === "string" ? raw.trim() : "");
-    return {
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof string === 'object') {
+      string.value = Array.isArray(string.value) ? string.value : [];
+      string.value = string.value.map(raw => typeof raw === "string" ? raw.trim() : "");
+      return {
         value: string.value || [],
         type: "List",
         metadata: string.metadata || {}
+      }
+    } else { 
+      return {
+        "value": [],
+        "type": "List",
+        "metadata": {}
+      }
     }
   }
 
@@ -295,19 +336,27 @@ function stringToArrayMandatory(string) {//OK Mandatory List Float or String
   return null;
 }
 
-function dateCheckMandatory(date) {// Not in use
+function dateCheckMandatory(date, ext) {// Not in use
   counter += 1;
   if (!date) {
     return null;
   }
   let date_val;
-  if (typeof date === 'object') {
-    date_val = isNaN(new Date(date.value).getTime()) ? new Date() : new Date(date.value);
-    return {
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof date === 'object') {
+      date_val = isNaN(new Date(date.value).getTime()) ? new Date() : new Date(date.value);
+      return {
         value: date_val,
         type: "DateTime",
-        metadata: date.metadata || {},
-    };
+        metadata: date.metadata || {}
+      };
+    } else { 
+      return {
+        value: new Date(),
+        type: "DateTime",
+        metadata: {}
+      };
+    }
   }
   date_val = isNaN(new Date(date).getTime()) ? new Date() : new Date(date);
   let meta = pos( counter );
@@ -356,8 +405,8 @@ function dateCheckMandatory(date) {// Not in use
 //   return null;
 // }
 
-function dateCheck(date) {// not in use
-    counter += 1;
+function dateCheck(date, ext) {// not in use
+  counter += 1;
     if (!date)
         return {
             value: new Date(),
@@ -365,13 +414,21 @@ function dateCheck(date) {// not in use
             metadata: {}
     }
   let date_val;
-  if (typeof date === 'object') {
-    date_val = isNaN(new Date(date.value).getTime()) ? new Date() : new Date(date.value);
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof date === 'object') {
+      date_val = isNaN(new Date(date.value).getTime()) ? new Date() : new Date(date.value);
       return {
-          value: date_val,
-          type: "DateTime",
-          metadata: date.metadata || {},
+        value: date_val,
+        type: "DateTime",
+        metadata: date.metadata || {}
       };
+    } else { 
+      return {
+        value: new Date(),
+        type: "DateTime",
+        metadata: {}
+      };
+    }
   }
   date_val = isNaN(new Date(date).getTime()) ? new Date() : new Date(date);
   let meta = pos( counter );
@@ -383,20 +440,27 @@ function dateCheck(date) {// not in use
 }
 
 
-function mandatoryCheck( attribute ) {//OK Mandatory String
-    counter += 1;
+function mandatoryCheck( attribute, ext ) {//OK Mandatory String
+  counter += 1;
     if ( !attribute ) {
         return null;
     }
-
-  if (typeof attribute === 'object') {
-    attribute.value = typeof attribute.value === "string" ? attribute.value : "";
-        return {
-            value: attribute.value || "",
-            type: "String",
-            metadata: attribute.metadata || {},
-        };
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof attribute === 'object') {
+      attribute.value = typeof attribute.value === "string" ? attribute.value : "";
+      return {
+        value: attribute.value || "",
+        type: "String",
+        metadata: attribute.metadata || {}
+      };
+    } else { 
+      return {
+        value: "",
+        type: "String",
+        metadata: {},
+      };
     }
+  }
 
     const test = attribute.split( "" );
     const forbide = [ "<", ">", "'", ";", "(", ")" ];
@@ -430,17 +494,25 @@ function mandatoryCheck( attribute ) {//OK Mandatory String
 }
 
 
-function stringCheck(value) {//OK Optional String
+function stringCheck(value, ext) {//OK Optional String
     counter += 1;
 
-  if (typeof value === 'object') {
-    value.value = typeof value.value === "string" ? value.value : "";
-        return {
-            "value": value.value || "",
-            "type": "String",
-            "metadata": value.metadata || {}
-        }
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof value === 'object') {
+      value.value = typeof value.value === "string" ? value.value : "";
+      return {
+        "value": value.value || "",
+        "type": "String",
+        "metadata": value.metadata || {}
+      }
+    } else { 
+      return {
+        "value": "",
+        "type": "String",
+        "metadata": {}
+      }
     }
+  }
 
     let meta = pos( counter );
     if(meta) {
@@ -457,15 +529,23 @@ function stringCheck(value) {//OK Optional String
     }
 }
 
-function stringToArrayNum(string) {//OK Optional List<Float>
-    counter += 1;
-  if (typeof string === 'object') {
-    string.value = Array.isArray(string.value) ? string.value : [];
-    string.value = string.value.map(raw => Number(raw) ? Number(raw) : 0);
-    return {
+function stringToArrayNum(string, ext) {//OK Optional List<Float>
+  counter += 1;
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof string === 'object') {
+      string.value = Array.isArray(string.value) ? string.value : [];
+      string.value = string.value.map(raw => Number(raw) ? Number(raw) : 0);
+      return {
         value: string.value || [],
         type: "List",
         metadata: string.metadata || {}
+      }
+    } else { 
+      return {
+        "value": [],
+        "type": "List",
+        "metadata": {}
+      }
     }
   }
 
@@ -507,20 +587,27 @@ function stringToArrayNum(string) {//OK Optional List<Float>
   return null;
 }
 
-function stringToArrayNumMandatory(string) {//OK Mandatory List<Float>
+function stringToArrayNumMandatory(string, ext) {//OK Mandatory List<Float>
   counter += 1;
   if (!string) {
     return null;
   }
-  
-  if (typeof string === "object") {
-    string.value = Array.isArray(string.value) ? string.value : [];
-    string.value = string.value.map(raw => Number(raw) ? Number(raw) : 0);
-    return {
-      value: string.value || [],
-      type: "List",
-      metadata: string.metadata || {}
-    };
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof string === "object") {
+      string.value = Array.isArray(string.value) ? string.value : [];
+      string.value = string.value.map(raw => Number(raw) ? Number(raw) : 0);
+      return {
+        value: string.value || [],
+        type: "List",
+        metadata: string.metadata || {}
+      };
+    } else { 
+      return {
+        value: [],
+        type: "List",
+        metadata: {}
+      };
+    }
   }
 
   if (string) {
@@ -561,34 +648,41 @@ function stringToArrayNumMandatory(string) {//OK Mandatory List<Float>
   return null;
 }
 
-function idCheck(attr) {//OK ID
+function idCheck(attr, ext) {//OK ID
     counter = 0;
-    counter += 1;
+  counter += 1;
     return attr;
 }
 
-function typeCheck(attr) {//OK type
-    counter += 1;
+function typeCheck(attr, ext) {//OK type
+  counter += 1;
     return attr;
 }
 
-function locationCheck(location) {//OK Mandatory geo:json
-    counter += 1;
+function locationCheck(location, ext) {//OK Mandatory geo:json
+  counter += 1;
   if (!location) {
     return null;
   }
-
-  if (typeof location === 'object') {
-    location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
-    return {
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof location === 'object') {
+      location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
+      return {
         // value: location["value"].value,
         // type: "geo:json",
         // metadata: location["value"].metadata
         value: location.value || {},
         type: "geo:json",
         metadata: location.metadata || {}
+      }
+    } else { 
+      return {
+        value: {},
+        type: "geo:json",
+        metadata: {}
+      }
     }
-}
+  }
 
   const data = location.substring(location.indexOf('[') + 1, location.indexOf(']'));
   const coordinates = data.split(',', 2);
@@ -633,19 +727,26 @@ function locationCheck(location) {//OK Mandatory geo:json
   return null;
 }
 
-function locationCheckNoMand(location) {// Optional geo:json
+function locationCheckNoMand(location, ext) {// Optional geo:json
   counter += 1; 
-
-  if (typeof location === "object") {
-    location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
-        return {
-            // value: location["value"].geometry,
-            // type: "geo:json",
-            // metadata: location.metadata || {}
-            value: location.value || {},
-            type: "geo:json",
-            metadata: location.metadata || {}
-        } 
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof location === "object") {
+      location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
+      return {
+        // value: location["value"].geometry,
+        // type: "geo:json",
+        // metadata: location.metadata || {}
+        value: location.value || {},
+        type: "geo:json",
+        metadata: location.metadata || {}
+      }
+    } else { 
+      return {
+        value: {},
+        type: "geo:json",
+        metadata: {}
+      }
+    }
   }
 
   const data = location ? location.substring(location.indexOf('[') + 1, location.indexOf(']')) : "";
@@ -744,16 +845,24 @@ function arrToNum(string) {
   return data;
 }
 
-function structuredValue(string) {
-    counter +=1
-  if (typeof string == "object") {
-    string.value = typeof string.value === "object" && !Array.isArray(string.value) ? string.value : {};
-        return {
-            "value": string.value || {},
-            "type": "StructuredValue",
-            "metadata": string.metadata || {}
-        }
+function structuredValue(string, ext) {
+  counter += 1
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof string == "object") {
+      string.value = typeof string.value === "object" && !Array.isArray(string.value) ? string.value : {};
+      return {
+        "value": string.value || {},
+        "type": "StructuredValue",
+        "metadata": string.metadata || {}
+      }
+    } else { 
+      return {
+        "value": {},
+        "type": "StructuredValue",
+        "metadata": {}
+      }
     }
+  }
   
   let meta = pos(counter);
   var string_obj;
@@ -778,18 +887,26 @@ function structuredValue(string) {
   }
 }
 
-function structuredValueMandatory(string) {
+function structuredValueMandatory(string, ext) {
     counter +=1
     if (!string)
-        return null;
-  if (typeof string == "object") {
-    string.value = typeof string.value === "object" && !Array.isArray(string.value) ? string.value : {};
-        return {
-            "value": string.value || {},
-            "type": "StructuredValue",
-            "metadata": string.metadata || {}
-        }
+    return null;
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof string == "object") {
+      string.value = typeof string.value === "object" && !Array.isArray(string.value) ? string.value : {};
+      return {
+        "value": string.value || {},
+        "type": "StructuredValue",
+        "metadata": string.metadata || {}
+      }
+    } else { 
+      return {
+        "value": {},
+        "type": "StructuredValue",
+        "metadata": {}
+      }
     }
+  }
     let meta = pos(counter);
     var string_obj;
     if (IsJsonString(string)) {
@@ -805,18 +922,26 @@ function structuredValueMandatory(string) {
     }
 }
 
-function structuredListMandatory(string) {
-    counter +=1
-    if (!string)
-        return null;
-  if (typeof string == "object") {
-    string.value = Array.isArray(string.value) ? string.value : [];
-    string.value = string.value.map(raw => typeof raw === "object" ? raw : {});
-        return {
-            "value": string.value || [],
-            "type": "List",
-            "metadata": string.metadata || {}
-        }
+function structuredListMandatory(string, ext) {
+  counter += 1
+  if (!string)
+    return null;
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof string == "object") {
+      string.value = Array.isArray(string.value) ? string.value : [];
+      string.value = string.value.map(raw => typeof raw === "object" ? raw : {});
+      return {
+        "value": string.value || [],
+        "type": "List",
+        "metadata": string.metadata || {}
+      }
+    } else { 
+      return {
+        "value": [],
+        "type": "List",
+        "metadata": {}
+      }
+    }
   }
 
   let meta = pos(counter);
@@ -866,16 +991,24 @@ function getPosition(string, subString, index) {
   return string.split(subString, index).join(subString).length;
 }
 
-function structuredList(string) {
+function structuredList(string, ext) {
   counter += 1;
-  if (typeof string == "object") {
-    string.value = Array.isArray(string.value) ? string.value : [];
-    string.value = string.value.map(raw => typeof raw === "object" ? raw : {});
-    return {
-      value: string.value || [],
-      type: "List",
-      metadata: string.metadata || {}
-    };
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof string == "object") {
+      string.value = Array.isArray(string.value) ? string.value : [];
+      string.value = string.value.map(raw => typeof raw === "object" ? raw : {});
+      return {
+        value: string.value || [],
+        type: "List",
+        metadata: string.metadata || {}
+      };
+    } else { 
+      return {
+        value: [],
+        type: "List",
+        metadata: {}
+      };
+    }
   }
 
   let meta = pos(counter);

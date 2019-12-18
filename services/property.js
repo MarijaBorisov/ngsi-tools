@@ -181,7 +181,7 @@ function processEntity( rules, entity, option, ext ) {
 
     rulesProperties.forEach( ( property ) => {
         try {
-            result[ property ] = processEntityProperty( rules, entity, property );
+            result[ property ] = processEntityProperty( rules, entity, property, ext );
         } catch ( error ) {
           if (option !== "update") {
             if (error == "Incorrectly structured metadata.") { 
@@ -199,7 +199,7 @@ function processEntity( rules, entity, option, ext ) {
     return result;
 }
 
-function processEntityProperty( rules, entity, property ) {
+function processEntityProperty( rules, entity, property, ext ) {
     let rule;
     if ( typeof rules[ property ] === "function" ) {
         rule = [ property, rules[ property ] ];
@@ -208,10 +208,10 @@ function processEntityProperty( rules, entity, property ) {
     } else {
         throw new Error( `Rules ${ property } rule was not of supported type.` );
     }
-    return convertProperties( rule, entity );
+    return convertProperties( rule, entity, ext );
 }
 
-function convertProperties( array, entity ) {
+function convertProperties( array, entity, ext ) {
     const arrayDuplicate = array.slice();
     const rule = arrayDuplicate.pop();
     let mappingFunction;
@@ -224,8 +224,8 @@ function convertProperties( array, entity ) {
         throw new Error( "100" );
     };
 
-    const args = arrayDuplicate.map( mappingFunction );
-    const result = rule( ...args );
+    const args = arrayDuplicate.map(mappingFunction);
+    const result = rule( ...args, ext );
     if ( result === null || result === undefined ) {
         throw new Error( `${ mappingFunction } returned null or undefined` );
     }
