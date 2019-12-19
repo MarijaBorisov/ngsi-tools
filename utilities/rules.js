@@ -266,12 +266,19 @@ function stringToArray(string, ext) {//OK Optional List Float or String
     string = string.trim();
     if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1)
       string = string.substring(1, string.length - 1);
+    spring = string.split(',');
+    string = string.reduce((finalList, raw) => {
+      raw = raw.trim();
+      if (typeof raw === "string" && raw !== "")
+        finalList.push(raw);
+      return finalList;
+    }, []);
   }
   if (meta) {
     obj = [];
     // meta = pos(counter);
     let send = {
-      value: string ? string.split(",").map(raw => raw.trim()) : [],
+      value: string || [],
       type: "List",
       metadata: JSON.parse(meta)
     };
@@ -283,7 +290,7 @@ function stringToArray(string, ext) {//OK Optional List Float or String
   }
 
   return {
-    value: string ? string.split(",").map(raw => raw.trim()) : [],
+    value: string || [],
     type: "List",
     metadata: {}
   };
@@ -298,8 +305,9 @@ function stringToArrayMandatory(string, ext) {//OK Mandatory List Float or Strin
     if (typeof string === 'object' && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
       string.value = string.value.reduce((finalList, raw) => {
-        if (typeof raw === "string")
-          finalList.push(raw.trim());
+        raw = raw.trim();
+        if (typeof raw === "string" && raw !== "")
+          finalList.push(raw);
         return finalList;
       }, []);
       return {
@@ -322,11 +330,18 @@ function stringToArrayMandatory(string, ext) {//OK Mandatory List Float or Strin
       string = string.substring(1, string.length - 1);
     let obj = [];
     let meta = pos(counter);
+    spring = string.split(',');
+    string = string.reduce((finalList, raw) => {
+      raw = raw.trim();
+      if (typeof raw === "string" && raw !== "")
+        finalList.push(raw);
+      return finalList;
+    }, []);
     if(meta) {
         obj = [];
         // meta = pos(counter);
         let send =  {
-            value: string.split(',').map(raw => raw.trim()),
+            value: string  || [],
             type: "List",
             metadata: JSON.parse(meta)
         };
@@ -337,7 +352,7 @@ function stringToArrayMandatory(string, ext) {//OK Mandatory List Float or Strin
         return obj[0];
     }
       return {
-          value: string.split(',').map(raw => raw.trim()),
+          value: string || [],
           type: "List",
           metadata: {}
       }
@@ -867,7 +882,7 @@ function arrToNum(string) {
   if (string) {
     string = string.split(',');
     data = string.reduce((finalList, str) => {
-      if(Number(str))
+      if (Number(str) || Number(str) === 0)
         finalList.push(Number(str));
     return finalList; 
   },[]);
