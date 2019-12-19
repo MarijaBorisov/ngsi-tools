@@ -862,7 +862,16 @@ function arrToNumOld(string) {
 }
 
 function arrToNum(string) {
-  let data = string ? string.split(',').map(raw => Number(raw.trim()) ? Number(raw.trim()) : 0) : [];
+  // let data = string ? string.split(',').map(raw => Number(raw.trim()) ? Number(raw.trim()) : 0) : [];
+  let data=[];
+  if (string) {
+    string = string.split(',');
+    data = string.reduce((finalList, str) => {
+      if(Number(str))
+        finalList.push(Number(str));
+    return finalList; 
+  },[]);
+  }
   return data;
 }
 
