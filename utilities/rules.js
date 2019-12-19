@@ -240,7 +240,12 @@ function stringToArray(string, ext) {//OK Optional List Float or String
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
-      string.value = string.value.map(raw => typeof raw === "string" ? raw.trim() : "");
+      // string.value = string.value.map(raw => typeof raw === "string" ? raw.trim() : "");
+      string.value = string.value.reduce((finalList, raw) => {
+        if (typeof raw === "string")
+          finalList.push(raw.trim());
+        return finalList;
+      }, []);
       return {
         value: string.value || [],
         type: "List",
@@ -292,7 +297,11 @@ function stringToArrayMandatory(string, ext) {//OK Mandatory List Float or Strin
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === 'object' && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
-      string.value = string.value.map(raw => typeof raw === "string" ? raw.trim() : "");
+      string.value = string.value.reduce((finalList, raw) => {
+        if (typeof raw === "string")
+          finalList.push(raw.trim());
+        return finalList;
+      }, []);
       return {
         value: string.value || [],
         type: "List",
@@ -534,7 +543,11 @@ function stringToArrayNum(string, ext) {//OK Optional List<Float>
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === 'object' && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
-      string.value = string.value.map(raw => Number(raw) ? Number(raw) : 0);
+      string.value = string.value.reduce((finalList, raw) => {
+        if (Number(raw) || Number(raw) === 0)
+          finalList.push(Number(raw));
+        return finalList;
+      }, []);
       return {
         value: string.value || [],
         type: "List",
@@ -595,7 +608,11 @@ function stringToArrayNumMandatory(string, ext) {//OK Mandatory List<Float>
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
-      string.value = string.value.map(raw => Number(raw) ? Number(raw) : 0);
+      string.value = string.value.reduce((finalList, raw) => {
+        if (Number(raw) || Number(raw) === 0)
+          finalList.push(Number(raw));
+        return finalList;
+      }, []);
       return {
         value: string.value || [],
         type: "List",
