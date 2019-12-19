@@ -447,7 +447,7 @@ function stringCheck(value, ext) { //OK Optional String
   let meta = pos(counter);
   if (meta) {
     return {
-      value: value || "", //
+      value: value || "",
       type: "String",
       metadata: JSON.parse(meta)
     };

@@ -235,7 +235,14 @@ Rules are customizable, users can create, remove or edit rules (entity type stru
 
 #### **Entities**
 * **`Add/Update entities`**
-     * As it is shown, each entity property belonges to the one of eleven types. The expected format of the entities that are going to be uploaded is:
+     * Mandatory properties are **`id`** and **`type`**. 
+        * Property **`id`** is of type **`EntityID`**.
+          - Example in **`.csv`** file: `DepositPoint:0001` (with the correct header with property name `id`)
+          - Example in **`.json`** file: `"id": "DepositPoint:0001"`
+        * Property **`type`** is of type **`EntityType`**.
+          - Example in **`.csv`** file: `DepositPoint` (with the correct header with property name `type`)
+          - Example in **`.json`** file: `"type": "DepositPoint"`
+     * As it is shown before, other entity properties belong to one of the eleven types. The expected format of the entity properties that are going to be uploaded is:
         * Type `Text`:
           - Example in **`.csv`** file: `Transaction` (with the correct header with property names)
           - Example in **`.json`** file: `"name":{"type": "String", "value": "Transaction", "metadata": {}}`
