@@ -933,7 +933,11 @@ function structuredListMandatory(string, ext) {
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
-      string.value = string.value.map(raw => typeof raw === "object" ? raw : {});
+      string.value = string.value.reduce((finalList, raw) => {
+        if (typeof raw === "object")
+          finalList.push(raw);
+        return finalList;
+      }, []);
       return {
         "value": string.value || [],
         "type": "List",
@@ -1000,7 +1004,11 @@ function structuredList(string, ext) {
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
-      string.value = string.value.map(raw => typeof raw === "object" ? raw : {});
+      string.value = string.value.reduce((finalList, raw) => {
+        if (typeof raw === "object")
+          finalList.push(raw);
+        return finalList;
+      }, []);
       return {
         value: string.value || [],
         type: "List",
