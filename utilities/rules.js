@@ -606,7 +606,6 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
   }
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof location === 'object' && location !== null) {
-      // location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
       if (location.value && typeof location.value === "object" && !Array.isArray(location.value)) {
         if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) &&
           location.value.coordinates.length === 2 && typeof location.value.coordinates[0] === "number" && typeof location.value.coordinates[1] === "number" );
@@ -634,9 +633,9 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
   const x = Number(coordinates[0]);
   const y = Number(coordinates[1]);
 
-  if (data.length === 0) {
-    return null;
-  }
+  // if (data.length === 0) {
+  //   return null;
+  // }
   if (!isNaN(x) && typeof x === 'number' && !isNaN(y) && typeof y === 'number') { // x || x
     let obj = [];
     let meta = pos(counter);
@@ -666,8 +665,13 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
       "type": "geo:json",
       "metadata": {}
     }
+  } else { 
+    return {
+      value: {},
+      type: "geo:json",
+      metadata: {}
+    }
   }
-  return null;
 }
 
 function locationCheckNoMand(location, ext) { // Optional geo:json
