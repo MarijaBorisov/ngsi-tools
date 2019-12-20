@@ -272,14 +272,14 @@ Rules are customizable, users can create, remove or edit rules (entity type stru
           - Example in **`.json`** file: `"name":{ "type": "DateTime","value": "2019-12-31T10:10:10+01:00","metadata": {}}`
         * Type `StructuredValue(JSON object)`:
           - Example in **`.csv`** file: `{ "refResource":"SortingType:1" , "amount":1, "unit":"C62"}` (with the correct header with property names)
-          - Example in **`.json`** file:  `"name": {"type": "List","value": {"amount": 1,"refResource": "SortingType:1","unit": "C62"},"metadata": {}}`
+          - Example in **`.json`** file:  `"name": {"type": "StructuredValue","value": {"amount": 1,"refResource": "SortingType:1","unit": "C62"},"metadata": {}}`
         * Type `StructuredList([JSON objects])`:
           - Example in **`.csv`** file: `[{ "refResource":"SortingType:1" , "amount":1, "unit":"C62"}, { "refResource":"SortingType:2" , "amount":2, "unit":"C62"}]` (with the correct header with property names)
           - Example in **`.json`** file: `"name": {"type": "List","value": [{"amount": 1,"refResource": "SortingType:1","unit": "C62"},{"amount": 2,"refResource": "SortingType:2","unit": "C62"}],"metadata": {}}`
 
-If property is mandatory, error will be reported if the property does not exist. If the wrong value is provided or a value is not provided when it is optional, a default value will be written. A default value for `"Text"` and `"ReferenceID"` types is an empty string **`""`**, for `"TextList(,)"`, `"NumberList(,)"`, `"ReferenceIDList(,)"` and `"StructuredList([JSON objects])"` it is an empty list **`[]`**. For `"Float"` and `"Integer"` default is zero value **`0`**, for `"Datetime"` the default value is a **`current date and time`**, for `"GeoJSON(Point)"` and `"StructuredValue(JSON object)"` it is an empty object **`"{}"`**. 
+**`Important:`** If property is mandatory, error will be reported if the property does not exist. If the wrong value is provided or a value is not provided when it is optional, a default value will be written. A default value for `"Text"` and `"ReferenceID"` types is an empty string **`""`**, for `"TextList(,)"`, `"NumberList(,)"`, `"ReferenceIDList(,)"` and `"StructuredList([JSON objects])"` it is an empty list **`[]`**. For `"Float"` and `"Integer"` default is zero value **`0`**, for `"Datetime"` the default value is a **`current date and time`**, for `"GeoJSON(Point)"` and `"StructuredValue(JSON object)"` it is an empty object **`"{}"`**. 
 
-Metadata in `csv` file can be sent in the header, like in the following example for property "width": **`width%%"metadata": {"unit": {"value": "MTR","type": "Text"}}%%`**
+Metadata in `csv` file can be sent in the header, like in the following example for property "width": **`width%%"metadata": {"unit": {"value": "MTR","type": "Text"}}%%`**. Metadata in `JSON` file are sent as shown in the examples.
 
 #### API
 
