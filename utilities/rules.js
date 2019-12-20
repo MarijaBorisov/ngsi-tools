@@ -187,10 +187,13 @@ function stringToArray(string, ext) { //OK Optional List Float or String
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
-      // string.value = string.value.map(raw => typeof raw === "string" ? raw.trim() : "");
       string.value = string.value.reduce((finalList, raw) => {
-        if (typeof raw === "string")
-          finalList.push(raw.trim());
+        if (typeof raw === "string") { 
+          raw = raw.trim();
+          if (raw !== "") { 
+            finalList.push(raw);
+          }
+        }
         return finalList;
       }, []);
       return {
@@ -251,9 +254,12 @@ function stringToArrayMandatory(string, ext) { //OK Mandatory List Float or Stri
     if (typeof string === 'object' && string !== null) {
       string.value = Array.isArray(string.value) ? string.value : [];
       string.value = string.value.reduce((finalList, raw) => {
-        raw = raw.trim();
-        if (typeof raw === "string" && raw !== "")
-          finalList.push(raw);
+        if (typeof raw === "string") { 
+          raw = raw.trim();
+          if (raw !== "") { 
+            finalList.push(raw);
+          }
+        }
         return finalList;
       }, []);
       return {
