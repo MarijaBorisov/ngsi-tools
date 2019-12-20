@@ -429,6 +429,16 @@ function createEntityTypeObject(res, typeDescription, properties, newEntities, b
       callback("Fields 'type' and 'mandatory' are necessary for each property of the entity type. Follow the correct entity type structure available on: GET /v1/typestructure.", newEntities, typeDescription, bodyObject, res);     
       return;
     }
+    if (typeof typeDescription[properties[i]].type !== "string") { 
+      callback("Each 'type' property has to be a string equal to one of predefined values. Follow the correct entity type structure available on: GET /v1/typestructure.", newEntities, typeDescription, bodyObject, res);
+      return;
+    }
+    if (typeof typeDescription[properties[i]].mandatory === "string" &&
+      ((typeDescription[properties[i]].mandatory.toLowerCase() == "yes") || (typeDescription[properties[i]].mandatory.toLowerCase() == "no")));
+    else { 
+      callback("Each 'mandatory' property has to be a string equal to one of the values: 'YES' or 'NO'. Follow the correct entity type structure available on: GET /v1/typestructure.", newEntities, typeDescription, bodyObject, res);
+      return;
+    }
     if (
       typeDescription[properties[i]].type.toLowerCase() ==
       "EntityID".toLowerCase()
@@ -554,8 +564,8 @@ function createEntityTypeObject(res, typeDescription, properties, newEntities, b
     callback("Fields 'EntityID' and 'EntityType' are mandatory. Follow the correct entity type structure available on: GET /v1/typestructure.", newEntities, typeDescription, bodyObject, res);
     return;
   }
-  if (callback)
-    callback(null, newEntities, typeDescription, bodyObject, res);
+    
+  callback(null, newEntities, typeDescription, bodyObject, res);
   return;
 }
 
