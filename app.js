@@ -64,7 +64,7 @@ setInterval(function() {
 }, 5 * 60 * 1000)
 
 app.use((req, res, next) => {
-  const error = new Error("Requested route not found, more information on available routes can be found at: http://backend.waste4think.eu:8082/");
+  const error = new Error("Requested route not found, more information on available routes can be found in README file.");
   error.status = 404;
   next(error);
 });
