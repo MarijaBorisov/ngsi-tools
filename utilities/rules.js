@@ -606,11 +606,14 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
   }
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof location === 'object' && location !== null) {
-      location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
+      // location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
+      if (location.value && typeof location.value === "object" && !Array.isArray(location.value)) {
+        if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) && location.value.coordinates.length === 2);
+        else location.value = {};
+      } else { 
+        location.value = {}
+      }
       return {
-        // value: location["value"].value,
-        // type: "geo:json",
-        // metadata: location["value"].metadata
         value: location.value || {},
         type: "geo:json",
         metadata: location.metadata || {}
@@ -670,11 +673,14 @@ function locationCheckNoMand(location, ext) { // Optional geo:json
   counter += 1;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof location === "object" && location !== null) {
-      location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
+      // location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
+      if (location.value && typeof location.value === "object" && !Array.isArray(location.value)) {
+        if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) && location.value.coordinates.length === 2);
+        else location.value = {};
+      } else { 
+        location.value = {}
+      }
       return {
-        // value: location["value"].geometry,
-        // type: "geo:json",
-        // metadata: location.metadata || {}
         value: location.value || {},
         type: "geo:json",
         metadata: location.metadata || {}
