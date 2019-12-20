@@ -636,7 +636,7 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
   // if (data.length === 0) {
   //   return null;
   // }
-  if (!isNaN(x) && typeof x === 'number' && !isNaN(y) && typeof y === 'number') { // x || x
+  if (!isNaN(x) && typeof x === 'number' && x < 180 && x > -180 && !isNaN(y) && typeof y === 'number' && y < 90 && y > -90) { // x || x
     let obj = [];
     let meta = pos(counter);
     if (meta) {
@@ -713,7 +713,7 @@ function locationCheckNoMand(location, ext) { // Optional geo:json
   }
   const x = Number(coordinates[0]);
   const y = Number(coordinates[1]);
-  if (!isNaN(x) && typeof x === 'number' && !isNaN(y) && typeof y === 'number') {
+  if (!isNaN(x) && typeof x === 'number' && x < 180 && x > -180 && !isNaN(y) && typeof y === 'number' && y < 90 && y > -90) {
     let obj = [];
     if (meta) {
       obj = [];
