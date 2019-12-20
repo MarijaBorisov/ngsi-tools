@@ -484,6 +484,9 @@ function stringToArrayNum(string, ext) { //OK Optional List<Float>
   }
 
   if (string) {
+    string = string.trim();
+    if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1)
+      string = string.substring(1, string.length - 1);
     let obj = [];
     let meta = pos(counter);
     if (meta) {
@@ -548,6 +551,9 @@ function stringToArrayNumMandatory(string, ext) { //OK Mandatory List<Float>
   }
 
   if (string) {
+    string = string.trim();
+    if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1)
+      string = string.substring(1, string.length - 1);
     let obj = [];
     let meta = pos(counter);
     if (meta) {
