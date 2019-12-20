@@ -615,7 +615,7 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
       if (location.value && typeof location.value === "object" && !Array.isArray(location.value)) {
         if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) &&
           location.value.coordinates.length === 2 && typeof location.value.coordinates[0] === "number" && typeof location.value.coordinates[1] === "number" &&
-          location.value.coordinates[0] <= 180 && location.value.coordinates[0] >= -180 && location.value.coordinates[1] <= 90 && location.value.coordinates[0] >= -90);
+          location.value.coordinates[0] <= 180 && location.value.coordinates[0] >= -180 && location.value.coordinates[1] <= 90 && location.value.coordinates[1] >= -90);
         else location.value = {};
       } else {
         location.value = {}
@@ -689,7 +689,7 @@ function locationCheckNoMand(location, ext) { // Optional geo:json
       if (location.value && typeof location.value === "object" && !Array.isArray(location.value)) {
         if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) &&
           location.value.coordinates.length === 2 && typeof location.value.coordinates[0] === "number" && typeof location.value.coordinates[1] === "number" &&
-          location.value.coordinates[0] <= 180 && location.value.coordinates[0] >= -180 && location.value.coordinates[1] <= 90 && location.value.coordinates[0] >= -90);
+          location.value.coordinates[0] <= 180 && location.value.coordinates[0] >= -180 && location.value.coordinates[1] <= 90 && location.value.coordinates[1] >= -90);
         else location.value = {};
       } else { 
         location.value = {}
