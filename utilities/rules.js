@@ -608,9 +608,10 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
     if (typeof location === 'object' && location !== null) {
       // location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
       if (location.value && typeof location.value === "object" && !Array.isArray(location.value)) {
-        if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) && location.value.coordinates.length === 2);
+        if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) &&
+          location.value.coordinates.length === 2 && typeof location.value.coordinates[0] === "number" && typeof location.value.coordinates[1] === "number" );
         else location.value = {};
-      } else { 
+      } else {
         location.value = {}
       }
       return {
@@ -675,7 +676,8 @@ function locationCheckNoMand(location, ext) { // Optional geo:json
     if (typeof location === "object" && location !== null) {
       // location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
       if (location.value && typeof location.value === "object" && !Array.isArray(location.value)) {
-        if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) && location.value.coordinates.length === 2);
+        if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) &&
+          location.value.coordinates.length === 2 && typeof location.value.coordinates[0] === "number" && typeof location.value.coordinates[1] === "number");
         else location.value = {};
       } else { 
         location.value = {}
