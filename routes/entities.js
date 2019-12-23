@@ -21,10 +21,15 @@ var sendJSONresponse = function (res, status, content) {
 module.exports = () => {
   router.post("/v1/entities/", headermid, upload.multer, (req, res) => {
     if (req.body.length > 0) {
-      entities.postEntitiesBody(req, res, req.body, req.headers, "body")
-    } else {
+      entities.postEntitiesBody(req, res, req.body, req.headers, "body");
+
+    } else if (req.files) {
       entities.postEntities(req, res, req.files[0], req.headers);
     }
+    else {
+      throw new Error(`Please upload a file`);
+    }
+    
   });
 
   router.post("/v1/entities/update", headermid, upload.multer, (req, res) => {
