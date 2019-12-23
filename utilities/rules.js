@@ -275,7 +275,7 @@ function stringToArrayMandatory(string, ext) { //OK Mandatory List Float or Stri
       }
     }
   }
-
+  
   if (string) {
     string = string.trim();
     if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1)

@@ -555,8 +555,8 @@ function createEntityTypeObject(res, typeDescription, properties, newEntities, b
       else newEntities.properties[properties[i]] = "structuredList";
     } else {
       if (callback)
-        callback("Unknown property type exists: " + properties[i] + ", please check the structure", newEntities, typeDescription, bodyObject, res);
-      console.log("Unknown property type exists: " + properties[i] + ", please check the structure");
+        callback("Unknown value "+ typeDescription[properties[i]].type +" for property 'type' exists for: " + properties[i] + ". Follow the correct entity type structure available on: GET /v1/typestructure.", newEntities, typeDescription, bodyObject, res);
+      console.log("Unknown value "+ typeDescription[properties[i]].type +" for property 'type' exists for: " + properties[i] + ". Follow the correct entity type structure available on: GET /v1/typestructure.");
       return;
     }
   }
