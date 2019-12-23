@@ -281,6 +281,8 @@ Rules are customizable, users can create, remove or edit rules (entity type stru
 
 Metadata in `csv` file can be sent in the header, like in the following example for property "width": **`width%%"metadata": {"unit": {"value": "MTR","type": "Text"}}%%`**. Metadata in `JSON` file are sent as shown in the examples.
 
+**`Important:`** In one file, only entities with the same type can be sent for upload. Otherwise, an error will be reported.
+
 #### API
 
 NGSI Connector API documentation can be found in its official [Swagger](backend.waste4think.eu:8082) instance.
