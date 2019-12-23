@@ -67,7 +67,13 @@ function postEntitiesBody(req, res, file, headers, body) {
       .catch((error) => {
         if (error.statusCode === 401) {
           res.status(401).json(error.error);
-        } 
+        }
+        else if (typeof data === "undefined" || !data) {
+          res.status(400).json({
+            "error": error
+          });
+          return;
+        }
         else res.json([
           {
             "Entity attribute errors:": data.errors.length,
@@ -80,6 +86,12 @@ function postEntitiesBody(req, res, file, headers, body) {
       });
   })
     .catch((error) => {
+      if (typeof data === "undefined" || !data) {
+        res.status(400).json({
+          "error": error
+        });
+        return;
+      }
       res.json([
         {
           "Entity attribute errors:": data.errors.length,

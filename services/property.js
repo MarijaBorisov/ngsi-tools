@@ -124,6 +124,14 @@ async function rulesCheck(parsedData, ext) {
     } else {
       var { type } = parsedData[0];
     }
+    if (!type) {
+      // return new Error(`Failed to find type on ${parsedData[0].id}`);
+      if (ext === '.json')
+        return reject(`Failed to find type on ${parsedData[0][0].id}`);
+      else
+        return reject(`Failed to find type on ${parsedData[0].id}`);
+    }
+
     EntityType.findOne({ entityType: type }, function (err, result) {
       if (err) {
         console.log(err);
@@ -138,11 +146,6 @@ async function rulesCheck(parsedData, ext) {
       props = Object.keys(result.properties);
       for (var i = 0; i < props.length; i++) {
         rules[props[i]] = rulesFunctions[result.properties[props[i]]];
-      }
-  
-      if (!type) {
-        // return new Error(`Failed to find type on ${parsedData[0].id}`);
-        return reject(`Failed to find type on ${parsedData[0].id}`);
       }
     
       parsedData.forEach((element) => {
