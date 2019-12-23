@@ -6,7 +6,7 @@ const parseOperations = {
 
     getData: rawData => csv( { delimiter: ";" } ).fromString( rawData ),
 
-    getRules: async ( parsedData, ext ) => {
+    getRules: async (parsedData, ext) => {
         let rules;
         try {
           rules = await ruleChecks(parsedData, ext);
@@ -46,8 +46,8 @@ const parseOperations = {
 
 function parse( rawData, option, fileType ) {
     if ( fileType === "body") {
-        return parseOperations.getRules( rawData )
-            .then( rules => parseOperations.getEntity( rules, rawData, option ) )
+        return parseOperations.getRules( rawData, 'body' )
+            .then( rules => parseOperations.getEntity( rules, rawData, option, 'body' ) )
             .then( checkedData => Promise.resolve( checkedData ) )
             .catch( error => Promise.reject( error ) );
     }
@@ -61,8 +61,8 @@ function parse( rawData, option, fileType ) {
     }
     if (fileType === ".csv") {
         return parseOperations.getData( rawData )
-        .then( parsedData => parseOperations.getRules( parsedData )
-            .then( rules => parseOperations.getEntity( rules, parsedData, option )
+        .then( parsedData => parseOperations.getRules( parsedData, '.csv' )
+            .then( rules => parseOperations.getEntity( rules, parsedData, option, '.csv' )
                 .then( checkedData => Promise.resolve( checkedData ) ) ) )
         .catch( error => Promise.reject( error ) );
     }
