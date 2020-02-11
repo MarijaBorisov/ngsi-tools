@@ -20,25 +20,37 @@ const parseOperations = {
         if (ext === '.json') {
             const result = [];
             const errors = [];
+            let warnings = [];
+            let ent;
             parsedData[0].forEach( ( entity ) => {
             try {
-                result.push( processEntity( rules, entity, option, ext ) );
+              ent = processEntity(rules, entity, option, ext);
+              if (ent.warnings && ent.warnings.length != 0) { 
+                warnings = warnings.concat(ent.warnings);
+              }
+              result.push(ent.result);
             } catch ( error ) {
                 errors.push( error.message );
             }
         } );
-        return Promise.resolve( { errors, result } );
+        return Promise.resolve({ errors, res: { result: result, warnings: warnings } });
         } else {
             const result = [];
             const errors = [];
+            let warnings = [];
+            let ent;
             parsedData.forEach( ( entity ) => {
-            try {
-                result.push( processEntity( rules, entity, option, ext ) );
+              try {
+                ent = processEntity(rules, entity, option, ext);
+                if (ent.warnings && ent.warnings.length != 0) { 
+                  warnings = warnings.concat(ent.warnings);
+                }
+                result.push(ent.result);
             } catch ( error ) {
                 errors.push( error.message );
             }
         } );
-        return Promise.resolve( { errors, result } );
+          return Promise.resolve({ errors, res: { result: result, warnings: warnings } } );
         }
         
     },
@@ -48,7 +60,9 @@ function parse( rawData, option, fileType ) {
     if ( fileType === "body") {
         return parseOperations.getRules( rawData, 'body' )
             .then( rules => parseOperations.getEntity( rules, rawData, option, 'body' ) )
-            .then( checkedData => Promise.resolve( checkedData ) )
+            .then(checkedData => {
+              return Promise.resolve({ result: checkedData.res.result, warnings: checkedData.res.warnings, errors: checkedData.errors });
+            })
             .catch( error => Promise.reject( error ) );
     }
     if ( fileType === ".json" ) {
@@ -56,14 +70,18 @@ function parse( rawData, option, fileType ) {
         data.push( JSON.parse( rawData ) );
         return parseOperations.getRules( data, '.json' )
             .then( rules => parseOperations.getEntity( rules, data, option, '.json' ) )
-            .then( checkedData => Promise.resolve( checkedData ) )
+            .then(checkedData => {
+              return Promise.resolve({ result: checkedData.res.result, warnings: checkedData.res.warnings, errors: checkedData.errors });
+            })
             .catch( error => Promise.reject( error ) );
     }
     if (fileType === ".csv") {
         return parseOperations.getData( rawData )
         .then( parsedData => parseOperations.getRules( parsedData, '.csv' )
             .then( rules => parseOperations.getEntity( rules, parsedData, option, '.csv' )
-                .then( checkedData => Promise.resolve( checkedData ) ) ) )
+              .then(checkedData => {
+                return Promise.resolve({ result: checkedData.res.result, warnings: checkedData.res.warnings, errors: checkedData.errors });
+              })))
         .catch( error => Promise.reject( error ) );
     }
 }

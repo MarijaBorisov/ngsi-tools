@@ -181,10 +181,14 @@ function processEntity( rules, entity, option, ext ) {
     propertyChecks( rules, entity, option, ext );
     const rulesProperties = Object.keys( rules );
     const result = {};
-
+    const warnings = [];
     rulesProperties.forEach( ( property ) => {
         try {
             result[ property ] = processEntityProperty( rules, entity, property, ext );
+          if (result[property].warning) { 
+            warnings.push(`Property ${property} in ${entity.id} does not have correct data type. Default value is written in the database instead.`);
+            delete result[property].warning;
+          }
         } catch ( error ) {
           if (option !== "update") {
             if (error == "Incorrectly structured metadata.") { 
@@ -199,7 +203,7 @@ function processEntity( rules, entity, option, ext ) {
             }
         }
     } );
-    return result;
+  return { result: result, warnings: warnings };
 }
 
 function processEntityProperty( rules, entity, property, ext ) {

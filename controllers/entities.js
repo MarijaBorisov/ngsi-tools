@@ -27,6 +27,7 @@ function postEntities(req, res, file, headers) {
         {
           "Entity attribute errors:": data.errors.length,
           "Entities without errors:": data.result.length,
+          "Warnings": data.warnings,
           "Info on rules for given type:": typet(data.result),
         },
         data.errors,
@@ -58,6 +59,7 @@ function postEntitiesBody(req, res, file, headers, body) {
         {
           "Entity attribute errors:": data.errors.length,
           "Entities without errors:": data.result.length,
+          "Warnings": data.warnings,
           "Info on rules for given type:": typet(data.result),
         },
         data.errors,
@@ -113,6 +115,7 @@ function updateEntitiesBody(req, res, file, headers, body) {
         {
           "Entity attribute errors:": data.errors.length,
           "Entities without errors:": data.result.length,
+          "Warnings": data.warnings,
           "Info on rules for given type:": typet(data.result),
         },
         data.errors,
@@ -149,6 +152,7 @@ function updateEntities(req, res, file, headers) {
             {
               "Entity attribute errors:": data.errors.length,
               "Entities updated:": data.result.length,
+              "Warnings": data.warnings,
               "Info on rules for given type:": typet(data.result),
             },
             data.errors,

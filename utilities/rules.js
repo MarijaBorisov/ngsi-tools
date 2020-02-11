@@ -247,6 +247,12 @@ function stringToArray(string, ext) { //OK Optional List Float or String
 
 function stringToArrayMandatory(string, ext) { //OK Mandatory List Float or String
   counter += 1;
+  return {
+    "value": [],
+    "type": "List",
+    "metadata": {},
+    "warning": 111
+  }
   if (!string) {
     return null;
   }
