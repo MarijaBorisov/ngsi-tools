@@ -13,7 +13,7 @@ const conf = require(conf_path);
 
 global.conn = mongoose.createConnection(conf.db.url, conf.db.options , (err, db) => {
    if (err) {
-     return console.log("MongoNetworkError: failed to connect to server");
+     return console.log(err);
    }
    console.log("Connected successfully to mongo server");
  });
