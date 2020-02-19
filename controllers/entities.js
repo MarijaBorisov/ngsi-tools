@@ -80,6 +80,7 @@ function postEntitiesBody(req, res, file, headers, body) {
           {
             "Entity attribute errors:": data.errors.length,
             "Entities without errors:": data.result.length,
+            "Warnings": data.warnings,
             "Info on rules for given type:": typet(data.result),
           },
           data.errors,
@@ -98,6 +99,7 @@ function postEntitiesBody(req, res, file, headers, body) {
         {
           "Entity attribute errors:": data.errors.length,
           "Entities without errors:": data.result.length,
+          "Warnings": data.warnings,
           "Info on rules for given type:": typet(data.result),
         },
         data.errors,
