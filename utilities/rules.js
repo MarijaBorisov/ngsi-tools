@@ -338,6 +338,7 @@ function stringToArrayMandatory(string, ext) { //OK Mandatory List Float or Stri
 }
 
 function dateCheckMandatory(date, ext) { // Not in use
+  let existIncorrect = false;
   counter += 1;
   if (!date) {
     return null;
@@ -345,11 +346,14 @@ function dateCheckMandatory(date, ext) { // Not in use
   let date_val;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof date === 'object' && date !== null) {
-      date_val = isNaN(new Date(date.value).getTime()) ? new Date() : new Date(date.value);
+      (!Array.isArray(date.value) && date.value.length === 0) ? date_val = new Date() : isNaN(new Date(date.value).getTime()) ?
+        (date_val = new Date(), existIncorrect = true) : date_val = new Date(date.value);
+      
       return {
         value: date_val,
         type: "DateTime",
-        metadata: date.metadata || {}
+        metadata: date.metadata || {},
+        warning: (existIncorrect) ? 111 : undefined
       };
     } else {
       return {
@@ -369,6 +373,7 @@ function dateCheckMandatory(date, ext) { // Not in use
 }
 
 function dateCheck(date, ext) {
+  let existIncorrect = false;
   counter += 1;
   if (!date)
     return {
@@ -379,11 +384,13 @@ function dateCheck(date, ext) {
   let date_val;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof date === 'object' && date !== null) {
-      date_val = isNaN(new Date(date.value).getTime()) ? new Date() : new Date(date.value);
+      (!Array.isArray(date.value) && date.value.length === 0) ? date_val = new Date() : isNaN(new Date(date.value).getTime()) ?
+        (date_val = new Date(), existIncorrect = true) : date_val = new Date(date.value);
       return {
         value: date_val,
         type: "DateTime",
-        metadata: date.metadata || {}
+        metadata: date.metadata || {},
+        warning: (existIncorrect) ? 111 : undefined
       };
     } else {
       return {
@@ -652,6 +659,7 @@ function typeCheck(attr, ext) { //OK type
 }
 
 function locationCheck(location, ext) { //OK Mandatory geo:json
+  let existIncorrect = false;
   counter += 1;
   if (!location) {
     return null;
@@ -659,17 +667,26 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof location === 'object' && location !== null) {
       if (location.value && typeof location.value === "object" && !Array.isArray(location.value)) {
-        if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) &&
+        if (Object.keys(location.value).length === 0) {
+          existIncorrect = false;
+          location.value = {};
+        }
+        else if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) &&
           location.value.coordinates.length === 2 && typeof location.value.coordinates[0] === "number" && typeof location.value.coordinates[1] === "number" &&
           location.value.coordinates[0] <= 180 && location.value.coordinates[0] >= -180 && location.value.coordinates[1] <= 90 && location.value.coordinates[1] >= -90);
-        else location.value = {};
+        else {
+          location.value = {};
+          existIncorrect = true;
+        }
       } else {
-        location.value = {}
+        location.value = {};
+        existIncorrect = true;
       }
       return {
         value: location.value || {},
         type: "geo:json",
-        metadata: location.metadata || {}
+        metadata: location.metadata || {},
+        warning: (existIncorrect) ? 111 : undefined
       }
     } else {
       return {
@@ -728,23 +745,32 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
 }
 
 function locationCheckNoMand(location, ext) { // Optional geo:json
-  
+  let existIncorrect = false;
   counter += 1;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof location === "object" && location !== null) {
-      // location.value = typeof location.value === "object" && !Array.isArray(location.value) ? location.value : {};
       if (location.value && typeof location.value === "object" && !Array.isArray(location.value)) {
-        if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) &&
+        if (Object.keys(location.value).length === 0) {
+          existIncorrect = false;
+          location.value = {};
+        }
+        else if (location.value.type && location.value.type == "Point" && location.value.coordinates && Array.isArray(location.value.coordinates) &&
           location.value.coordinates.length === 2 && typeof location.value.coordinates[0] === "number" && typeof location.value.coordinates[1] === "number" &&
           location.value.coordinates[0] <= 180 && location.value.coordinates[0] >= -180 && location.value.coordinates[1] <= 90 && location.value.coordinates[1] >= -90);
-        else location.value = {};
+        else {
+          location.value = {};
+          existIncorrect = true;
+        };
       } else { 
-        location.value = {}
+        location.value = {};
+        existIncorrect = true;
       }
+
       return {
         value: location.value || {},
         type: "geo:json",
-        metadata: location.metadata || {}
+        metadata: location.metadata || {},
+        warning: (existIncorrect) ? 111 : undefined
       }
     } else {
       return {
