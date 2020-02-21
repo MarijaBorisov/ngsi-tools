@@ -7,12 +7,16 @@ let counter = 0;
 
 function commaNumToUnits(oldNum, ext) { //OK Float Optional
   counter += 1;
+  let existIncorrect = false;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof oldNum === 'object' && oldNum !== null) {
+      (!Array.isArray(oldNum.value) && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
+        oldNum.value = Number(oldNum.value) : (oldNum.value = 0, existIncorrect = true); 
       return {
-        "value": Number(oldNum.value) || 0,
+        "value": oldNum.value || 0,
         "type": "Float",
-        "metadata": oldNum.metadata || {}
+        "metadata": oldNum.metadata || {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
       return {
@@ -34,7 +38,6 @@ function commaNumToUnits(oldNum, ext) { //OK Float Optional
       metadata: JSON.parse(meta)
     };
     obj.push(send);
-
   }
 
   if (obj.length !== 0) {
@@ -50,13 +53,16 @@ function commaNumToUnits(oldNum, ext) { //OK Float Optional
 
 function commaNumToUnitsInt(oldNum, ext) { //OK Opional Integer
   counter += 1;
+  let existIncorrect = false;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof oldNum === 'object' && oldNum !== null) {
-      oldNum.value = Number(oldNum.value) ? parseInt(Number(oldNum.value)) : 0;
+      (!Array.isArray(oldNum.value) && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
+        (oldNum.value = parseInt(Number(oldNum.value))) : (oldNum.value = 0, existIncorrect = true);
       return {
         "value": oldNum.value || 0,
         "type": "Integer",
-        "metadata": oldNum.metadata || {}
+        "metadata": oldNum.metadata || {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
       return {
@@ -93,16 +99,19 @@ function commaNumToUnitsInt(oldNum, ext) { //OK Opional Integer
 
 function commaNumToUnitsIntMandatory(oldNum, ext) { //OK Mandatory Integer
   counter += 1;
+  let existIncorrect = false;
   if (!oldNum) {
     return null;
   }
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof oldNum === "object" && oldNum !== null) {
-      oldNum.value = Number(oldNum.value) ? parseInt(Number(oldNum.value)) : 0;
+      (!Array.isArray(oldNum.value) && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
+        (oldNum.value = parseInt(Number(oldNum.value))) : (oldNum.value = 0, existIncorrect = true);
       return {
         "value": oldNum.value || 0,
         "type": "Integer",
-        "metadata": oldNum.metadata || {}
+        "metadata": oldNum.metadata || {},
+        "warning": (existIncorrect) ? 111 : undefined
       };
     } else {
       return {
@@ -139,15 +148,19 @@ function commaNumToUnitsIntMandatory(oldNum, ext) { //OK Mandatory Integer
 
 function commaNumToUnitsMandatory(oldNum, ext) { //OK Mandatory Float
   counter += 1;
+  let existIncorrect = false;
   if (!oldNum) {
     return null;
   }
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof oldNum === 'object' && oldNum !== null) {
+      (!Array.isArray(oldNum.value) && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
+        oldNum.value = Number(oldNum.value) : (oldNum.value = 0, existIncorrect = true); 
       return {
-        "value": Number(oldNum.value) || 0,
+        "value": oldNum.value || 0,
         "type": "Float",
-        "metadata": oldNum.metadata || {}
+        "metadata": oldNum.metadata || {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
       return {
@@ -184,9 +197,10 @@ function commaNumToUnitsMandatory(oldNum, ext) { //OK Mandatory Float
 
 function stringToArray(string, ext) { //OK Optional List Float or String
   counter += 1;
+  let existIncorrect = false;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
-      string.value = Array.isArray(string.value) ? string.value : [];
+      (Array.isArray(string.value)) ? string.value : (string.value = [], existIncorrect = true);
       string.value = string.value.reduce((finalList, raw) => {
         if (typeof raw === "string") { 
           raw = raw.trim();
@@ -194,12 +208,17 @@ function stringToArray(string, ext) { //OK Optional List Float or String
             finalList.push(raw);
           }
         }
+        else {
+          existIncorrect = true;
+        }
         return finalList;
       }, []);
+    
       return {
         value: string.value || [],
         type: "List",
-        metadata: string.metadata || {}
+        metadata: string.metadata || {},
+        warning: (existIncorrect) ? 111 : undefined
       };
     } else {
       return {
@@ -246,19 +265,15 @@ function stringToArray(string, ext) { //OK Optional List Float or String
 }
 
 function stringToArrayMandatory(string, ext) { //OK Mandatory List Float or String
+  let existIncorrect = false;
   counter += 1;
-  return {
-    "value": [],
-    "type": "List",
-    "metadata": {},
-    "warning": 111
-  }
+
   if (!string) {
     return null;
   }
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === 'object' && string !== null) {
-      string.value = Array.isArray(string.value) ? string.value : [];
+      (Array.isArray(string.value)) ? string.value : (string.value = [], existIncorrect= true);
       string.value = string.value.reduce((finalList, raw) => {
         if (typeof raw === "string") { 
           raw = raw.trim();
@@ -266,12 +281,17 @@ function stringToArrayMandatory(string, ext) { //OK Mandatory List Float or Stri
             finalList.push(raw);
           }
         }
+        else {
+          existIncorrect = true;
+        }
         return finalList;
       }, []);
+
       return {
         value: string.value || [],
         type: "List",
-        metadata: string.metadata || {}
+        metadata: string.metadata || {},
+        warning: (existIncorrect) ? 111 : undefined
       }
     } else {
       return {
@@ -385,16 +405,19 @@ function dateCheck(date, ext) {
 
 function mandatoryCheck(attribute, ext) { //OK Mandatory String
   counter += 1;
+  let existIncorrect = false;
   if (!attribute) {
     return null;
   }
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof attribute === 'object' && attribute !== null) {
-      attribute.value = typeof attribute.value === "string" ? attribute.value : "";
+      (typeof attribute.value === "string") ? attribute.value : (attribute.value = "", existIncorrect = true);
+
       return {
         value: attribute.value || "",
         type: "String",
-        metadata: attribute.metadata || {}
+        metadata: attribute.metadata || {},
+        warning: (existIncorrect) ? 111 : undefined
       };
     } else {
       return {
@@ -438,14 +461,16 @@ function mandatoryCheck(attribute, ext) { //OK Mandatory String
 
 function stringCheck(value, ext) { //OK Optional String
   counter += 1;
-
+  let existIncorrect = false;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof value === 'object' && value !== null) {
-      value.value = typeof value.value === "string" ? value.value : "";
+      (typeof value.value === "string") ?  value.value : (value.value = "", existIncorrect = true);
+      
       return {
         "value": value.value || "",
         "type": "String",
-        "metadata": value.metadata || {}
+        "metadata": value.metadata || {},
+        "warning": (existIncorrect)? 111 : undefined
       }
     } else {
       return {
@@ -455,6 +480,7 @@ function stringCheck(value, ext) { //OK Optional String
       }
     }
   }
+
 
   let meta = pos(counter);
   if (meta) {
@@ -473,24 +499,27 @@ function stringCheck(value, ext) { //OK Optional String
 
 function stringToArrayNum(string, ext) { //OK Optional List<Float>
   counter += 1;
+  let existIncorrect = false;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === 'object' && string !== null) {
-      string.value = Array.isArray(string.value) ? string.value : [];
+      (Array.isArray(string.value)) ? string.value : (string.value = [], existIncorrect = true);
       string.value = string.value.reduce((finalList, raw) => {
         if (Number(raw) || Number(raw) === 0)
           finalList.push(Number(raw));
+        else existIncorrect = true;
         return finalList;
       }, []);
       return {
         value: string.value || [],
         type: "List",
-        metadata: string.metadata || {}
+        metadata: string.metadata || {},
+        warning: (existIncorrect) ? 111 : undefined
       }
     } else {
       return {
         "value": [],
         "type": "List",
-        "metadata": {}
+        "metadata": {},
       }
     }
   }
@@ -537,21 +566,26 @@ function stringToArrayNum(string, ext) { //OK Optional List<Float>
 
 function stringToArrayNumMandatory(string, ext) { //OK Mandatory List<Float>
   counter += 1;
+  let existIncorrect = false;
   if (!string) {
     return null;
   }
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
-      string.value = Array.isArray(string.value) ? string.value : [];
+      // string.value = Array.isArray(string.value) ? string.value : [];
+      (Array.isArray(string.value)) ? string.value : (string.value = [], existIncorrect = true);
       string.value = string.value.reduce((finalList, raw) => {
         if (Number(raw) || Number(raw) === 0)
           finalList.push(Number(raw));
+        else
+          existIncorrect = true
         return finalList;
       }, []);
       return {
         value: string.value || [],
         type: "List",
-        metadata: string.metadata || {}
+        metadata: string.metadata || {},
+        warning: (existIncorrect) ? 111 : undefined
       };
     } else {
       return {
@@ -694,6 +728,7 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
 }
 
 function locationCheckNoMand(location, ext) { // Optional geo:json
+  
   counter += 1;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof location === "object" && location !== null) {
@@ -823,14 +858,17 @@ function arrToNum(string) {
 }
 
 function structuredValue(string, ext) {
+  let existIncorrect = false;
   counter += 1
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
-      string.value = typeof string.value === "object" && !Array.isArray(string.value) ? string.value : {};
+      // string.value = typeof string.value === "object" && !Array.isArray(string.value) ? string.value : {};
+      (typeof string.value === "object" && !Array.isArray(string.value)) ? string.value : (string.value = {}, existIncorrect = true);
       return {
         "value": string.value || {},
         "type": "StructuredValue",
-        "metadata": string.metadata || {}
+        "metadata": string.metadata || {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
       return {
@@ -865,16 +903,18 @@ function structuredValue(string, ext) {
 }
 
 function structuredValueMandatory(string, ext) {
+  let existIncorrect = false;
   counter += 1
   if (!string)
     return null;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
-      string.value = typeof string.value === "object" && !Array.isArray(string.value) ? string.value : {};
+      (typeof string.value === "object" && !Array.isArray(string.value)) ? string.value  : (string.value = {}, existIncorrect = true);
       return {
         "value": string.value || {},
         "type": "StructuredValue",
-        "metadata": string.metadata || {}
+        "metadata": string.metadata || {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
       return {
@@ -900,21 +940,27 @@ function structuredValueMandatory(string, ext) {
 }
 
 function structuredListMandatory(string, ext) {
+  let existIncorrect = false;
   counter += 1
   if (!string)
     return null;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
-      string.value = Array.isArray(string.value) ? string.value : [];
+      // string.value = Array.isArray(string.value) ? string.value : [];
+      Array.isArray(string.value) ? string.value : (string.value = [], existIncorrect = true);
       string.value = string.value.reduce((finalList, raw) => {
-        if (typeof raw === "object")
+        if (typeof raw === "object" && !Array.isArray(raw))
           finalList.push(raw);
+        else
+          existIncorrect = true;
+      
         return finalList;
       }, []);
       return {
         "value": string.value || [],
         "type": "List",
-        "metadata": string.metadata || {}
+        "metadata": string.metadata || {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
       return {
@@ -973,19 +1019,23 @@ function getPosition(string, subString, index) {
 }
 
 function structuredList(string, ext) {
+  var existIncorrect = false;
   counter += 1;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
-      string.value = Array.isArray(string.value) ? string.value : [];
+      Array.isArray(string.value) ? string.value : (string.value = [], existIncorrect = true);
       string.value = string.value.reduce((finalList, raw) => {
-        if (typeof raw === "object")
+        if (typeof raw === "object" && !Array.isArray(raw))
           finalList.push(raw);
+        else
+          existIncorrect = true;
         return finalList;
       }, []);
       return {
         value: string.value || [],
         type: "List",
-        metadata: string.metadata || {}
+        metadata: string.metadata || {},
+        warning: (existIncorrect) ? 111 : undefined
       };
     } else {
       return {
