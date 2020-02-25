@@ -27,15 +27,20 @@ function commaNumToUnits(oldNum, ext) { //OK Float Optional
     }
   }
 
-  const newNum = Number(oldNum) ? Number(oldNum) : 0;
+  let newNum;
   let obj = [];
   let meta = pos(counter);
+
+  (!Array.isArray(oldNum) && (Number(oldNum) || Number(oldNum) === 0)) ?
+    newNum = Number(oldNum) : (newNum = 0, existIncorrect = true);
+  
   if (meta) {
     obj = [];
     let send = {
       value: newNum || 0,
       type: "Float",
-      metadata: JSON.parse(meta)
+      metadata: JSON.parse(meta),
+      warning: (existIncorrect) ? 111 : undefined
     };
     obj.push(send);
   }
@@ -47,7 +52,8 @@ function commaNumToUnits(oldNum, ext) { //OK Float Optional
   return {
     "value": newNum || 0,
     "type": "Float",
-    metadata: {}
+    metadata: {},
+    warning: (existIncorrect) ? 111 : undefined
   };
 }
 
@@ -72,18 +78,23 @@ function commaNumToUnitsInt(oldNum, ext) { //OK Opional Integer
       }
     }
   }
-  const newNum = Number(oldNum) ? parseInt(Number(oldNum)) : 0;
+ 
+  let newNum;
   let obj = [];
   let meta = pos(counter);
+
+  (!Array.isArray(oldNum) && (Number(oldNum) || Number(oldNum) === 0)) ?
+    newNum = parseInt(Number(oldNum)) : (newNum = 0, existIncorrect = true);
+  
   if (meta) {
     obj = [];
     let send = {
       value: newNum || 0,
       type: "Integer",
-      metadata: JSON.parse(meta)
+      metadata: JSON.parse(meta),
+      warning: (existIncorrect) ? 111 : undefined
     };
     obj.push(send);
-
   }
 
   if (obj.length !== 0) {
@@ -93,7 +104,8 @@ function commaNumToUnitsInt(oldNum, ext) { //OK Opional Integer
   return {
     "value": newNum || 0,
     "type": "Integer",
-    metadata: {}
+    metadata: {},
+    warning: (existIncorrect) ? 111 : undefined
   };
 }
 
@@ -122,15 +134,20 @@ function commaNumToUnitsIntMandatory(oldNum, ext) { //OK Mandatory Integer
     }
   }
 
-  const newNum = Number(oldNum) ? parseInt(Number(oldNum)) : 0;
+  let newNum;
   let obj = [];
   let meta = pos(counter);
+
+  (!Array.isArray(oldNum) && (Number(oldNum) || Number(oldNum) === 0)) ?
+    newNum = parseInt(Number(oldNum)) : (newNum = 0, existIncorrect = true);
+  
   if (meta) {
     obj = [];
     let send = {
       value: newNum || 0,
       type: "Integer",
-      metadata: JSON.parse(meta)
+      metadata: JSON.parse(meta),
+      warning: (existIncorrect) ? 111 : undefined
     };
     obj.push(send);
   }
@@ -142,7 +159,8 @@ function commaNumToUnitsIntMandatory(oldNum, ext) { //OK Mandatory Integer
   return {
     value: newNum || 0,
     type: "Integer",
-    metadata: {}
+    metadata: {},
+    warning: (existIncorrect) ? 111 : undefined
   };
 }
 
@@ -171,15 +189,20 @@ function commaNumToUnitsMandatory(oldNum, ext) { //OK Mandatory Float
     }
   }
 
-  const newNum = Number(oldNum) ? Number(oldNum) : 0;
+  let newNum;
   let obj = [];
   let meta = pos(counter);
+
+  (!Array.isArray(oldNum) && (Number(oldNum) || Number(oldNum) === 0)) ?
+    newNum = Number(oldNum) : (newNum = 0, existIncorrect = true);
+  
   if (meta) {
     obj = [];
     let send = {
       value: newNum || 0,
       type: "Float",
-      metadata: JSON.parse(meta)
+      metadata: JSON.parse(meta),
+      warning: (existIncorrect) ? 111 : undefined
     };
     obj.push(send);
   }
@@ -191,7 +214,8 @@ function commaNumToUnitsMandatory(oldNum, ext) { //OK Mandatory Float
   return {
     "value": newNum || 0,
     "type": "Float",
-    metadata: {}
+    metadata: {},
+    warning: (existIncorrect) ? 111 : undefined
   };
 }
 
@@ -240,6 +264,8 @@ function stringToArray(string, ext) { //OK Optional List Float or String
       raw = raw.trim();
       if (typeof raw === "string" && raw !== "")
         finalList.push(raw);
+      else existIncorrect = true;
+
       return finalList;
     }, []);
   }
@@ -248,7 +274,8 @@ function stringToArray(string, ext) { //OK Optional List Float or String
     let send = {
       value: string || [],
       type: "List",
-      metadata: JSON.parse(meta)
+      metadata: JSON.parse(meta),
+      warning: existIncorrect ? 111 : undefined
     };
     obj.push(send);
   }
@@ -260,7 +287,8 @@ function stringToArray(string, ext) { //OK Optional List Float or String
   return {
     value: string || [],
     type: "List",
-    metadata: {}
+    metadata: {},
+    warning: (existIncorrect) ? 111 : undefined
   };
 }
 
@@ -306,13 +334,17 @@ function stringToArrayMandatory(string, ext) { //OK Mandatory List Float or Stri
     string = string.trim();
     if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1)
       string = string.substring(1, string.length - 1);
+
     let obj = [];
     let meta = pos(counter);
     string = string.split(',');
+
     string = string.reduce((finalList, raw) => {
       raw = raw.trim();
       if (typeof raw === "string" && raw !== "")
         finalList.push(raw);
+      else
+        existIncorrect = true;
       return finalList;
     }, []);
     if (meta) {
@@ -320,7 +352,8 @@ function stringToArrayMandatory(string, ext) { //OK Mandatory List Float or Stri
       let send = {
         value: string || [],
         type: "List",
-        metadata: JSON.parse(meta)
+        metadata: JSON.parse(meta),
+        warning: existIncorrect ? 111 : undefined
       };
       obj.push(send);
     }
@@ -331,7 +364,8 @@ function stringToArrayMandatory(string, ext) { //OK Mandatory List Float or Stri
     return {
       value: string || [],
       type: "List",
-      metadata: {}
+      metadata: {},
+      warning: existIncorrect ? 111 : undefined
     }
   }
   return null;
@@ -363,12 +397,16 @@ function dateCheckMandatory(date, ext) { // Not in use
       };
     }
   }
-  date_val = isNaN(new Date(date).getTime()) ? new Date() : new Date(date);
-  let meta = pos(counter);
+
+  (!Array.isArray(date) && date.length === 0) ? date_val = new Date() : isNaN(new Date(date).getTime()) ?
+    (date_val = new Date(), existIncorrect = true) : date_val = new Date(date);
+  
+    let meta = pos(counter);
   return {
     value: date_val,
     type: "DateTime",
-    metadata: meta ? JSON.parse(meta) : {}
+    metadata: meta ? JSON.parse(meta) : {},
+    warning: (existIncorrect) ? 111 : undefined
   };
 }
 
@@ -400,12 +438,15 @@ function dateCheck(date, ext) {
       };
     }
   }
-  date_val = isNaN(new Date(date).getTime()) ? new Date() : new Date(date);
+
+  (!Array.isArray(date) && date.length === 0) ? date_val = new Date() : isNaN(new Date(date).getTime()) ?
+    (date_val = new Date(), existIncorrect = true) : date_val = new Date(date);
   let meta = pos(counter);
   return {
     value: date_val,
     type: "DateTime",
-    metadata: meta ? JSON.parse(meta) : {}
+    metadata: meta ? JSON.parse(meta) : {},
+    warning: (existIncorrect) ? 111 : undefined
   }
 }
 
@@ -472,7 +513,6 @@ function stringCheck(value, ext) { //OK Optional String
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof value === 'object' && value !== null) {
       (typeof value.value === "string") ?  value.value : (value.value = "", existIncorrect = true);
-      
       return {
         "value": value.value || "",
         "type": "String",
@@ -487,7 +527,6 @@ function stringCheck(value, ext) { //OK Optional String
       }
     }
   }
-
 
   let meta = pos(counter);
   if (meta) {
@@ -540,9 +579,11 @@ function stringToArrayNum(string, ext) { //OK Optional List<Float>
     if (meta) {
       obj = [];
       let send = {
-        value: arrToNum(string),
+        // value: arrToNum(string),
+        value: (arrToNum(string)).data,
         type: "List",
-        metadata: JSON.parse(meta)
+        metadata: JSON.parse(meta),
+        warning: (arrToNum(string)).existIncorrect ? 111 : undefined
       };
       obj.push(send);
     }
@@ -550,10 +591,12 @@ function stringToArrayNum(string, ext) { //OK Optional List<Float>
     if (obj.length !== 0) {
       return obj[0];
     }
+   
     return {
-      value: arrToNum(string),
+      value: (arrToNum(string)).data,
       type: "List",
-      metadata: {}
+      metadata: {},
+      warning: (arrToNum(string)).existIncorrect ? 111 : undefined
     }
   } else {
     obj = [];
@@ -588,6 +631,7 @@ function stringToArrayNumMandatory(string, ext) { //OK Mandatory List<Float>
           existIncorrect = true
         return finalList;
       }, []);
+
       return {
         value: string.value || [],
         type: "List",
@@ -612,9 +656,10 @@ function stringToArrayNumMandatory(string, ext) { //OK Mandatory List<Float>
     if (meta) {
       obj = [];
       let send = {
-        value: arrToNum(string),
+        value: (arrToNum(string)).data,
         type: "List",
-        metadata: JSON.parse(meta)
+        metadata: JSON.parse(meta),
+        warning: (arrToNum(string)).existIncorrect ? 111 : undefined
       };
       obj.push(send);
     }
@@ -622,10 +667,12 @@ function stringToArrayNumMandatory(string, ext) { //OK Mandatory List<Float>
     if (obj.length !== 0) {
       return obj[0];
     }
+
     return {
-      value: arrToNum(string),
+      value: (arrToNum(string)).data,
       type: "List",
-      metadata: {}
+      metadata: {},
+      warning: (arrToNum(string)).existIncorrect ? 111 : undefined
     };
   } else {
     obj = [];
@@ -726,7 +773,6 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
     if (obj.length !== 0) {
       return obj[0];
     }
-
     return {
       "value": {
         "type": "Point",
@@ -736,10 +782,12 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
       "metadata": {}
     }
   } else { 
+    existIncorrect = true;
     return {
       value: {},
       type: "geo:json",
-      metadata: {}
+      metadata: {},
+      warning: existIncorrect ? 111 : undefined
     }
   }
 }
@@ -794,6 +842,7 @@ function locationCheckNoMand(location, ext) { // Optional geo:json
   }
   const x = Number(coordinates[0]);
   const y = Number(coordinates[1]);
+
   if (!isNaN(x) && typeof x === 'number' && x <= 180 && x >= -180 && !isNaN(y) && typeof y === 'number' && y <= 90 && y >= -90) {
     let obj = [];
     if (meta) {
@@ -813,7 +862,6 @@ function locationCheckNoMand(location, ext) { // Optional geo:json
     if (obj.length !== 0) {
       return obj[0];
     }
-
     return {
       "value": {
         "type": "Point",
@@ -823,11 +871,12 @@ function locationCheckNoMand(location, ext) { // Optional geo:json
       metadata: {}
     };
   }
-
+  else existIncorrect = true;
   return {
     value: {},
     type: "geo:json",
-    metadata: meta ? JSON.parse(meta) : {}
+    metadata: meta ? JSON.parse(meta) : {},
+    warning: existIncorrect ? 111 : undefined
   };
 }
 
@@ -870,6 +919,7 @@ function arrToNumOld(string) {
 }
 
 function arrToNum(string) {
+  let existIncorrect = false;
   // let data = string ? string.split(',').map(raw => Number(raw.trim()) ? Number(raw.trim()) : 0) : [];
   let data = [];
   if (string) {
@@ -877,10 +927,14 @@ function arrToNum(string) {
     data = string.reduce((finalList, str) => {
       if (str !== "" && (Number(str) || Number(str) === 0))
         finalList.push(Number(str));
+      else
+        existIncorrect = true;
+    
       return finalList;
     }, []);
   }
-  return data;
+  // return data;
+  return { data: data, existIncorrect: existIncorrect };
 }
 
 function structuredValue(string, ext) {
@@ -912,19 +966,23 @@ function structuredValue(string, ext) {
     string_obj = urlEncodeForbiddenObj(string_obj);
   } else {
     string_obj = {};
+    existIncorrect = true;
   }
 
   if (meta) {
     return {
       "value": string_obj || {}, // specCase(string) || {},
       "type": "StructuredValue",
-      metadata: JSON.parse(meta)
+      metadata: JSON.parse(meta),
+      warning: existIncorrect ? 111 : undefined
     };
   }
+  
   return {
     "value": string_obj || {}, // specCase(string) || {},
     "type": "StructuredValue",
-    "metadata": {}
+    "metadata": {},
+    "warning": existIncorrect ? 111 : undefined
   }
 }
 
@@ -957,11 +1015,13 @@ function structuredValueMandatory(string, ext) {
     string_obj = urlEncodeForbiddenObj(string_obj);
   } else {
     string_obj = {};
+    existIncorrect = true;
   }
   return {
     "value": string_obj, //specCase(string) || "",
     "type": "StructuredValue",
-    "metadata": meta ? JSON.parse(meta) : {}
+    "metadata": meta ? JSON.parse(meta) : {},
+    "warning": existIncorrect ? 111 : undefined
   }
 }
 
@@ -1032,7 +1092,7 @@ function structuredListMandatory(string, ext) {
       array.push(string);
     }
   }
-
+  
   return {
     "value": array || [], //specCase(string) || "",
     "type": "List",
