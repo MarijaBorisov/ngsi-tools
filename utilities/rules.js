@@ -1032,7 +1032,7 @@ function structuredListMandatory(string, ext) {
     return null;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
-      // string.value = Array.isArray(string.value) ? string.value : [];
+      //  string.value = Array.isArray(string.value) ? string.value : [];
       Array.isArray(string.value) ? string.value : (string.value = [], existIncorrect = true);
       string.value = string.value.reduce((finalList, raw) => {
         if (typeof raw === "object" && !Array.isArray(raw))
@@ -1059,6 +1059,8 @@ function structuredListMandatory(string, ext) {
 
   let meta = pos(counter);
   let array = [];
+  incorrectData = IsJsonString(string) ? JSON.parse(string) : [];
+  incorrectData = incorrectData.filter(x => typeof x !== 'object' || Array.isArray(x));
   string = string.trim();
   if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1) {
     string = string.substring(1, string.length - 1).trim();
@@ -1092,11 +1094,12 @@ function structuredListMandatory(string, ext) {
       array.push(string);
     }
   }
-  
+
   return {
     "value": array || [], //specCase(string) || "",
     "type": "List",
-    "metadata": meta ? JSON.parse(meta) : {}
+    "metadata": meta ? JSON.parse(meta) : {},
+    "warning": (incorrectData.length>0) ? 111 : undefined
   }
 }
 
@@ -1105,7 +1108,7 @@ function getPosition(string, subString, index) {
 }
 
 function structuredList(string, ext) {
-  var existIncorrect = false;
+  let existIncorrect = false;
   counter += 1;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
@@ -1134,7 +1137,10 @@ function structuredList(string, ext) {
 
   let meta = pos(counter);
   let array = [];
+  incorrectData = IsJsonString(string) ? JSON.parse(string) : [];
+  incorrectData = incorrectData.filter(x => typeof x !== 'object' || Array.isArray(x));
   string = string.trim();
+
   if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1) {
     string = string.substring(1, string.length - 1).trim();
   }
@@ -1171,7 +1177,8 @@ function structuredList(string, ext) {
   return {
     value: array || [], //specCase(string) || [],
     type: "List",
-    metadata: meta ? JSON.parse(meta) : {}
+    metadata: meta ? JSON.parse(meta) : {},
+    "warning": (incorrectData.length > 0) ? 111 : undefined
   };
 }
 
