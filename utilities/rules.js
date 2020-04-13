@@ -19,10 +19,12 @@ function commaNumToUnits(oldNum, ext) { //OK Float Optional
         "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
+      existIncorrect = true;
       return {
         "value": 0,
         "type": "Float",
-        "metadata": {}
+        "metadata": {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     }
   }
@@ -71,10 +73,12 @@ function commaNumToUnitsInt(oldNum, ext) { //OK Opional Integer
         "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
+      existIncorrect= true
       return {
         "value": 0,
         "type": "Integer",
-        "metadata": {}
+        "metadata": {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     }
   }
@@ -126,10 +130,12 @@ function commaNumToUnitsIntMandatory(oldNum, ext) { //OK Mandatory Integer
         "warning": (existIncorrect) ? 111 : undefined
       };
     } else {
+      existIncorrect = true;
       return {
         "value": 0,
         "type": "Integer",
-        "metadata": {}
+        "metadata": {},
+        "warning": (existIncorrect) ? 111 : undefined
       };
     }
   }
@@ -181,10 +187,12 @@ function commaNumToUnitsMandatory(oldNum, ext) { //OK Mandatory Float
         "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
+      existIncorrect = true;     
       return {
         "value": 0,
         "type": "Float",
-        "metadata": {}
+        "metadata": {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     }
   }
@@ -245,10 +253,12 @@ function stringToArray(string, ext) { //OK Optional List Float or String
         warning: (existIncorrect) ? 111 : undefined
       };
     } else {
+      existIncorrect = true;  
       return {
         "value": [],
         "type": "List",
-        "metadata": {}
+        "metadata": {},
+        warning: (existIncorrect) ? 111 : undefined
       };
     }
 
@@ -322,10 +332,12 @@ function stringToArrayMandatory(string, ext) { //OK Mandatory List Float or Stri
         warning: (existIncorrect) ? 111 : undefined
       }
     } else {
+      existIncorrect = true;  
       return {
         "value": [],
         "type": "List",
-        "metadata": {}
+        "metadata": {},
+        "warning": (existIncorrect) ? 111 : undefined        
       }
     }
   }
@@ -390,10 +402,12 @@ function dateCheckMandatory(date, ext) { // Not in use
         warning: (existIncorrect) ? 111 : undefined
       };
     } else {
+      existIncorrect = true;
       return {
         value: new Date(),
         type: "DateTime",
-        metadata: {}
+        metadata: {},
+        warning: (existIncorrect) ? 111 : undefined
       };
     }
   }
@@ -431,10 +445,12 @@ function dateCheck(date, ext) {
         warning: (existIncorrect) ? 111 : undefined
       };
     } else {
+      existIncorrect = true;
       return {
         value: new Date(),
         type: "DateTime",
-        metadata: {}
+        metadata: {},
+        warning: (existIncorrect) ? 111 : undefined
       };
     }
   }
@@ -468,10 +484,12 @@ function mandatoryCheck(attribute, ext) { //OK Mandatory String
         warning: (existIncorrect) ? 111 : undefined
       };
     } else {
+      existIncorrect = true;
       return {
         value: "",
         type: "String",
         metadata: {},
+        warning: (existIncorrect) ? 111 : undefined
       };
     }
   }
@@ -520,10 +538,12 @@ function stringCheck(value, ext) { //OK Optional String
         "warning": (existIncorrect)? 111 : undefined
       }
     } else {
+      existIncorrect = true;
       return {
         "value": "",
         "type": "String",
-        "metadata": {}
+        "metadata": {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     }
   }
@@ -562,10 +582,12 @@ function stringToArrayNum(string, ext) { //OK Optional List<Float>
         warning: (existIncorrect) ? 111 : undefined
       }
     } else {
+      existIncorrect = true;
       return {
         "value": [],
         "type": "List",
         "metadata": {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     }
   }
@@ -639,10 +661,12 @@ function stringToArrayNumMandatory(string, ext) { //OK Mandatory List<Float>
         warning: (existIncorrect) ? 111 : undefined
       };
     } else {
+      existIncorrect = true;
       return {
         value: [],
         type: "List",
-        metadata: {}
+        metadata: {},
+        warning: (existIncorrect) ? 111 : undefined
       };
     }
   }
