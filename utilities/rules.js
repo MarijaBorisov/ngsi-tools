@@ -760,10 +760,12 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
         warning: (existIncorrect) ? 111 : undefined
       }
     } else {
+      existIncorrect = (typeof location != 'object') ? true : false;
       return {
         value: {},
         type: "geo:json",
-        metadata: {}
+        metadata: {},
+        warning: (existIncorrect) ? 111 : undefined
       }
     }
   }
@@ -845,10 +847,12 @@ function locationCheckNoMand(location, ext) { // Optional geo:json
         warning: (existIncorrect) ? 111 : undefined
       }
     } else {
+      existIncorrect = location != "object" ? true : false;
       return {
         value: {},
         type: "geo:json",
-        metadata: {}
+        metadata: {},
+        warning: (existIncorrect) ? 111 : undefined
       }
     }
   }
@@ -858,10 +862,12 @@ function locationCheckNoMand(location, ext) { // Optional geo:json
 
   let meta = pos(counter);
   if (!data || data.length === 0 || coordinates.length < 2) {
+    existIncorrect = (!location || location.trim().length === 0) ? false : true; 
     return {
       value: {},
       type: "geo:json",
-      metadata: meta ? JSON.parse(meta) : {}
+      metadata: meta ? JSON.parse(meta) : {},
+      warning: (existIncorrect) ? 111 : undefined
     };
   }
   const x = Number(coordinates[0]);
@@ -975,10 +981,12 @@ function structuredValue(string, ext) {
         "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
+      existIncorrect = (typeof string !== "object") ? true : false;
       return {
         "value": {},
         "type": "StructuredValue",
-        "metadata": {}
+        "metadata": {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     }
   }
@@ -1025,10 +1033,12 @@ function structuredValueMandatory(string, ext) {
         "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
+      existIncorrect = (typeof string != "object") ? true : false;
       return {
         "value": {},
         "type": "StructuredValue",
-        "metadata": {}
+        "metadata": {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     }
   }
@@ -1052,8 +1062,9 @@ function structuredValueMandatory(string, ext) {
 function structuredListMandatory(string, ext) {
   let existIncorrect = false;
   counter += 1
-  if (!string)
+  if (!string) {
     return null;
+  }
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
       //  string.value = Array.isArray(string.value) ? string.value : [];
@@ -1073,18 +1084,26 @@ function structuredListMandatory(string, ext) {
         "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
+      existIncorrect = (typeof string != "object") ? true : false;
       return {
         "value": [],
         "type": "List",
-        "metadata": {}
+        "metadata": {},
+        "warning": (existIncorrect) ? 111 : undefined
       }
     }
   }
-
   let meta = pos(counter);
   let array = [];
-  incorrectData = IsJsonString(string) ? JSON.parse(string) : [];
-  incorrectData = incorrectData.filter(x => typeof x !== 'object' || Array.isArray(x));
+  var incorrectData=[];
+  // incorrectData = IsJsonString(string) ? JSON.parse(string) : [];
+  // incorrectData = incorrectData.filter(x => typeof x !== 'object' || Array.isArray(x));
+  if (IsJsonString(string) && Array.isArray(JSON.parse(decodeURIComponent( string)))) {
+    incorrectData = JSON.parse(decodeURIComponent(string));
+    incorrectData = incorrectData.filter(x => typeof x !== 'object' || Array.isArray(x));
+  } else { 
+    incorrectData.push(string);
+  }
   string = string.trim();
   if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1) {
     string = string.substring(1, string.length - 1).trim();
@@ -1151,18 +1170,27 @@ function structuredList(string, ext) {
         warning: (existIncorrect) ? 111 : undefined
       };
     } else {
+      existIncorrect = (typeof string != "object") ? true : false;
       return {
         value: [],
         type: "List",
-        metadata: {}
+        metadata: {},
+        warning: (existIncorrect) ? 111 : undefined
       };
     }
   }
 
   let meta = pos(counter);
   let array = [];
-  incorrectData = IsJsonString(string) ? JSON.parse(string) : [];
-  incorrectData = incorrectData.filter(x => typeof x !== 'object' || Array.isArray(x));
+  var incorrectData = [];
+  // incorrectData = IsJsonString(string) ? JSON.parse(string) : [];
+  // incorrectData = incorrectData.filter(x => typeof x !== 'object' || Array.isArray(x));
+  if (IsJsonString(string) && Array.isArray(JSON.parse(decodeURIComponent( string)))) {
+    incorrectData = JSON.parse(decodeURIComponent(string));
+    incorrectData = incorrectData.filter(x => typeof x !== 'object' || Array.isArray(x));
+  } else { 
+    incorrectData.push(string);
+  }
   string = string.trim();
 
   if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1) {
