@@ -186,7 +186,7 @@ function processEntity( rules, entity, option, ext ) {
         try {
             result[ property ] = processEntityProperty( rules, entity, property, ext );
           if (result[property].warning) { 
-            warnings.push(`Property ${property} in ${entity.id} does not have (all) correct data type. Default value and/or just the values that are correct are written in the database. Incorrect values are disregarded.`);
+            warnings.push(`Property ${property} in ${entity.id} has not had (all) correct data type(s) for (all) value(s). Default value and/or only the values that are correct were saved in the database. Incorrect values were disregarded.`);
             delete result[property].warning;
           }
         } catch ( error ) {
