@@ -140,6 +140,10 @@ function commaNumToUnitsIntMandatory(oldNum, ext) { //OK Mandatory Integer
     }
   }
 
+  if (oldNum.trim().length === 0) { 
+    return null;
+  }
+
   let newNum;
   let obj = [];
   let meta = pos(counter);
@@ -195,6 +199,10 @@ function commaNumToUnitsMandatory(oldNum, ext) { //OK Mandatory Float
         "warning": (existIncorrect) ? 111 : undefined
       }
     }
+  }
+
+  if (oldNum.trim().length === 0) { 
+    return null;
   }
 
   let newNum;
@@ -342,6 +350,10 @@ function stringToArrayMandatory(string, ext) { //OK Mandatory List Float or Stri
     }
   }
 
+  if (string.trim().length === 0) { 
+    return null;
+  }
+
   if (string) {
     string = string.trim();
     if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1)
@@ -410,6 +422,10 @@ function dateCheckMandatory(date, ext) { // Not in use
         warning: (existIncorrect) ? 111 : undefined
       };
     }
+  }
+
+  if (date.trim().length === 0) { 
+    return null;
   }
 
   (!Array.isArray(date) && date.length === 0) ? date_val = new Date() : isNaN(new Date(date).getTime()) ?
@@ -492,6 +508,10 @@ function mandatoryCheck(attribute, ext) { //OK Mandatory String
         warning: (existIncorrect) ? 111 : undefined
       };
     }
+  }
+
+  if (attribute.trim().length === 0) { 
+    return null;
   }
 
   const test = attribute.split("");
@@ -671,6 +691,10 @@ function stringToArrayNumMandatory(string, ext) { //OK Mandatory List<Float>
     }
   }
 
+  if (string.trim().length === 0) { 
+    return null;
+  }
+
   if (string) {
     string = string.trim();
     if (string.indexOf("[") == 0 && string.indexOf("]") == string.length - 1)
@@ -770,8 +794,23 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
     }
   }
 
+  if (location.trim().length === 0) { 
+    return null;
+  }
+
   const data = location.substring(location.indexOf('[') + 1, location.indexOf(']'));
   const coordinates = data.split(',', 2);
+
+  let meta = pos(counter);
+  if (!data || data.length === 0 || coordinates.length < 2 || coordinates[0].trim().length == 0 || coordinates[1].trim().length == 0) {
+    existIncorrect = (!location || location.trim().length === 0) ? false : true; 
+    return {
+      value: {},
+      type: "geo:json",
+      metadata: meta ? JSON.parse(meta) : {},
+      warning: (existIncorrect) ? 111 : undefined
+    };
+  }
 
   const x = Number(coordinates[0]);
   const y = Number(coordinates[1]);
@@ -781,7 +820,7 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
   // }
   if (!isNaN(x) && typeof x === 'number' && x <= 180 && x >= -180 && !isNaN(y) && typeof y === 'number' && y <= 90 && y >= -90) { // x || x
     let obj = [];
-    let meta = pos(counter);
+    // let meta = pos(counter);
     if (meta) {
       obj = [];
       let send = {
@@ -812,7 +851,7 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
     return {
       value: {},
       type: "geo:json",
-      metadata: {},
+      metadata: meta ? JSON.parse(meta) : {},
       warning: existIncorrect ? 111 : undefined
     }
   }
@@ -861,7 +900,7 @@ function locationCheckNoMand(location, ext) { // Optional geo:json
   const coordinates = data ? data.split(',', 2) : [];
 
   let meta = pos(counter);
-  if (!data || data.length === 0 || coordinates.length < 2) {
+  if (!data || data.length === 0 || coordinates.length < 2 || coordinates[0].trim().length == 0 || coordinates[1].trim().length == 0) {
     existIncorrect = (!location || location.trim().length === 0) ? false : true; 
     return {
       value: {},
@@ -870,6 +909,7 @@ function locationCheckNoMand(location, ext) { // Optional geo:json
       warning: (existIncorrect) ? 111 : undefined
     };
   }
+
   const x = Number(coordinates[0]);
   const y = Number(coordinates[1]);
 
@@ -1042,6 +1082,11 @@ function structuredValueMandatory(string, ext) {
       }
     }
   }
+
+  if (string.trim().length === 0) { 
+    return null;
+  }
+
   let meta = pos(counter);
   var string_obj;
   if (IsJsonString(string)) {
@@ -1093,6 +1138,11 @@ function structuredListMandatory(string, ext) {
       }
     }
   }
+
+  if (string.trim().length === 0) { 
+    return null;
+  }
+  
   let meta = pos(counter);
   let array = [];
   var incorrectData=[];
