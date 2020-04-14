@@ -19,7 +19,7 @@ function commaNumToUnits(oldNum, ext) { //OK Float Optional
         "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
-      existIncorrect = true;
+      existIncorrect = (typeof oldNum !== "object") ? true : false;
       return {
         "value": 0,
         "type": "Float",
@@ -73,7 +73,7 @@ function commaNumToUnitsInt(oldNum, ext) { //OK Opional Integer
         "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
-      existIncorrect= true
+      existIncorrect = (typeof oldNum !== "object") ? true : false;
       return {
         "value": 0,
         "type": "Integer",
@@ -130,7 +130,7 @@ function commaNumToUnitsIntMandatory(oldNum, ext) { //OK Mandatory Integer
         "warning": (existIncorrect) ? 111 : undefined
       };
     } else {
-      existIncorrect = true;
+      existIncorrect = (typeof oldNum !== "object") ? true : false;
       return {
         "value": 0,
         "type": "Integer",
@@ -187,7 +187,7 @@ function commaNumToUnitsMandatory(oldNum, ext) { //OK Mandatory Float
         "warning": (existIncorrect) ? 111 : undefined
       }
     } else {
-      existIncorrect = true;     
+      existIncorrect = (typeof oldNum !== "object") ? true : false;     
       return {
         "value": 0,
         "type": "Float",
@@ -253,7 +253,7 @@ function stringToArray(string, ext) { //OK Optional List Float or String
         warning: (existIncorrect) ? 111 : undefined
       };
     } else {
-      existIncorrect = true;  
+      existIncorrect = (typeof string !== "object") ? true : false; 
       return {
         "value": [],
         "type": "List",
@@ -332,7 +332,7 @@ function stringToArrayMandatory(string, ext) { //OK Mandatory List Float or Stri
         warning: (existIncorrect) ? 111 : undefined
       }
     } else {
-      existIncorrect = true;  
+      existIncorrect = (typeof string !== "object") ? true : false;  
       return {
         "value": [],
         "type": "List",
@@ -392,7 +392,7 @@ function dateCheckMandatory(date, ext) { // Not in use
   let date_val;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof date === 'object' && date !== null) {
-      (!Array.isArray(date.value) && date.value.length === 0) ? date_val = new Date() : isNaN(new Date(date.value).getTime()) ?
+      (!Array.isArray(date.value) || date.value.length === 0) ? (date_val = new Date(), existIncorrect = true) : isNaN(new Date(date.value).getTime()) ?
         (date_val = new Date(), existIncorrect = true) : date_val = new Date(date.value);
       
       return {
@@ -402,7 +402,7 @@ function dateCheckMandatory(date, ext) { // Not in use
         warning: (existIncorrect) ? 111 : undefined
       };
     } else {
-      existIncorrect = true;
+      existIncorrect = (typeof date !== "object") ? true : false; 
       return {
         value: new Date(),
         type: "DateTime",
@@ -436,7 +436,7 @@ function dateCheck(date, ext) {
   let date_val;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof date === 'object' && date !== null) {
-      (!Array.isArray(date.value) && date.value.length === 0) ? date_val = new Date() : isNaN(new Date(date.value).getTime()) ?
+      (!Array.isArray(date.value) || date.value.length === 0) ? (date_val = new Date(), existIncorrect = true) : isNaN(new Date(date.value).getTime()) ?
         (date_val = new Date(), existIncorrect = true) : date_val = new Date(date.value);
       return {
         value: date_val,
@@ -445,7 +445,7 @@ function dateCheck(date, ext) {
         warning: (existIncorrect) ? 111 : undefined
       };
     } else {
-      existIncorrect = true;
+      existIncorrect = (typeof date !== "object") ? true : false; 
       return {
         value: new Date(),
         type: "DateTime",
@@ -484,7 +484,7 @@ function mandatoryCheck(attribute, ext) { //OK Mandatory String
         warning: (existIncorrect) ? 111 : undefined
       };
     } else {
-      existIncorrect = true;
+      existIncorrect = (typeof attribute !== "object") ? true : false; 
       return {
         value: "",
         type: "String",
@@ -538,7 +538,7 @@ function stringCheck(value, ext) { //OK Optional String
         "warning": (existIncorrect)? 111 : undefined
       }
     } else {
-      existIncorrect = true;
+      existIncorrect = (typeof value !== "object") ? true : false; 
       return {
         "value": "",
         "type": "String",
@@ -582,7 +582,7 @@ function stringToArrayNum(string, ext) { //OK Optional List<Float>
         warning: (existIncorrect) ? 111 : undefined
       }
     } else {
-      existIncorrect = true;
+      existIncorrect = (typeof string !== "object") ? true : false; 
       return {
         "value": [],
         "type": "List",
@@ -661,7 +661,7 @@ function stringToArrayNumMandatory(string, ext) { //OK Mandatory List<Float>
         warning: (existIncorrect) ? 111 : undefined
       };
     } else {
-      existIncorrect = true;
+      existIncorrect = (typeof string !== "object") ? true : false; 
       return {
         value: [],
         type: "List",
