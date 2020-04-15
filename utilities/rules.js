@@ -417,7 +417,7 @@ function dateCheckMandatory(date, ext) { // Not in use
   let date_val;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof date === 'object' && date !== null) {
-      (!Array.isArray(date.value) || date.value.length === 0) ? (date_val = new Date(), existIncorrect = true) : isNaN(new Date(date.value).getTime()) ?
+      (Array.isArray(date.value) || date.value.length === 0) ? (date_val = new Date(), existIncorrect = true) : isNaN(new Date(date.value).getTime()) ?
         (date_val = new Date(), existIncorrect = true) : date_val = new Date(date.value);
       
       return {
@@ -441,7 +441,7 @@ function dateCheckMandatory(date, ext) { // Not in use
     return null;
   }
 
-  (!Array.isArray(date) && date.length === 0) ? date_val = new Date() : isNaN(new Date(date).getTime()) ?
+  (Array.isArray(date) && date.length === 0) ? date_val = new Date() : isNaN(new Date(date).getTime()) ?
     (date_val = new Date(), existIncorrect = true) : date_val = new Date(date);
   
     let meta = pos(counter);
@@ -465,7 +465,7 @@ function dateCheck(date, ext) {
   let date_val;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof date === 'object' && date !== null) {
-      (!Array.isArray(date.value) || date.value.length === 0) ? (date_val = new Date(), existIncorrect = true) : isNaN(new Date(date.value).getTime()) ?
+      (Array.isArray(date.value) || date.value.length === 0) ? (date_val = new Date(), existIncorrect = true) : isNaN(new Date(date.value).getTime()) ?
         (date_val = new Date(), existIncorrect = true) : date_val = new Date(date.value);
       return {
         value: date_val,
@@ -484,7 +484,7 @@ function dateCheck(date, ext) {
     }
   }
 
-  (!Array.isArray(date) && date.length === 0) ? date_val = new Date() : isNaN(new Date(date).getTime()) ?
+  (Array.isArray(date) && date.length === 0) ? date_val = new Date() : isNaN(new Date(date).getTime()) ?
     (date_val = new Date(), existIncorrect = true) : date_val = new Date(date);
   let meta = pos(counter);
   return {
