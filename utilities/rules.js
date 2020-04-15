@@ -62,10 +62,14 @@ function commaNumToUnits(oldNum, ext) { //OK Float Optional
 function commaNumToUnitsInt(oldNum, ext) { //OK Opional Integer
   counter += 1;
   let existIncorrect = false;
+  let newNum;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof oldNum === 'object' && oldNum !== null) {
       (!Array.isArray(oldNum.value) && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
-        (oldNum.value = parseInt(Number(oldNum.value))) : (oldNum.value = 0, existIncorrect = true);
+        (newNum = Number(oldNum.value), oldNum.value = parseInt(Number(oldNum.value))) : (oldNum.value = 0, newNum = 0, existIncorrect = true);
+      if (oldNum.value != newNum) { 
+        existIncorrect = true;
+      }
       return {
         "value": oldNum.value || 0,
         "type": "Integer",
@@ -83,13 +87,15 @@ function commaNumToUnitsInt(oldNum, ext) { //OK Opional Integer
     }
   }
  
-  let newNum;
+  
   let obj = [];
   let meta = pos(counter);
 
   (!Array.isArray(oldNum) && (Number(oldNum) || Number(oldNum) === 0)) ?
-    newNum = parseInt(Number(oldNum)) : (newNum = 0, existIncorrect = true);
-  
+    (oldNum = Number(oldNum), newNum = parseInt(Number(oldNum))) : (newNum = 0, oldNum = 0, existIncorrect = true);
+  if (oldNum != newNum) { 
+    existIncorrect = true;
+  }
   if (meta) {
     obj = [];
     let send = {
@@ -116,13 +122,18 @@ function commaNumToUnitsInt(oldNum, ext) { //OK Opional Integer
 function commaNumToUnitsIntMandatory(oldNum, ext) { //OK Mandatory Integer
   counter += 1;
   let existIncorrect = false;
+  let newNum;
   if (!oldNum) {
     return null;
   }
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof oldNum === "object" && oldNum !== null) {
       (!Array.isArray(oldNum.value) && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
-        (oldNum.value = parseInt(Number(oldNum.value))) : (oldNum.value = 0, existIncorrect = true);
+        (newNum = Number(oldNum.value), oldNum.value = parseInt(Number(oldNum.value))) : (oldNum.value = 0, newNum = 0, existIncorrect = true);
+      if (oldNum.value != newNum) { 
+        existIncorrect = true;
+      }
+
       return {
         "value": oldNum.value || 0,
         "type": "Integer",
@@ -144,13 +155,15 @@ function commaNumToUnitsIntMandatory(oldNum, ext) { //OK Mandatory Integer
     return null;
   }
 
-  let newNum;
+  
   let obj = [];
   let meta = pos(counter);
 
   (!Array.isArray(oldNum) && (Number(oldNum) || Number(oldNum) === 0)) ?
-    newNum = parseInt(Number(oldNum)) : (newNum = 0, existIncorrect = true);
-  
+    (oldNum = Number(oldNum), newNum = parseInt(Number(oldNum))) : (newNum = 0, oldNum = 0, existIncorrect = true);
+  if (oldNum != newNum) { 
+    existIncorrect = true;
+  }
   if (meta) {
     obj = [];
     let send = {
