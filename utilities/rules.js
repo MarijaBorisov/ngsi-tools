@@ -10,7 +10,7 @@ function commaNumToUnits(oldNum, ext) { //OK Float Optional
   let existIncorrect = false;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof oldNum === 'object' && oldNum !== null) {
-      (!Array.isArray(oldNum.value) && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
+      (!Array.isArray(oldNum.value) && (typeof oldNum.value === "number") && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
         oldNum.value = Number(oldNum.value) : (oldNum.value = 0, existIncorrect = true); 
       return {
         "value": oldNum.value || 0,
@@ -65,7 +65,7 @@ function commaNumToUnitsInt(oldNum, ext) { //OK Opional Integer
   let newNum;
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof oldNum === 'object' && oldNum !== null) {
-      (!Array.isArray(oldNum.value) && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
+      (!Array.isArray(oldNum.value) && (typeof oldNum.value === "number") && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
         (newNum = Number(oldNum.value), oldNum.value = parseInt(Number(oldNum.value))) : (oldNum.value = 0, newNum = 0, existIncorrect = true);
       if (oldNum.value != newNum) { 
         existIncorrect = true;
@@ -128,7 +128,7 @@ function commaNumToUnitsIntMandatory(oldNum, ext) { //OK Mandatory Integer
   }
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof oldNum === "object" && oldNum !== null) {
-      (!Array.isArray(oldNum.value) && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
+      (!Array.isArray(oldNum.value) && (typeof oldNum.value === "number") && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
         (newNum = Number(oldNum.value), oldNum.value = parseInt(Number(oldNum.value))) : (oldNum.value = 0, newNum = 0, existIncorrect = true);
       if (oldNum.value != newNum) { 
         existIncorrect = true;
@@ -195,7 +195,7 @@ function commaNumToUnitsMandatory(oldNum, ext) { //OK Mandatory Float
   }
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof oldNum === 'object' && oldNum !== null) {
-      (!Array.isArray(oldNum.value) && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
+      (!Array.isArray(oldNum.value) && (typeof oldNum.value === "number") && (Number(oldNum.value) || Number(oldNum.value) === 0)) ?
         oldNum.value = Number(oldNum.value) : (oldNum.value = 0, existIncorrect = true); 
       return {
         "value": oldNum.value || 0,
@@ -603,7 +603,7 @@ function stringToArrayNum(string, ext) { //OK Optional List<Float>
     if (typeof string === 'object' && string !== null) {
       (Array.isArray(string.value)) ? string.value : (string.value = [], existIncorrect = true);
       string.value = string.value.reduce((finalList, raw) => {
-        if (Number(raw) || Number(raw) === 0)
+        if (typeof raw === "number" && (Number(raw) || Number(raw) === 0))
           finalList.push(Number(raw));
         else existIncorrect = true;
         return finalList;
@@ -680,7 +680,7 @@ function stringToArrayNumMandatory(string, ext) { //OK Mandatory List<Float>
       // string.value = Array.isArray(string.value) ? string.value : [];
       (Array.isArray(string.value)) ? string.value : (string.value = [], existIncorrect = true);
       string.value = string.value.reduce((finalList, raw) => {
-        if (Number(raw) || Number(raw) === 0)
+        if (typeof raw === "number" && (Number(raw) || Number(raw) === 0))
           finalList.push(Number(raw));
         else
           existIncorrect = true
