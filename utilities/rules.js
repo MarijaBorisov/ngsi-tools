@@ -1117,7 +1117,7 @@ function structuredValueMandatory(string, ext) {
   }
 }
 
-function structuredListMandatory(string, ext) {
+function structuredListMandatoryOld(string, ext) {
   let existIncorrect = false;
   counter += 1
   if (!string) {
@@ -1209,11 +1209,191 @@ function structuredListMandatory(string, ext) {
   }
 }
 
+function structuredListMandatory(string, ext) {
+  let existIncorrect = false;
+  counter += 1
+  if (!string) {
+    return null;
+  }
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof string === "object" && string !== null) {
+      Array.isArray(string.value) ? string.value : (string.value = [], existIncorrect = true);
+      string.value = string.value.reduce((finalList, raw) => {
+        if (typeof raw === "object" )
+          finalList.push(raw);
+        else
+          existIncorrect = true;
+      
+        return finalList;
+      }, []);
+      return {
+        "value": string.value || [],
+        "type": "List",
+        "metadata": string.metadata || {},
+        "warning": (existIncorrect) ? 111 : undefined
+      }
+    } else {
+      existIncorrect = (typeof string != "object") ? true : false;
+      return {
+        "value": [],
+        "type": "List",
+        "metadata": {},
+        "warning": (existIncorrect) ? 111 : undefined
+      }
+    }
+  }
+
+  if (string.trim().length === 0) { 
+    return null;
+  }
+  
+  let meta = pos(counter);
+  let array = [];
+  var incorrectData=[];
+
+  if (IsJsonString(string) && Array.isArray(JSON.parse(decodeURIComponent( string)))) {
+    incorrectData = JSON.parse(decodeURIComponent(string));
+    incorrectData = incorrectData.filter(x => typeof x !== 'object');
+    if (incorrectData.length === 0) { 
+      array = JSON.parse(decodeURIComponent(string));
+      array = urlEncodeForbiddenObj(array);
+      return {
+        "value": array || [],
+        "type": "List",
+        "metadata": meta ? JSON.parse(meta) : {},
+        "warning": (incorrectData.length>0) ? 111 : undefined
+      }
+    }
+  } else { 
+    incorrectData.push(string);
+  }
+  string = string.trim();
+  if (string.indexOf("[") == 0 && string.lastIndexOf("]") == string.length - 1) {
+    string = string.substring(1, string.length - 1).trim();
+  }
+  var j = 1;
+  let obj_start_index = string.indexOf("{");
+  var obj_end_index = getPosition(string, "}", j);
+  var start_arr_index = string.indexOf("[");
+  var stop_arr_index = getPosition(string, "]", j);
+  var start_index;
+  var end_index;
+  var limits;
+  var finished_search_index = 0;
+  if (obj_start_index > -1 && (obj_start_index < start_arr_index || start_arr_index == -1)) {
+    start_index = obj_start_index;
+    end_index = obj.end_index;
+    limits = ["{", "}"];
+  } else { 
+    start_index = start_arr_index;
+    end_index = stop_arr_index;
+    limits = ["[", "]"];
+  }
+  console.log(limits);
+  var test;
+  var obj_stop = false;
+  while (start_index < end_index && start_index > -1 && end_index > -1 && start_index < string.length && end_index < string.length) {
+    test = string.substring(start_index, end_index + 1);
+    console.log("test",test);
+    if (IsJsonString(test)) {
+      console.log("In true", test, limits);
+      test = JSON.parse(decodeURIComponent(test));
+      test = urlEncodeForbiddenObj(test);
+      array.push(test);
+      j = 1;
+      string = string.substring(end_index + 1, string.length).trim();
+      finished_search_index = end_index + 1;
+      obj_start_index = string.indexOf("{");
+      obj_end_index = getPosition(string, "}", j);
+      start_arr_index = string.indexOf("[");
+      stop_arr_index = getPosition(string, "]", j);
+      if (obj_start_index > -1 && (obj_start_index < start_arr_index || start_arr_index == -1)) {
+        start_index = obj_start_index;
+        end_index = obj_end_index;
+        limits = ["{", "}"];
+      } else {
+        start_index = start_arr_index;
+        end_index = stop_arr_index;
+        limits = ["[", "]"];
+      }
+      obj_stop = false;
+    } else if (obj_stop != true) {
+      j++;
+      console.log("***In error", test, limits);
+      var end_index_new = getPosition(string, limits[1], j);
+      if (end_index_new >= string.length) {
+        console.log("Value bigger then end");
+        j = 1;
+        string = string.substring(end_index_new, string.length);
+        obj_start_index = string.indexOf("{");
+        obj_end_index = getPosition(string, "}", j);
+        start_arr_index = string.indexOf("[");
+        stop_arr_index = getPosition(string, "]", j);
+        if (obj_start_index > -1 && (obj_start_index < start_arr_index || start_arr_index == -1)) {
+          start_index = obj_start_index;
+          end_index = obj_end_index;
+          limits = ["{", "}"];
+        } else {
+          start_index = start_arr_index;
+          end_index = stop_arr_index;
+          limits = ["[", "]"];
+        }
+      } else {
+        console.log("in another check");
+        end_index = end_index_new;
+        var test = string.substring(start_index, end_index+1);
+        var n_closed = (test.match(new RegExp("\\"+limits[1], "g")) || []).length;
+        var n_opened = (test.match(new RegExp("\\"+limits[0], "g")) || []).length;
+        console.log("next check", n_closed, n_opened);
+        if (n_opened == n_closed) {
+          obj_stop = true;
+        } else continue;
+      }
+    } else { 
+      console.log("object stop == true");
+      j = 1;
+      string = string.substring(end_index + 1, string.length).trim();
+      finished_search_index = end_index + 1;
+      obj_start_index = string.indexOf("{");
+      obj_end_index = getPosition(string, "}", j);
+      start_arr_index = string.indexOf("[");
+      stop_arr_index = getPosition(string, "]", j);
+      if (obj_start_index > -1 && (obj_start_index < start_arr_index || start_arr_index == -1)) {
+        start_index = obj_start_index;
+        end_index = obj_end_index;
+        limits = ["{", "}"];
+      } else {
+        start_index = start_arr_index;
+        end_index = stop_arr_index;
+        limits = ["[", "]"];
+      }
+      console.log(string, limits);
+      obj_stop = false;
+    }
+  }
+  console.log("after", string);
+  string = string.trim();
+  if (((string.indexOf("{") == 0 && string.lastIndexOf("}") == string.length - 1) || (string.indexOf("[") == 0 && string.lastIndexOf("]") == string.length - 1))){
+    if (IsJsonString(string)) {
+      string = JSON.parse(decodeURIComponent(string));
+      string = urlEncodeForbiddenObj(string);
+      array.push(string);
+    }
+  }
+
+  return {
+    "value": array || [],
+    "type": "List",
+    "metadata": meta ? JSON.parse(meta) : {},
+    "warning": (incorrectData.length>0) ? 111 : undefined
+  }
+}
+
 function getPosition(string, subString, index) {
   return string.split(subString, index).join(subString).length;
 }
 
-function structuredList(string, ext) {
+function structuredListOld(string, ext) {
   let existIncorrect = false;
   counter += 1;
   if (ext && ext.toLowerCase() != ".csv") {
@@ -1295,6 +1475,179 @@ function structuredList(string, ext) {
     metadata: meta ? JSON.parse(meta) : {},
     "warning": (incorrectData.length > 0) ? 111 : undefined
   };
+}
+
+function structuredList(string, ext) {
+  let existIncorrect = false;
+  counter += 1;
+  if (ext && ext.toLowerCase() != ".csv") {
+    if (typeof string === "object" && string !== null) {
+      Array.isArray(string.value) ? string.value : (string.value = [], existIncorrect = true);
+      string.value = string.value.reduce((finalList, raw) => {
+        if (typeof raw === "object" )//&& !Array.isArray(raw)
+          finalList.push(raw);
+        else
+          existIncorrect = true;
+        return finalList;
+      }, []);
+      return {
+        value: string.value || [],
+        type: "List",
+        metadata: string.metadata || {},
+        warning: (existIncorrect) ? 111 : undefined
+      };
+    } else {
+      existIncorrect = (typeof string != "object") ? true : false;
+      return {
+        value: [],
+        type: "List",
+        metadata: {},
+        warning: (existIncorrect) ? 111 : undefined
+      };
+    }
+  }
+
+
+  let meta = pos(counter);
+  let array = [];
+  var incorrectData=[];
+
+  if (IsJsonString(string) && Array.isArray(JSON.parse(decodeURIComponent( string)))) {
+    incorrectData = JSON.parse(decodeURIComponent(string));
+    incorrectData = incorrectData.filter(x => typeof x !== 'object');
+    if (incorrectData.length === 0) { 
+      array = JSON.parse(decodeURIComponent(string));
+      array = urlEncodeForbiddenObj(array);
+      return {
+        "value": array || [],
+        "type": "List",
+        "metadata": meta ? JSON.parse(meta) : {},
+        "warning": (incorrectData.length>0) ? 111 : undefined
+      }
+    }
+  } else { 
+    incorrectData.push(string);
+  }
+  string = string.trim();
+  if (string.indexOf("[") == 0 && string.lastIndexOf("]") == string.length - 1) {
+    string = string.substring(1, string.length - 1).trim();
+  }
+  var j = 1;
+  let obj_start_index = string.indexOf("{");
+  var obj_end_index = getPosition(string, "}", j);
+  var start_arr_index = string.indexOf("[");
+  var stop_arr_index = getPosition(string, "]", j);
+  var start_index;
+  var end_index;
+  var limits;
+  var finished_search_index = 0;
+  if (obj_start_index > -1 && (obj_start_index < start_arr_index || start_arr_index == -1)) {
+    start_index = obj_start_index;
+    end_index = obj.end_index;
+    limits = ["{", "}"];
+  } else { 
+    start_index = start_arr_index;
+    end_index = stop_arr_index;
+    limits = ["[", "]"];
+  }
+  console.log(limits);
+  var test;
+  var obj_stop = false;
+  while (start_index < end_index && start_index > -1 && end_index > -1 && start_index < string.length && end_index < string.length) {
+    test = string.substring(start_index, end_index + 1);
+    console.log("test",test);
+    if (IsJsonString(test)) {
+      console.log("In true", test, limits);
+      test = JSON.parse(decodeURIComponent(test));
+      test = urlEncodeForbiddenObj(test);
+      array.push(test);
+      j = 1;
+      string = string.substring(end_index + 1, string.length).trim();
+      finished_search_index = end_index + 1;
+      obj_start_index = string.indexOf("{");
+      obj_end_index = getPosition(string, "}", j);
+      start_arr_index = string.indexOf("[");
+      stop_arr_index = getPosition(string, "]", j);
+      if (obj_start_index > -1 && (obj_start_index < start_arr_index || start_arr_index == -1)) {
+        start_index = obj_start_index;
+        end_index = obj_end_index;
+        limits = ["{", "}"];
+      } else {
+        start_index = start_arr_index;
+        end_index = stop_arr_index;
+        limits = ["[", "]"];
+      }
+      obj_stop = false;
+    } else if (obj_stop != true) {
+      j++;
+      console.log("***In error", test, limits);
+      var end_index_new = getPosition(string, limits[1], j);
+      if (end_index_new >= string.length) {
+        console.log("Value bigger then end");
+        j = 1;
+        string = string.substring(end_index_new, string.length);
+        obj_start_index = string.indexOf("{");
+        obj_end_index = getPosition(string, "}", j);
+        start_arr_index = string.indexOf("[");
+        stop_arr_index = getPosition(string, "]", j);
+        if (obj_start_index > -1 && (obj_start_index < start_arr_index || start_arr_index == -1)) {
+          start_index = obj_start_index;
+          end_index = obj_end_index;
+          limits = ["{", "}"];
+        } else {
+          start_index = start_arr_index;
+          end_index = stop_arr_index;
+          limits = ["[", "]"];
+        }
+      } else {
+        console.log("in another check");
+        end_index = end_index_new;
+        var test = string.substring(start_index, end_index+1);
+        var n_closed = (test.match(new RegExp("\\"+limits[1], "g")) || []).length;
+        var n_opened = (test.match(new RegExp("\\"+limits[0], "g")) || []).length;
+        console.log("next check", n_closed, n_opened);
+        if (n_opened == n_closed) {
+          obj_stop = true;
+        } else continue;
+      }
+    } else { 
+      console.log("object stop == true");
+      j = 1;
+      string = string.substring(end_index + 1, string.length).trim();
+      finished_search_index = end_index + 1;
+      obj_start_index = string.indexOf("{");
+      obj_end_index = getPosition(string, "}", j);
+      start_arr_index = string.indexOf("[");
+      stop_arr_index = getPosition(string, "]", j);
+      if (obj_start_index > -1 && (obj_start_index < start_arr_index || start_arr_index == -1)) {
+        start_index = obj_start_index;
+        end_index = obj_end_index;
+        limits = ["{", "}"];
+      } else {
+        start_index = start_arr_index;
+        end_index = stop_arr_index;
+        limits = ["[", "]"];
+      }
+      console.log(string, limits);
+      obj_stop = false;
+    }
+  }
+  console.log("after", string);
+  string = string.trim();
+  if (((string.indexOf("{") == 0 && string.lastIndexOf("}") == string.length - 1) || (string.indexOf("[") == 0 && string.lastIndexOf("]") == string.length - 1))){
+    if (IsJsonString(string)) {
+      string = JSON.parse(decodeURIComponent(string));
+      string = urlEncodeForbiddenObj(string);
+      array.push(string);
+    }
+  }
+
+  return {
+    "value": array || [],
+    "type": "List",
+    "metadata": meta ? JSON.parse(meta) : {},
+    "warning": (incorrectData.length>0) ? 111 : undefined
+  }
 }
 
 function specCase(string) {
