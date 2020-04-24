@@ -1254,16 +1254,16 @@ function structuredListMandatory(string, ext) {
   if (IsJsonString(string) && Array.isArray(JSON.parse(decodeURIComponent( string)))) {
     incorrectData = JSON.parse(decodeURIComponent(string));
     incorrectData = incorrectData.filter(x => typeof x !== 'object');
-    if (incorrectData.length === 0) { 
-      array = JSON.parse(decodeURIComponent(string));
-      array = urlEncodeForbiddenObj(array);
-      return {
-        "value": array || [],
-        "type": "List",
-        "metadata": meta ? JSON.parse(meta) : {},
-        "warning": (incorrectData.length>0) ? 111 : undefined
-      }
-    }
+    // if (incorrectData.length === 0) { 
+    //   array = JSON.parse(decodeURIComponent(string));
+    //   array = urlEncodeForbiddenObj(array);
+    //   return {
+    //     "value": array || [],
+    //     "type": "List",
+    //     "metadata": meta ? JSON.parse(meta) : {},
+    //     "warning": (incorrectData.length>0) ? 111 : undefined
+    //   }
+    // }
   } else { 
     incorrectData.push(string);
   }
@@ -1282,7 +1282,7 @@ function structuredListMandatory(string, ext) {
   var finished_search_index = 0;
   if (obj_start_index > -1 && (obj_start_index < start_arr_index || start_arr_index == -1)) {
     start_index = obj_start_index;
-    end_index = obj.end_index;
+    end_index = obj_end_index;
     limits = ["{", "}"];
   } else { 
     start_index = start_arr_index;
@@ -1515,16 +1515,16 @@ function structuredList(string, ext) {
   if (IsJsonString(string) && Array.isArray(JSON.parse(decodeURIComponent( string)))) {
     incorrectData = JSON.parse(decodeURIComponent(string));
     incorrectData = incorrectData.filter(x => typeof x !== 'object');
-    if (incorrectData.length === 0) { 
-      array = JSON.parse(decodeURIComponent(string));
-      array = urlEncodeForbiddenObj(array);
-      return {
-        "value": array || [],
-        "type": "List",
-        "metadata": meta ? JSON.parse(meta) : {},
-        "warning": (incorrectData.length>0) ? 111 : undefined
-      }
-    }
+    // if (incorrectData.length === 0) { 
+    //   array = JSON.parse(decodeURIComponent(string));
+    //   array = urlEncodeForbiddenObj(array);
+    //   return {
+    //     "value": array || [],
+    //     "type": "List",
+    //     "metadata": meta ? JSON.parse(meta) : {},
+    //     "warning": (incorrectData.length>0) ? 111 : undefined
+    //   }
+    // }
   } else { 
     incorrectData.push(string);
   }
@@ -1543,7 +1543,7 @@ function structuredList(string, ext) {
   var finished_search_index = 0;
   if (obj_start_index > -1 && (obj_start_index < start_arr_index || start_arr_index == -1)) {
     start_index = obj_start_index;
-    end_index = obj.end_index;
+    end_index = obj_end_index;
     limits = ["{", "}"];
   } else { 
     start_index = start_arr_index;
