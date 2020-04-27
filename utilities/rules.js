@@ -1219,11 +1219,11 @@ function structuredListMandatory(string, ext) {
     if (typeof string === "object" && string !== null) {
       Array.isArray(string.value) ? string.value : (string.value = [], existIncorrect = true);
       string.value = string.value.reduce((finalList, raw) => {
-        if (typeof raw === "object" )
+        if (typeof raw === "object")
           finalList.push(raw);
         else
           existIncorrect = true;
-      
+
         return finalList;
       }, []);
       return {
@@ -1243,28 +1243,18 @@ function structuredListMandatory(string, ext) {
     }
   }
 
-  if (string.trim().length === 0) { 
+  if (string.trim().length === 0) {
     return null;
   }
-  
+
   let meta = pos(counter);
   let array = [];
-  var incorrectData=[];
+  var incorrectData = [];
 
-  if (IsJsonString(string) && Array.isArray(JSON.parse(decodeURIComponent( string)))) {
+  if (IsJsonString(string) && Array.isArray(JSON.parse(decodeURIComponent(string)))) {
     incorrectData = JSON.parse(decodeURIComponent(string));
     incorrectData = incorrectData.filter(x => typeof x !== 'object');
-    // if (incorrectData.length === 0) { 
-    //   array = JSON.parse(decodeURIComponent(string));
-    //   array = urlEncodeForbiddenObj(array);
-    //   return {
-    //     "value": array || [],
-    //     "type": "List",
-    //     "metadata": meta ? JSON.parse(meta) : {},
-    //     "warning": (incorrectData.length>0) ? 111 : undefined
-    //   }
-    // }
-  } else { 
+  } else {
     incorrectData.push(string);
   }
   string = string.trim();
@@ -1284,19 +1274,17 @@ function structuredListMandatory(string, ext) {
     start_index = obj_start_index;
     end_index = obj_end_index;
     limits = ["{", "}"];
-  } else { 
+  } else {
     start_index = start_arr_index;
     end_index = stop_arr_index;
     limits = ["[", "]"];
   }
-  console.log(limits);
+
   var test;
   var obj_stop = false;
   while (start_index < end_index && start_index > -1 && end_index > -1 && start_index < string.length && end_index < string.length) {
     test = string.substring(start_index, end_index + 1);
-    console.log("test",test);
     if (IsJsonString(test)) {
-      console.log("In true", test, limits);
       test = JSON.parse(decodeURIComponent(test));
       test = urlEncodeForbiddenObj(test);
       array.push(test);
@@ -1319,10 +1307,8 @@ function structuredListMandatory(string, ext) {
       obj_stop = false;
     } else if (obj_stop != true) {
       j++;
-      console.log("***In error", test, limits);
       var end_index_new = getPosition(string, limits[1], j);
       if (end_index_new >= string.length) {
-        console.log("Value bigger then end");
         j = 1;
         string = string.substring(end_index_new, string.length);
         obj_start_index = string.indexOf("{");
@@ -1339,18 +1325,15 @@ function structuredListMandatory(string, ext) {
           limits = ["[", "]"];
         }
       } else {
-        console.log("in another check");
         end_index = end_index_new;
-        var test = string.substring(start_index, end_index+1);
-        var n_closed = (test.match(new RegExp("\\"+limits[1], "g")) || []).length;
-        var n_opened = (test.match(new RegExp("\\"+limits[0], "g")) || []).length;
-        console.log("next check", n_closed, n_opened);
+        var test = string.substring(start_index, end_index + 1);
+        var n_closed = (test.match(new RegExp("\\" + limits[1], "g")) || []).length;
+        var n_opened = (test.match(new RegExp("\\" + limits[0], "g")) || []).length;
         if (n_opened == n_closed) {
           obj_stop = true;
         } else continue;
       }
-    } else { 
-      console.log("object stop == true");
+    } else {
       j = 1;
       string = string.substring(end_index + 1, string.length).trim();
       finished_search_index = end_index + 1;
@@ -1367,13 +1350,12 @@ function structuredListMandatory(string, ext) {
         end_index = stop_arr_index;
         limits = ["[", "]"];
       }
-      console.log(string, limits);
       obj_stop = false;
     }
   }
-  console.log("after", string);
+
   string = string.trim();
-  if (((string.indexOf("{") == 0 && string.lastIndexOf("}") == string.length - 1) || (string.indexOf("[") == 0 && string.lastIndexOf("]") == string.length - 1))){
+  if (((string.indexOf("{") == 0 && string.lastIndexOf("}") == string.length - 1) || (string.indexOf("[") == 0 && string.lastIndexOf("]") == string.length - 1))) {
     if (IsJsonString(string)) {
       string = JSON.parse(decodeURIComponent(string));
       string = urlEncodeForbiddenObj(string);
@@ -1385,7 +1367,7 @@ function structuredListMandatory(string, ext) {
     "value": array || [],
     "type": "List",
     "metadata": meta ? JSON.parse(meta) : {},
-    "warning": (incorrectData.length>0) ? 111 : undefined
+    "warning": (incorrectData.length > 0) ? 111 : undefined
   }
 }
 
@@ -1428,10 +1410,10 @@ function structuredListOld(string, ext) {
   var incorrectData = [];
   // incorrectData = IsJsonString(string) ? JSON.parse(string) : [];
   // incorrectData = incorrectData.filter(x => typeof x !== 'object' || Array.isArray(x));
-  if (IsJsonString(string) && Array.isArray(JSON.parse(decodeURIComponent( string)))) {
+  if (IsJsonString(string) && Array.isArray(JSON.parse(decodeURIComponent(string)))) {
     incorrectData = JSON.parse(decodeURIComponent(string));
     incorrectData = incorrectData.filter(x => typeof x !== 'object' || Array.isArray(x));
-  } else { 
+  } else {
     incorrectData.push(string);
   }
   string = string.trim();
@@ -1484,7 +1466,7 @@ function structuredList(string, ext) {
     if (typeof string === "object" && string !== null) {
       Array.isArray(string.value) ? string.value : (string.value = [], existIncorrect = true);
       string.value = string.value.reduce((finalList, raw) => {
-        if (typeof raw === "object" )//&& !Array.isArray(raw)
+        if (typeof raw === "object")
           finalList.push(raw);
         else
           existIncorrect = true;
@@ -1507,25 +1489,14 @@ function structuredList(string, ext) {
     }
   }
 
-
   let meta = pos(counter);
   let array = [];
-  var incorrectData=[];
+  var incorrectData = [];
 
-  if (IsJsonString(string) && Array.isArray(JSON.parse(decodeURIComponent( string)))) {
+  if (IsJsonString(string) && Array.isArray(JSON.parse(decodeURIComponent(string)))) {
     incorrectData = JSON.parse(decodeURIComponent(string));
     incorrectData = incorrectData.filter(x => typeof x !== 'object');
-    // if (incorrectData.length === 0) { 
-    //   array = JSON.parse(decodeURIComponent(string));
-    //   array = urlEncodeForbiddenObj(array);
-    //   return {
-    //     "value": array || [],
-    //     "type": "List",
-    //     "metadata": meta ? JSON.parse(meta) : {},
-    //     "warning": (incorrectData.length>0) ? 111 : undefined
-    //   }
-    // }
-  } else { 
+  } else {
     incorrectData.push(string);
   }
   string = string.trim();
@@ -1545,19 +1516,17 @@ function structuredList(string, ext) {
     start_index = obj_start_index;
     end_index = obj_end_index;
     limits = ["{", "}"];
-  } else { 
+  } else {
     start_index = start_arr_index;
     end_index = stop_arr_index;
     limits = ["[", "]"];
   }
-  console.log(limits);
+
   var test;
   var obj_stop = false;
   while (start_index < end_index && start_index > -1 && end_index > -1 && start_index < string.length && end_index < string.length) {
     test = string.substring(start_index, end_index + 1);
-    console.log("test",test);
     if (IsJsonString(test)) {
-      console.log("In true", test, limits);
       test = JSON.parse(decodeURIComponent(test));
       test = urlEncodeForbiddenObj(test);
       array.push(test);
@@ -1580,10 +1549,8 @@ function structuredList(string, ext) {
       obj_stop = false;
     } else if (obj_stop != true) {
       j++;
-      console.log("***In error", test, limits);
       var end_index_new = getPosition(string, limits[1], j);
       if (end_index_new >= string.length) {
-        console.log("Value bigger then end");
         j = 1;
         string = string.substring(end_index_new, string.length);
         obj_start_index = string.indexOf("{");
@@ -1600,18 +1567,15 @@ function structuredList(string, ext) {
           limits = ["[", "]"];
         }
       } else {
-        console.log("in another check");
         end_index = end_index_new;
-        var test = string.substring(start_index, end_index+1);
-        var n_closed = (test.match(new RegExp("\\"+limits[1], "g")) || []).length;
-        var n_opened = (test.match(new RegExp("\\"+limits[0], "g")) || []).length;
-        console.log("next check", n_closed, n_opened);
+        var test = string.substring(start_index, end_index + 1);
+        var n_closed = (test.match(new RegExp("\\" + limits[1], "g")) || []).length;
+        var n_opened = (test.match(new RegExp("\\" + limits[0], "g")) || []).length;
         if (n_opened == n_closed) {
           obj_stop = true;
         } else continue;
       }
-    } else { 
-      console.log("object stop == true");
+    } else {
       j = 1;
       string = string.substring(end_index + 1, string.length).trim();
       finished_search_index = end_index + 1;
@@ -1628,13 +1592,12 @@ function structuredList(string, ext) {
         end_index = stop_arr_index;
         limits = ["[", "]"];
       }
-      console.log(string, limits);
       obj_stop = false;
     }
   }
-  console.log("after", string);
+
   string = string.trim();
-  if (((string.indexOf("{") == 0 && string.lastIndexOf("}") == string.length - 1) || (string.indexOf("[") == 0 && string.lastIndexOf("]") == string.length - 1))){
+  if (((string.indexOf("{") == 0 && string.lastIndexOf("}") == string.length - 1) || (string.indexOf("[") == 0 && string.lastIndexOf("]") == string.length - 1))) {
     if (IsJsonString(string)) {
       string = JSON.parse(decodeURIComponent(string));
       string = urlEncodeForbiddenObj(string);
@@ -1646,7 +1609,7 @@ function structuredList(string, ext) {
     "value": array || [],
     "type": "List",
     "metadata": meta ? JSON.parse(meta) : {},
-    "warning": (incorrectData.length>0) ? 111 : undefined
+    "warning": (incorrectData.length > 0) ? 111 : undefined
   }
 }
 
