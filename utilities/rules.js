@@ -1306,21 +1306,7 @@ function structuredListMandatory(string, ext) {
       j++;
       var end_index_new = getPosition(string, limits[1], j);
       if (end_index_new >= string.length) {
-        j = 1;
-        string = string.substring(end_index_new, string.length);
-        obj_start_index = string.indexOf("{");
-        obj_end_index = getPosition(string, "}", j);
-        start_arr_index = string.indexOf("[");
-        stop_arr_index = getPosition(string, "]", j);
-        if (obj_start_index > -1 && (obj_start_index < start_arr_index || start_arr_index == -1)) {
-          start_index = obj_start_index;
-          end_index = obj_end_index;
-          limits = ["{", "}"];
-        } else {
-          start_index = start_arr_index;
-          end_index = stop_arr_index;
-          limits = ["[", "]"];
-        }
+        break;
       } else {
         end_index = end_index_new;
         var test = string.substring(start_index, end_index + 1);
@@ -1548,21 +1534,7 @@ function structuredList(string, ext) {
       j++;
       var end_index_new = getPosition(string, limits[1], j);
       if (end_index_new >= string.length) {
-        j = 1;
-        string = string.substring(end_index_new, string.length);
-        obj_start_index = string.indexOf("{");
-        obj_end_index = getPosition(string, "}", j);
-        start_arr_index = string.indexOf("[");
-        stop_arr_index = getPosition(string, "]", j);
-        if (obj_start_index > -1 && (obj_start_index < start_arr_index || start_arr_index == -1)) {
-          start_index = obj_start_index;
-          end_index = obj_end_index;
-          limits = ["{", "}"];
-        } else {
-          start_index = start_arr_index;
-          end_index = stop_arr_index;
-          limits = ["[", "]"];
-        }
+        break;
       } else {
         end_index = end_index_new;
         var test = string.substring(start_index, end_index + 1);
