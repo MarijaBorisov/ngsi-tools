@@ -441,7 +441,7 @@ function dateCheckMandatory(date, ext) { // Not in use
     return null;
   }
 
-  (Array.isArray(date)) ? date_val = new Date() : isNaN(new Date(date).getTime()) ?
+  (Array.isArray(date)) ? (date_val = new Date(), existIncorrect = true) : isNaN(new Date(date).getTime()) ?
     (date_val = new Date(), existIncorrect = true) : date_val = new Date(date);
   
     let meta = pos(counter);
@@ -484,7 +484,7 @@ function dateCheck(date, ext) {
     }
   }
 
-  (Array.isArray(date)) ? date_val = new Date() : isNaN(new Date(date).getTime()) ?
+  (Array.isArray(date)) ? (date_val = new Date(), existIncorrect = true) : isNaN(new Date(date).getTime()) ?
     (date_val = new Date(), existIncorrect = true) : date_val = new Date(date);
   let meta = pos(counter);
   return {
@@ -677,7 +677,6 @@ function stringToArrayNumMandatory(string, ext) { //OK Mandatory List<Float>
   }
   if (ext && ext.toLowerCase() != ".csv") {
     if (typeof string === "object" && string !== null) {
-      // string.value = Array.isArray(string.value) ? string.value : [];
       (Array.isArray(string.value)) ? string.value : (string.value = [], existIncorrect = true);
       string.value = string.value.reduce((finalList, raw) => {
         if (typeof raw === "number" && (Number(raw) || Number(raw) === 0))
@@ -833,7 +832,6 @@ function locationCheck(location, ext) { //OK Mandatory geo:json
   // }
   if (!isNaN(x) && typeof x === 'number' && x <= 180 && x >= -180 && !isNaN(y) && typeof y === 'number' && y <= 90 && y >= -90) { // x || x
     let obj = [];
-    // let meta = pos(counter);
     if (meta) {
       obj = [];
       let send = {
@@ -1016,7 +1014,6 @@ function arrToNum(string) {
       return finalList;
     }, []);
   }
-  // return data;
   return { data: data, existIncorrect: existIncorrect };
 }
 
