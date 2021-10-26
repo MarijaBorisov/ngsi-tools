@@ -1,10 +1,10 @@
-# <a name="top"></a>Waste4Think Ngsi Connector Api
+# <a name="top"></a>NGSIBulkUpdater
 <br />
 <br />
-Waste4Think Ngsi Connector API is part of backend implementation of Waste4Think
+NGSIBulkUpdater is part of backend implementation of Waste4Think
 the project, providing an API interface for other participants in the project.
 Using this interface, users can do several operations:
-* Create entities from a file. The Ngsi Connector API allows users to create a large
+* Create entities from a file. The NGSIBulkUpdater allows users to create a large
 number of entities directly from .csv or .json files, it also has customizable
 rules for defining how data from files will be checked.
 * Update entities from a file, it can support full or partial update depending on
@@ -30,18 +30,18 @@ infomation check the Waste4Think [Info](http://waste4think.eu/about-waste4think)
 
 ### Description
 
-Ngsi Connector API allows you to create or update entities in Fiware Orion instance from files, add rules and query entity information. Using the Ngsi Connector API,
+NGSIBulkUpdater allows you to create or update entities in Fiware Orion instance from files, add rules and query entity information. Using the NGSIBulkUpdater,
 you are able to create a large number of entities while internal setting rules which make sure data integrity stay intact. The connector is providing a quick and safe
 way of adding data to Fiware Orion instance from different sources, at the moment of writing supporting file formats are **`.csv`** and **`.json`**.
 
-With Connector, you are able to also query data in Fiware Orion this part of its structure is set up to act like proxy witch fully support all Fiware Orion GET and query methods regarding entities. 
+With NGSIBulkUpdater, you are able to also query data in Fiware Orion this part of its structure is set up to act like proxy witch fully support all Fiware Orion GET and query methods regarding entities. 
 
 More information regarding Fiware Orion can be found on it's official [documentation](https://fiware-orion.readthedocs.io/en/master/).
 <br />
 
-###### Ngsi Connector API work flow:
+###### NGSIBulkUpdater work flow:
 
-Ngsi Connector API is a NodeJs implementation of the NGSIv2 REST API binding developed as a part
+NGSIBulkUpdater is a NodeJs implementation of the NGSIv2 REST API binding developed as a part
 of the FIWARE platform.
 
 1) **`Parsing`**:
@@ -68,41 +68,41 @@ entities with errors and detail of each entity created including id, type, and s
 
 ## Install
 
-NGSI Connector API can be installed from two sources, one of them is this repository and other is Docker Hub wich can be found on
+NGSIBulkUpdater can be installed from two sources, one of them is this repository and other is Docker Hub wich can be found on
 [Docker](https://cloud.docker.com/u/waste4think/repository/docker/waste4think/ngsi-connector) repository.
 
 ###### Docker Hub
   1. Make sure you have Docker and Docker-Compose installed on you server/machine, more info about this can be found on following [Documentation](https://docs.docker.com/docker-for-windows/install/)
   2. Go to Waste4think official [Docker](https://cloud.docker.com/u/waste4think/repository/docker/waste4think/ngsi-connector) repository.
-  3. Example of running Ngsi Connector API from Docker Hub would be:
+  3. Example of running NGSIBulkUpdater from Docker Hub would be:
     * **`docker run -p port_map:3002 --name <container-name> waste4think/ngsi-connector`**
   6. This method of running connector will start with default configuration, meaning it expect Fiware Orion to be running locally on port 1026. In order to avoid this and add your
   configuration Docker volumes mapping must be used. More info in officiall [Volume](https://docs.docker.com/storage/volumes/) documentation.
-  7. Example of running Ngsi Connector APi from Docker Hub using volumes would be:
+  7. Example of running NGSIBulkUpdater from Docker Hub using volumes would be:
     * **`docker run -p port_map:3002 -v config.js:/opt/nconnector/config.js --name <container-name> waste4think/ngsi-connector`**
   8. In config.js you have some vital configuration settings, but most important Fiware Orion instance URL, more information on about this can be found in [Configuration]() section.
-  9. After these steps you can start using Ngsi Connector API, more info about use of API can be found in [Usage](#usage) section.
+  9. After these steps you can start using NGSIBulkUpdater, more info about use of API can be found in [Usage](#usage) section.
     * **`important`** Fiware Orion default instance is secured by Fiware Pep-Proxy and it will require token in order to start testing
   change header setting in config.js from 3 to 2 in order to test with local instance of Fiware Orion.
 
 ###### Git Lab
   1. Clone/Download this gihtub repository
   2. Change **`config.js`** most critical information is Fiware Orion Url, more detail regarding this config can be found in [Configuration]() section.
-  3. Install dependencies for Ngsi Connector API:
+  3. Install dependencies for NGSIBulkUpdater:
     * **`npm install`**
-  4. Start Ngsi Connector API:
+  4. Start NGSIBulkUpdater:
     * **`npm start`**
-  5. After these steps you can start using Ngsi Connector API, more info about use of API can be found in [Usage](#usage) section.
+  5. After these steps you can start using NGSIBulkUpdater, more info about use of API can be found in [Usage](#usage) section.
 
 [Top](#waste4think-ngsi-connector-api)
 
 ## Usage
 
-Usage section will cover how to configure Ngsi Connector API but also what endpoints API have to offer as well rule managment.
+Usage section will cover how to configure NGSIBulkUpdater but also what endpoints API have to offer as well rule managment.
 
 ###### **Configuration**
 
-Configuration for Ngsi Connector API is responsible for how API will be started and run. 
+Configuration for NGSIBulkUpdater is responsible for how API will be started and run. 
 Bellow users can found detail explanation regarding each setting from **`config.js`** file which is located in the root of this project.
 
 ```console
@@ -122,16 +122,16 @@ module.exports = config;
 ```
 
 * **`config.orion_url`**
-     - Fiware Orion Url, Connector API will use this URL for all Fiware Orion calls.
+     - Fiware Orion Url, NGSIBulkUpdater will use this URL for all Fiware Orion calls.
 
 * **`config.api_port`**
-     - Ngsi Connector Port, this is port on with Connector will run.
+     - NGSIBulkUpdater Port, this is port on with NGSIBulkUpdater will run.
 
 * **`config.ext`** 
     - Allowed file extentions, some users want to limit which file type will be allowed due to their system request.
     
 * **`config.https`** 
-    - How to run Ngsi Connector, if set to the true server will be started in https.
+    - How to run NGSIBulkUpdater, if set to the true server will be started in https.
 
 * **`config.returnEntities`** 
     - When getting all entities default value provided by Fiware Orion is 20, meaning a user can get only 20 entities. But this option
@@ -139,11 +139,11 @@ allows users to specify the number of entities they will get in return max value
 
 ###### **Rules**
 
-Ngsi Connector API has support for rules, they represent a key aspect of API by providing users with a platform for customizing aspect of data creation 
+NGSIBulkUpdater has support for rules, they represent a key aspect of API by providing users with a platform for customizing aspect of data creation 
 before sending data to Fiware Orion.
 
 Rules make sure that data which is sent to Fiware Orion keep its integrity and structure, it becomes essentials when working with big files. Files can contain up to 3000 and more entities
-making sure that data is sent to Fiware Orion is of the right format, type, etc.. become an almost impossible task, rules solve this problem by adding this layer to Ngsi Connector API.
+making sure that data is sent to Fiware Orion is of the right format, type, etc.. become an almost impossible task, rules solve this problem by adding this layer to NGSIBulkUpdater.
 
 Rules are customizable, users can create, remove or edit rules, at the moment of writing rules can be created only manually but REST option will be added in future.
 
@@ -233,7 +233,7 @@ Rules are customizable, users can create, remove or edit rules, at the moment of
 
 ###### API
 
-Ngsi Connector API documentation can be found in its official [Swagger](backend.waste4think.eu:81) instance.
+NGSIBulkUpdater documentation can be found in its official [Swagger](backend.waste4think.eu:81) instance.
 
 All currently available endpoints are:
 
@@ -245,7 +245,7 @@ All currently available endpoints are:
     * **`entities/:entityType`**
         * Get entities for required type, as for previous 2 routes result depend on Fiware-Service/Fiware-ServicePath
     * **`rules`**
-        * Get all rules currently supported in  Ngsi Connector API
+        * Get all rules currently supported in  NGSIBulkUpdater
     * **`rules/:ruleId`**
         * Get single rule description, users can very fast find all info what properties are mandatory and what type they return.
 
@@ -262,7 +262,7 @@ In description of API endpoints we mentioned Fiware-Service/Fiware-ServicePath m
 
 This manual wont cover each endpoint in depth but will focus on key **`POST`** routes because they are backbone of entire system.
 
-1. Creating entities from user file, bellow is example of typical CURL POST call to NGSI Connector API.
+1. Creating entities from user file, bellow is example of typical CURL POST call to NGSIBulkUpdater.
 
 ```console
 curl -X POST \
@@ -281,7 +281,7 @@ EOF
     * **`userFIle`** Represent form name, can be any named user want to the user in this example we used `userFile`.
     * **`@C:\Users\deposit_point.csv`** Represent file location on the server/operating system, in this example widows path is used.
 
-2. Update entities from user file, below are an example of typical CURL POST call to NGSI Connector API.
+2. Update entities from user file, below are an example of typical CURL POST call to NGSIBulkUpdater.
 
 ```console
 curl -X POST \
@@ -365,9 +365,9 @@ The meeting aimed to start the project in an official way with the partners of t
 
 ### License
 
-Ngsi Connector API © 2019 Engineering Ingegneria Informatica S.p.A.
+NGSIBulkUpdater © 2019 Engineering Ingegneria Informatica S.p.A.
 
-Ngsi Connector API is licensed under Affero General Public License (GPL) version 3.
+NGSIBulkUpdater is licensed under Affero General Public License (GPL) version 3.
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or at your option) any later version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
