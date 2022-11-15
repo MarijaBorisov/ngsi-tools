@@ -19,5 +19,8 @@ module.exports =  {
   structuredValueMandatory,
   dateCheck,
   commaNumToUnitsInt,
-  structuredListMandatory
+  structuredListMandatory,
+  stringToArrayNumMandatory,
+  commaNumToUnitsIntMandatory,
+  structuredList
 } = require("./rules");

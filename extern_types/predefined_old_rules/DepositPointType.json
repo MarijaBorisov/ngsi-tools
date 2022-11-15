@@ -1,0 +1,36 @@
+{
+	"DepositPointType":{
+		"id": {"type":"EntityID","mandatory":"YES"},
+		"type": {"type":"EntityType","mandatory":"YES"},
+		"family":{"type":"Text", "mandatory":"YES"},
+		"name":{"type":"Text", "mandatory":"YES"},
+		"refInputs":{"type":"ReferenceIDList(,)", "mandatory":"NO"},
+		"refOutputs":{"type":"ReferenceIDList(,)", "mandatory":"NO"},
+		"width":{"type":"Float", "mandatory":"YES", "metadata":{"unit": {"value": "MTR","type": "String"}}},
+		"height":{"type":"Float", "mandatory":"YES", "metadata":{"unit": {"value": "MTR","type": "String"}}},
+		"depth":{"type":"Float", "mandatory":"YES", "metadata":{"unit": {"value": "MTR","type": "String"}}},
+		"weight":{"type":"Float", "mandatory":"YES", "metadata":{"unit": {"value": "KGM","type": "String"}}},
+		"cargoVolume":{"type":"Float", "mandatory":"YES", "metadata":{"unit": {"value": "LTR","type": "String"}}},
+		"maximumLoad":{"type":"Float", "mandatory":"YES", "metadata":{"unit": {"value": "KGM","type": "String"}}},
+		"recommendedLoad":{"type":"Float", "mandatory":"YES", "metadata":{"unit": {"value": "KGM","type": "String"}}},
+		"category": {"type":"Text","mandatory":"YES"},
+		"insertHolesNumber":{"type":"Float", "mandatory":"YES", "metadata":{"unit": {"value": "C62","type": "String"}}},
+		"insertHoleWidth":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "MTR","type": "String"}}},
+		"insertHoleHeight":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "MTR","type": "String"}}},
+		"loadType":{"type":"Text", "mandatory":"NO"},
+		"madeOf":{"type":"Text", "mandatory":"NO"},
+		"madeOfCode":{"type":"Text", "mandatory":"NO"},
+		"brandName":{"type":"Text", "mandatory":"YES"},
+		"modelName":{"type":"Text", "mandatory":"YES"},
+		"manufacturerName":{"type":"Text", "mandatory":"NO"},
+		"colors":{"type":"TextList(,)", "mandatory":"NO"},		
+		"image":{"type":"Text", "mandatory":"NO"},
+		"compliantWith":{"type":"TextList(,)", "mandatory":"NO"},	
+		"accessLimitation":{"type":"Text", "mandatory":"NO"},
+		"userIdentification":{"type":"Text", "mandatory":"NO"},
+		"inputControl":{"type":"Text", "mandatory":"NO"},
+		"maximumInputVolume":{"type":"Float", "mandatory":"NO", "metadata":{"unit": {"value": "LTR","type": "String"}}},
+		"features":{"type":"TextList(,)", "mandatory":"YES"}
+	}
+
+}

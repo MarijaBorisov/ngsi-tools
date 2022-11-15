@@ -1,6 +1,7 @@
-const entityRules = require("../rules");
+// const entityRules = require("../rules");
 const metawrite = require("./metadata").set;
-
+var EntityType = global.conn.model("EntityType");
+var rulesFunctions = require("../utilities");
 function propertyChecks( rules, entity, operation, ext ) {
 
     const rulesProp = Object.getOwnPropertyNames( rules );
@@ -67,11 +68,11 @@ function propertyChecks( rules, entity, operation, ext ) {
     } );
 
     if ( invalidProp.length !== 0 ) {
-        throw new Error( `Invalid properties found in csv header:${ invalidProp }` );
+        throw new Error( `Invalid properties found: ${ invalidProp }` );
     }
 }
 
-function rulesCheck( parsedData, ext ) {
+function rulesCheckOld( parsedData, ext ) {
 
     if (ext === '.json') {
         var { type } = parsedData[0][0]
@@ -80,6 +81,8 @@ function rulesCheck( parsedData, ext ) {
     }
 
     const rules = entityRules[ type ];
+  // console.log("rules");
+  // console.log(rules);
     const errors = [];
 
    
@@ -111,26 +114,99 @@ function rulesCheck( parsedData, ext ) {
     return rules;
 }
 
+async function rulesCheck(parsedData, ext) {
+  return new Promise((resolve, reject) => {
+    const errors = [];
+    var rules = {};
+    var props;
+    if (ext === '.json') {
+      var { type } = parsedData[0][0]
+    } else {
+      var { type } = parsedData[0];
+    }
+    if (!type) {
+      // return new Error(`Failed to find type on ${parsedData[0].id}`);
+      if (ext === '.json')
+        return reject(`Failed to find type on ${parsedData[0][0].id}`);
+      else
+        return reject(`Failed to find type on ${parsedData[0].id}`);
+    }
+
+    EntityType.findOne({ entityType: type }, function (err, result) {
+      if (err) {
+        console.log(err);
+        // throw new Error("Error while getting data from database. Please try it later.");
+        return reject("Error while getting data from database. Please try it later.");
+      }
+      if (!result || result.length == 0) {
+        //throw new Error("There is no entity type " + type + " in the database. Please add new entity type structure.");
+        return reject("There is no entity type " + type + " in the database. Please add new entity type structure.");
+      }
+      // console.log(result);
+      props = Object.keys(result.properties);
+      for (var i = 0; i < props.length; i++) {
+        rules[props[i]] = rulesFunctions[result.properties[props[i]]];
+      }
+    
+      parsedData.forEach((element) => {
+        if (ext === '.json') {
+          element.forEach((single) => {
+            if (!single.type || single.type !== type) {
+              errors.push(single.id);
+            }
+          })
+        } else {
+          if (!element.type || element.type !== type) {
+            errors.push(element.id);
+          }
+        }
+      });
+
+      if (errors.length !== 0) {
+        // throw new Error(`Invalid type attribute on: ${errors}`);
+        return reject(`Invalid type attribute on: ${errors}`);
+      }
+
+      if (!rules) {
+        // throw new Error(`No rules have been found for: ${type}`);
+        return reject(`No rules have been found for: ${type}`);
+      }
+
+      return resolve(rules);
+    });
+  });
+}
+
 function processEntity( rules, entity, option, ext ) {
     propertyChecks( rules, entity, option, ext );
     const rulesProperties = Object.keys( rules );
     const result = {};
-
+    const warnings = [];
     rulesProperties.forEach( ( property ) => {
         try {
-            result[ property ] = processEntityProperty( rules, entity, property );
+            result[ property ] = processEntityProperty( rules, entity, property, ext );
+          if (result[property].warning) { 
+            warnings.push(`Property ${property} in ${entity.id} has not had (all) correct data type(s) for (all) value(s). Default value and/or only the values that are correct were saved in the database. Incorrect values were disregarded.`);
+            delete result[property].warning;
+          }
         } catch ( error ) {
-            if ( option !== "update" ) {
+          if (option !== "update") {
+            if (error == "Incorrectly structured metadata.") { 
+              throw new Error( `Property ${ property } failed attribute check in ${ entity.id }: Incorrectly structured metadata.` );
+            } else
                 throw new Error( `Property ${ property } failed attribute check in ${ entity.id }` );
-            } else if ( error.message !== "100" ) {
+          } else if (error.message !== "100") {
+            if (error == "Incorrectly structured metadata.") { 
+              throw new Error( `Property ${ property } failed attribute check in ${ entity.id }: Incorrectly structured metadata.` );
+            } else
                 throw new Error( `Property ${ property } failed attribute check in ${ entity.id }` );
             }
         }
     } );
-    return result;
+  return { result: result, warnings: warnings };
 }
 
-function processEntityProperty( rules, entity, property ) {
+function processEntityProperty( rules, entity, property, ext ) {
     let rule;
     if ( typeof rules[ property ] === "function" ) {
         rule = [ property, rules[ property ] ];
@@ -139,10 +215,10 @@ function processEntityProperty( rules, entity, property ) {
     } else {
         throw new Error( `Rules ${ property } rule was not of supported type.` );
     }
-    return convertProperties( rule, entity );
+    return convertProperties( rule, entity, ext );
 }
 
-function convertProperties( array, entity ) {
+function convertProperties( array, entity, ext ) {
     const arrayDuplicate = array.slice();
     const rule = arrayDuplicate.pop();
     let mappingFunction;
@@ -155,8 +231,8 @@ function convertProperties( array, entity ) {
         throw new Error( "100" );
     };
 
-    const args = arrayDuplicate.map( mappingFunction );
-    const result = rule( ...args );
+    const args = arrayDuplicate.map(mappingFunction);
+    const result = rule( ...args, ext );
     if ( result === null || result === undefined ) {
         throw new Error( `${ mappingFunction } returned null or undefined` );
     }

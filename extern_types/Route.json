@@ -1,0 +1,23 @@
+{
+	"Route":{
+		"id": {"type":"EntityID","mandatory":"YES"},
+		"type": {"type":"EntityType","mandatory":"YES"},
+		"shortName":{"type":"Text", "mandatory":"NO"},
+		"longName":{"type":"Text", "mandatory":"NO"},
+		"description":{"type":"Text", "mandatory":"NO"},
+		"refScheduledVehicle":{"type":"ReferenceID", "mandatory":"NO"},
+		"refAssignedVehicle ":{"type":"ReferenceID", "mandatory":"YES"},
+		"vehicleType ":{"type":"Text", "mandatory":"NO"},
+		"departurePoint":{"type":"StructuredValue(JSON object)", "mandatory":"NO"},
+		"scheduledDepartureTimestamp ":{"type":"Text", "mandatory":"NO"},
+		"realDepartureTimestamp":{"type":"Text", "mandatory":"NO"},
+		"arrivalPoint":{"type":"StructuredValue(JSON object)", "mandatory":"NO"},
+		"scheduledArrivalTimestamp":{"type":"Text", "mandatory":"NO"},
+		"realArrivalTimestamp":{"type":"Text", "mandatory":"NO"},
+		"scheduledStops":{"type":"TextList(,)", "mandatory":"NO"},
+		"realStops":{"type":"TextList(,)", "mandatory":"NO"},
+		"scheduledPath":{"type":"TextList(,)", "mandatory":"NO"},
+		"realPath":{"type":"TextList(,)", "mandatory":"NO"},
+		"refResourceTypes":{"type":"TextList(,)", "mandatory":"NO"}
+	}
+}

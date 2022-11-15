@@ -1,0 +1,15 @@
+{
+	"WasteTransaction":{
+		"id": {"type":"EntityID","mandatory":"YES"},
+		"type": {"type":"EntityType","mandatory":"YES"},
+		"family":{"type":"Text", "mandatory":"NO"},
+		"refEmitter":{"type":"ReferenceID", "mandatory":"YES"},
+		"refReceiver":{"type":"ReferenceID", "mandatory":"YES"},
+		"refCapturer":{"type":"ReferenceID", "mandatory":"NO"},
+		"date":{"type":"Text", "mandatory":"YES"},
+		"emittedResources":{"type":"TextList(,)", "mandatory":"YES"},
+		"receivedResources":{"type":"TextList(,)", "mandatory":"YES"},
+		"incidence":{"type":"Text", "mandatory":"NO"},
+    "incidenceReason":{"type":"Text", "mandatory":"NO"}
+	}
+}

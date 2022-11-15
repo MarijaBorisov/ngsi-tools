@@ -6,6 +6,19 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const request = require("request-promise");
 
+const mongoose = require("mongoose");
+var models_path = path.normalize(__dirname + '/models');
+var conf_path = path.normalize(__dirname + '/config');
+const conf = require(conf_path);
+
+global.conn = mongoose.createConnection(conf.db.url, conf.db.options , (err, db) => {
+   if (err) {
+     return console.log(err);
+   }
+   console.log("Connected successfully to mongo server");
+ });
+require(models_path + "/entityType.js");
+
 const entities = require("./routes/entities")();
 
 const app = express();
@@ -51,7 +64,7 @@ setInterval(function() {
 }, 5 * 60 * 1000)
 
 app.use((req, res, next) => {
-  const error = new Error("Requested route not found, more information on available routes can be found at: http://backend.waste4think.eu:81/");
+  const error = new Error("Requested route not found, more information on available routes can be found in README file.");
   error.status = 404;
   next(error);
 });

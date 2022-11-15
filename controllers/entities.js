@@ -27,6 +27,7 @@ function postEntities(req, res, file, headers) {
         {
           "Entity attribute errors:": data.errors.length,
           "Entities without errors:": data.result.length,
+          "Warnings": data.warnings,
           "Info on rules for given type:": typet(data.result),
         },
         data.errors,
@@ -35,18 +36,17 @@ function postEntities(req, res, file, headers) {
     })
       .catch((error) => {
         if (error.statusCode === 422) {
-          res.json(`Duplicate entities where detected in creation operations, 
-            NGSI Connector API successfuly created all entities that where not already in Fiware Orion`);
+          res.json(`Duplicate entities where detected in creation operations, NGSI Connector API successfuly created all entities that where not already in Fiware Orion`);
         }
         else if (error.statusCode === 401) {
           res.status(401).json(error.error);
         } else {
-          res.json(error);
+          res.status(400).json(error);
         }
       });
   })
     .catch((error) => {
-      res.json(error);
+      res.status(400).json(error);
     });
   };
 
@@ -59,6 +59,7 @@ function postEntitiesBody(req, res, file, headers, body) {
         {
           "Entity attribute errors:": data.errors.length,
           "Entities without errors:": data.result.length,
+          "Warnings": data.warnings,
           "Info on rules for given type:": typet(data.result),
         },
         data.errors,
@@ -68,11 +69,18 @@ function postEntitiesBody(req, res, file, headers, body) {
       .catch((error) => {
         if (error.statusCode === 401) {
           res.status(401).json(error.error);
-        } 
+        }
+        else if (typeof data === "undefined" || !data) {
+          res.status(400).json({
+            "error": error
+          });
+          return;
+        }
         else res.json([
           {
             "Entity attribute errors:": data.errors.length,
             "Entities without errors:": data.result.length,
+            "Warnings": data.warnings,
             "Info on rules for given type:": typet(data.result),
           },
           data.errors,
@@ -81,10 +89,17 @@ function postEntitiesBody(req, res, file, headers, body) {
       });
   })
     .catch((error) => {
+      if (typeof data === "undefined" || !data) {
+        res.status(400).json({
+          "error": error
+        });
+        return;
+      }
       res.json([
         {
           "Entity attribute errors:": data.errors.length,
           "Entities without errors:": data.result.length,
+          "Warnings": data.warnings,
           "Info on rules for given type:": typet(data.result),
         },
         data.errors,
@@ -102,6 +117,7 @@ function updateEntitiesBody(req, res, file, headers, body) {
         {
           "Entity attribute errors:": data.errors.length,
           "Entities without errors:": data.result.length,
+          "Warnings": data.warnings,
           "Info on rules for given type:": typet(data.result),
         },
         data.errors,
@@ -112,11 +128,11 @@ function updateEntitiesBody(req, res, file, headers, body) {
         if (error.statusCode === 401) {
           res.status(401).json(error.error);
         }
-         res.json(error);
+         res.status(400).json(error);
       });
   })
     .catch((error) => {
-      res.json(error);
+      res.status(400).json(error);
     });
 }
 
@@ -138,6 +154,7 @@ function updateEntities(req, res, file, headers) {
             {
               "Entity attribute errors:": data.errors.length,
               "Entities updated:": data.result.length,
+              "Warnings": data.warnings,
               "Info on rules for given type:": typet(data.result),
             },
             data.errors,
@@ -145,11 +162,11 @@ function updateEntities(req, res, file, headers) {
           ]);
         })
         .catch((error) => {
-          res.json(error);
+          res.status(400).json(error);
         });
     })
     .catch((error) => {
-      res.json(error);
+      res.status(400).json(error);
     });
 }
 

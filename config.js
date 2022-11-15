@@ -14,4 +14,13 @@ config.returnEntities = 20;
 
 config.batch_size = 150;
 
+config.db = {
+  url: "mongodb://localhost:27017/w4t-entities",
+  options: {
+    user: '',
+    pass: '',
+    useNewUrlParser: true
+  },
+}
+
 module.exports = config;

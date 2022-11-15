@@ -1,18 +1,18 @@
 # <a name="top"></a>NGSIBulkUpdater
 <br />
 <br />
-NGSIBulkUpdater is part of backend implementation of Waste4Think
-the project, providing an API interface for other participants in the project.
+NGSIBulkUpdater is a part of the backend implementation of the Waste4Think project, providing an API interface for other participants in the project.
 Using this interface, users can do several operations:
-* Create entities from a file. The NGSIBulkUpdater allows users to create a large
-number of entities directly from .csv or .json files, it also has customizable
-rules for defining how data from files will be checked.
-* Update entities from a file, it can support full or partial update depending on
-user configuration.
-* Supporting all Fiware Orion GET operations with queries, the goal is providing
-users with the ability to check data creation.
-This project is part of [Waste4Think](http://waste4think.eu/), for more
-infomation check the Waste4Think [Info](http://waste4think.eu/about-waste4think) section.
+
+* Create/update entity type structure which defines rules to be applied in order to create/update entities.
+
+* Create entities from a file. The NGSIBulkUpdater allows users to create a large number of entities directly from .csv or .json files As stated before, it also has customizable rules for defining how data from files will be checked.
+
+* Update entities from a file, it can support full or partial update depending on user configuration.
+
+* Supporting all Fiware Orion GET operations with queries, the goal is providing users with the ability to check data creation.
+
+This project is part of [Waste4Think](http://waste4think.eu/). For more information, check the Waste4Think [Info](http://waste4think.eu/about-waste4think) section.
 
 ### Content
 *  [Description](#description)
@@ -23,35 +23,32 @@ infomation check the Waste4Think [Info](http://waste4think.eu/about-waste4think)
     * [Configuration](#configuration)
     * [Rules](#rules)
     * [Metadata](#metadata)
-    * [Api](#api)
+    * [API](#api)
 *  [Project](#project)
 *  [License](#license)
   
 
 ### Description
 
-NGSIBulkUpdater allows you to create or update entities in Fiware Orion instance from files, add rules and query entity information. Using the NGSIBulkUpdater,
-you are able to create a large number of entities while internal setting rules which make sure data integrity stay intact. The connector is providing a quick and safe
-way of adding data to Fiware Orion instance from different sources, at the moment of writing supporting file formats are **`.csv`** and **`.json`**.
+NGSIBulkUpdater allows you to add rules for entity types by defining their structure, create or update entities in Fiware Orion instance from files, and query entity information. Using the NGSIBulkUpdater, users can create a large number of entities while internal setting rules make sure data integrity stays intact. The connector is providing a quick and safe way of adding data to Fiware Orion instance from different sources, at the moment of writing supporting file formats are **`.csv`** and **`.json`**.
 
-With NGSIBulkUpdater, you are able to also query data in Fiware Orion this part of its structure is set up to act like proxy witch fully support all Fiware Orion GET and query methods regarding entities. 
+With NGSIBulkUpdater, you are able to also query data in Fiware Orion. This part of its structure is set up to act like a proxy that fully supports all Fiware Orion GET and query methods regarding entities. 
 
-More information regarding Fiware Orion can be found on it's official [documentation](https://fiware-orion.readthedocs.io/en/master/).
+More information regarding Fiware Orion can be found on its official [documentation](https://fiware-orion.readthedocs.io/en/master/).
 <br />
 
-###### NGSIBulkUpdater work flow:
+#### NGSIBulkUpdater workflow:
 
-NGSIBulkUpdater is a NodeJs implementation of the NGSIv2 REST API binding developed as a part
-of the FIWARE platform.
+NGSIBulkUpdater is a Node.js implementation of the NGSIv2 REST API binding developed as a part of the FIWARE platform.
 
 1) **`Parsing`**:
 
-- Parse input file, by converting it into a plain json object.
+- Parse input file, by converting it into a plain JSON object.
 
 2) **`Checking`**:
 
-- Checking parsed json object structure.
-- Converting a parsed object to Ngsi v2 API data structure, according to predefined rules.
+- Check parsed JSON object structure.
+- Convert a parsed object to NGSI v2 API data structure, according to predefined rules.
 
 3) **`Writing`**:
 
@@ -68,42 +65,42 @@ entities with errors and detail of each entity created including id, type, and s
 
 ## Install
 
-NGSIBulkUpdater can be installed from two sources, one of them is this repository and other is Docker Hub wich can be found on
+NGSIBulkUpdater can be installed from two sources, one of them is this repository and the other is Docker Hub which can be found on
 [Docker](https://cloud.docker.com/u/waste4think/repository/docker/waste4think/ngsi-connector) repository.
 
-###### Docker Hub
-  1. Make sure you have Docker and Docker-Compose installed on you server/machine, more info about this can be found on following [Documentation](https://docs.docker.com/docker-for-windows/install/)
+#### Docker Hub
+  1. Make sure you have Docker and Docker-Compose installed on your server/machine, more info about this can be found on the following [Documentation](https://docs.docker.com/docker-for-windows/install/)
   2. Go to Waste4think official [Docker](https://cloud.docker.com/u/waste4think/repository/docker/waste4think/ngsi-connector) repository.
   3. Example of running NGSIBulkUpdater from Docker Hub would be:
     * **`docker run -p port_map:3002 --name <container-name> waste4think/ngsi-connector`**
-  6. This method of running connector will start with default configuration, meaning it expect Fiware Orion to be running locally on port 1026. In order to avoid this and add your
-  configuration Docker volumes mapping must be used. More info in officiall [Volume](https://docs.docker.com/storage/volumes/) documentation.
+  6. This method of running the connector will start with a default configuration, meaning it expects Fiware Orion to be running locally on port 1026. In order to avoid this and add your configuration, Docker volumes mapping must be used. More info in official [Volume](https://docs.docker.com/storage/volumes/) documentation.
   7. Example of running NGSIBulkUpdater from Docker Hub using volumes would be:
     * **`docker run -p port_map:3002 -v config.js:/opt/nconnector/config.js --name <container-name> waste4think/ngsi-connector`**
-  8. In config.js you have some vital configuration settings, but most important Fiware Orion instance URL, more information on about this can be found in [Configuration]() section.
-  9. After these steps you can start using NGSIBulkUpdater, more info about use of API can be found in [Usage](#usage) section.
-    * **`important`** Fiware Orion default instance is secured by Fiware Pep-Proxy and it will require token in order to start testing
-  change header setting in config.js from 3 to 2 in order to test with local instance of Fiware Orion.
+  8. In config.js you have some vital configuration settings, but most important Fiware Orion instance URL, more information on about this can be found in the [Configuration]() section.
+  9. After these steps you can start using NGSIBulkUpdater, more info about the use of API can be found in the [Usage](#usage) section.
+    * **`important`** Fiware Orion default instance is secured by Fiware Pep-Proxy and it will require a token in order to start testing. Change header setting in config.js from 3 to 2 in order to test with a local instance of Fiware Orion.
 
-###### Git Lab
-  1. Clone/Download this gihtub repository
-  2. Change **`config.js`** most critical information is Fiware Orion Url, more detail regarding this config can be found in [Configuration]() section.
-  3. Install dependencies for NGSIBulkUpdater:
-    * **`npm install`**
-  4. Start NGSIBulkUpdater:
-    * **`npm start`**
-  5. After these steps you can start using NGSIBulkUpdater, more info about use of API can be found in [Usage](#usage) section.
+#### Git Lab
+  1. Clone/Download this GitLab repository
+  2. Change **`config.js`** most critical information is Fiware Orion Url, more detail regarding this config can be found in the [Configuration]() section.
+  3. To have locally your Fiware Orion Context Broker instance, together with MongoDB database, go to `/extras/docker/orion_mongo` folder and issue 
+   **`docker-compose up -d`**
+  4. Install dependencies for NGSIBulkUpdater:
+   **`npm install`**
+  5. Start NGSIBulkUpdater:
+   **`npm start`**
+  6. After these steps you can start using NGSIBulkUpdater, more info about the use of API can be found in the [Usage](#usage) section.
 
 [Top](#waste4think-ngsi-connector-api)
 
 ## Usage
 
-Usage section will cover how to configure NGSIBulkUpdater but also what endpoints API have to offer as well rule managment.
+Usage section will cover not only how to configure NGSIBulkUpdater but also what endpoints API has to offer as well as rule management.
 
-###### **Configuration**
+#### **Configuration**
 
 Configuration for NGSIBulkUpdater is responsible for how API will be started and run. 
-Bellow users can found detail explanation regarding each setting from **`config.js`** file which is located in the root of this project.
+Bellow users can find a detail explanation regarding each setting from the **`config.js`** file which is located in the root of this project.
 
 ```console
 const config = {}; 
@@ -119,16 +116,25 @@ config.https = true;
 config.returnEntities = 20; 
 
 module.exports = config;
+
+config.db = {
+  url: "mongodb://localhost:27017/w4t-entities",
+  options: {
+    user: '',
+    pass: '',
+    useNewUrlParser: true
+  },
+}
 ```
 
 * **`config.orion_url`**
      - Fiware Orion Url, NGSIBulkUpdater will use this URL for all Fiware Orion calls.
 
 * **`config.api_port`**
-     - NGSIBulkUpdater Port, this is port on with NGSIBulkUpdater will run.
+     - NGSIBulkUpdater Port, this is a port on which the NGSIBulkUpdater will run.
 
 * **`config.ext`** 
-    - Allowed file extentions, some users want to limit which file type will be allowed due to their system request.
+    - Allowed file extensions, some users want to limit which file type will be allowed due to their system requests.
     
 * **`config.https`** 
     - How to run NGSIBulkUpdater, if set to the true server will be started in https.
@@ -137,103 +143,149 @@ module.exports = config;
     - When getting all entities default value provided by Fiware Orion is 20, meaning a user can get only 20 entities. But this option
 allows users to specify the number of entities they will get in return max value is 1000. More on information on this in official Fiware Orion [Documentation](https://fiware-orion.readthedocs.io/en/master/user/pagination/index.html).
 
-###### **Rules**
+* **`config.db`**
+    - Structures of entity types that can be uploaded via the NGSIBulkUpdater are saved in this database. It could be the same MongoDB instance that the Orion Context Broker is using for saving its data, just the new "w4t-entities" database.
 
-NGSIBulkUpdater has support for rules, they represent a key aspect of API by providing users with a platform for customizing aspect of data creation 
-before sending data to Fiware Orion.
+#### **Rules/Structures of Entity Types**
+NGSIBulkUpdater has support for rules. They represent a key aspect of API by providing users with a platform for customizing aspects of data creation before sending data to Fiware Orion.
 
-Rules make sure that data which is sent to Fiware Orion keep its integrity and structure, it becomes essentials when working with big files. Files can contain up to 3000 and more entities
-making sure that data is sent to Fiware Orion is of the right format, type, etc.. become an almost impossible task, rules solve this problem by adding this layer to NGSIBulkUpdater.
+Rules make sure that data that is sent to Fiware Orion keep its integrity and structure, and it becomes essentials when working with big files. Files can contain up to 3000 and more entities making sure that data is sent to Fiware Orion is of the right format, type, etc... become an almost impossible task, rules solve this problem by adding this layer to NGSIBulkUpdater.
 
-Rules are customizable, users can create, remove or edit rules, at the moment of writing rules can be created only manually but REST option will be added in future.
+In order to make the NGSIBulkUpdater more universal, the possibility for users to dynamically create and update various Entity Types and their structure is incorporated. Each structure sets the rules that will be used while parsing specific entities. It is mandatory to first upload the structure of each entity type that will be uploaded. Otherwise, the upload of entities of unknown structure would not be possible.
 
-**Rule operations**:
+Rules are customizable, users can create, remove or edit rules (entity type structures) via the RESTful API.
 
-* **`Create Rule`**
-    * Navigate to rules folder.
-    * Make a new file, depending on server commands for this can differ most common one for Linux systems is **`sudo touch`** followed with the name of the rule.
-    * Name of a rule is very important, a user must name the file with type property that he expects from **`.csv/.json`** file.
-    * Example of **`.csv`** file
-    
+* **`Create a structure of Entity Type (Rule)`**
+     * Upload a structure of entity type into the request body in JSON format
+     * A structure must be added in the following format:
     ```console
-    id;type;temperature;pressure
-    10;Room;24.4;249
-    11;Room;33;200
-    12;Room;12;2500
+       {
+        "nameOfNewType": {
+            "id": {
+            "type": "EntityID",
+            "mandatory": "YES"
+            },
+            "type": {
+            "type": "EntityType",
+            "mandatory": "YES"
+            },
+            "nameOfFirstProperty":{
+            "type": "Text|ReferenceID|TextList(,)|NumberList(,)|ReferenceIDList(,)|GeoJSON(Point)|Float|Integer|Datetime|StructuredValue(JSON object)|StructuredList([JSON objects])",
+            "mandatory": "YES|NO",
+            "metadata" :"{'name': 'EnterArbitraryName','value': 'EnterArbitraryValue','type': 'EnterArbitraryType'}||{}",
+            "description": "EnterArbitraryDescription"
+            },
+            "..." : {"...":"..."}
+         }
+       }
     ```
+     * Name of an entity type is very important. The user must name the entity type so that it is the same as a property named 'type' of entities that are going to be uploaded via **`.csv/.json`** file.
+     * Structures of entity types are saved in this database
+     * Example of entity type structure:
+     ```console
+        {
+            "Room":{
+                "id": {"type":"EntityID","mandatory":"YES"},
+                "type": {"type":"EntityType","mandatory":"YES"},
+                "temperature":{"type":"Float", "mandatory":"YES"},
+                "pressure":{"type":"Float", "mandatory":"YES"},
+                "location": {"type":"Text","mandatory":"NO", "metadata":{}}
+	        }
+        }
+     ```
+     * The result of the previously created structure is the name of the rule for each entity:
+     ```console
+        "properties" : {
+                "id" : "idCheck",
+                "type" : "typeCheck",
+                "temperature" : "commaNumToUnitsMandatory",
+                "pressure":"commaNumToUnitsMandatory"
+                "location" : "stringCheck"
+        }
+     ```
     
-    * On this example we can notice that value for type is Room, so we must name our rule Room.js inside of rules folder.
-    
-* **`Add functions to rule`**
-    * Once we have Room.js created in rules folder then users must add structure to it.
-    * Open Room.js file, the first time it is empty, some aspect of each rule is same and we are going to cover it.
-    
-    ```console
-    const rules = require('../utilities');
-    
-    
-    module.exports = Room;
-    ```
-    
-    * **`const rules = require('../utilities');`**
-        * This line will never change in any rule user create, it is mandatory. What we are doing here is just importing functions that will be used later
-        for various checks.
-    * **`module.exports = Room;`**
-        * Here user exports rule to be used in other parts of system, important to mention is that export name is same as file name. This filed is mandatory.
-* **`Add properties to rule`**
-    
-    ```console
-    const rules = require('../utilities');
-    
-    const Room = {
-        id:
-        type:
-        temperature:
-        pressure:
-    }
-    
-    module.exports = Room;
-    ```
-    
-      * Here we expanded the previous example by creating a simple object with Room name, the name must be equal to file name. Then we add properties from **`.csv`**
-        file example above, each property must be equal to expected properties that will be on file.    
-      *, In short, you put the first line of **`.csv`** file or keys from **`.json`** files as properties.
-      
-* **`Add functions to rule properties`**
-    
-    ```console
-    const Room = {
-        id: rules.idCheck,
-        type: rules.typeCheck,
-        temperature: rules.stringCheck
-        pressure: rules.stringCheckMandatory
-    }
-    ```
-    * So we added function to rules, by typing **`rules.`** we have access to all functions available in rules object, those functions are:
+    * After the entity is created, the `properties` object of that entity is dynamically assigned to values that are the same as the function names that will be used to validate the **`.csv/.json`** files
+    * The functions used to check the validity of the values obtained from the **`.csv/.json`** file are:
         * **`idCheck`** 
-            - Used for all id properties mandatory.
+            - Used for id property, mandatory.
         * **`typeCheck`** 
-            - Used for all types properties mandatory.
-        * **`commaToUnits/commaToUnitsMandatory`** 
-            - Used for parse of string to a number, mandatory version requires value for that property.
+            - Used for type property, mandatory.
+        * **`stringCheck/mandatoryCheck`** 
+            - Used for all string properties, the mandatory version requires a value for that property.
+        * **`commaNumToUnits/commaNumToUnitsMandatory`** 
+            - Used for parsing a value to a float number, the mandatory version requires a value for that property.
+        * **`commaNumToUnitsInt/commaNumToUnitsIntMandatory`** 
+            - Used for parsing a value to an integer number, the mandatory version requires a value for that property.
         * **`locationCheck/locationCheckMandatory`** 
-            - Used to parse **`geo:json`** values, mandatory version requires value for that property.
+            - Used to parse **`geo:json`** values, the mandatory version requires a value for that property.
+        * **`dateCheck/dateCheckMandatory`** 
+            - Used for all DateTime values, the mandatory version requires a value for that property.
         * **`stringToArray/stringToArrayMandatory`** 
-            - Used to parse string from files to array object, in **.csv** file these values are separated with **`,`**,
-            mandatory version requires value for that property.
+            - Used to parse a value to an array object, in **.csv** file these values are separated with a comma **`,`**,
+            the mandatory version requires a value for that property.
         * **`stringToArryNum/stringToArryNumMandatory`** 
-            - Used to parse string from file to array of Numbers, in **.csv** file these values are separated with **`,`**,
-            mandatory version requires value for that property. 
+            - Used to parse a value to an array of numbers, in **.csv** file these values are separated with a comma **`,`**,
+           the mandatory version requires a value for that property. 
         * **`structuredValue/structuredValueMandatory`** 
-            - Used to parse string from file to structure value, this value is a special type of Fiware Orion, 
-            the mandatory version requires value for that property.
+            - Used to parse a value to a structured value - JSON object, this value is a special type of Fiware Orion, 
+            the mandatory version requires a value for that property.
+         * **`structuredList/structuredListMandatory`** 
+            - Used to parse a value to a structured list of JSON objects, this value is a special type of Fiware Orion, 
+            the mandatory version requires a value for that property. 
 
-* **`Remove rule`**
-    * To remove rule simply delete created file.
+#### **Entities**
+* **`Add/Update entities`**
+     * Mandatory properties are **`id`** and **`type`**. 
+        * Property **`id`** is of type **`EntityID`**.
+          - Example in **`.csv`** file: `DepositPoint:0001` (with the correct header with property name `id`)
+          - Example in **`.json`** file: `"id": "DepositPoint:0001"`
+        * Property **`type`** is of type **`EntityType`**.
+          - Example in **`.csv`** file: `DepositPoint` (with the correct header with property name `type`)
+          - Example in **`.json`** file: `"type": "DepositPoint"`
+     * As it is shown before, other entity properties belong to one of the eleven types. The expected format of the entity properties that are going to be uploaded is:
+        * Type `Text`:
+          - Example in **`.csv`** file: `Transaction` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{"type": "String", "value": "Transaction", "metadata": {}}`
+        * Type `ReferenceID`:
+          - Example in **`.csv`** file: `DepositPoint:0001` (with the correct header with property names)
+          - Example in **`.json`** file: `"name": {"type": "String","value": "DepositPoint:0001","metadata": {}}`
+        * Type `TextList(,)`:
+          - Example in **`.csv`** file: `Value1,Value2,Value3` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{"type": "List", "value": ["Value1","Value2","Value:3"], "metadata": {}}`
+        * Type `NumberList(,)`:
+          - Example in **`.csv`** file: `1000.34,1001.45,1002.12` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{"type": "List", "value": [1000.34,1001.45,1002.12], "metadata": {}}`
+        * Type `ReferenceIDList(,)`:
+          - Example in **`.csv`** file: `Waste:1,Waste:2,Waste:3` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{"type": "List", "value": ["Waste:1","Waste:2","Waste:3"], "metadata": {}}`
+        * Type `GeoJSON(Point)`:
+          - Example in **`.csv`** file: `"geometry": { "type": "Point", "coordinates": [ 45.645752, 9.1475983 ] } }` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{ "type": "geo:json","value": {"type": "Point","coordinates": [-2.812263201,43.26375754]},"metadata": {}}`
+        * Type `Float`:
+          - Example in **`.csv`** file: `123.45` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{"type": "Float", "value": 123.45, "metadata": {}}`
+        * Type `Integer`:
+          - Example in **`.csv`** file: `123` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{"type": "Integer", "value": 123, "metadata": {}}`
+        * Type `Datetime`:
+          - Example in **`.csv`** file: `2019-12-31T10:10:10+01:00` (with the correct header with property names)
+          - Example in **`.json`** file: `"name":{ "type": "DateTime","value": "2019-12-31T10:10:10+01:00","metadata": {}}`
+        * Type `StructuredValue(JSON object)`:
+          - Example in **`.csv`** file: `{ "refResource":"SortingType:1" , "amount":1, "unit":"C62"}` (with the correct header with property names)
+          - Example in **`.json`** file:  `"name": {"type": "StructuredValue","value": {"amount": 1,"refResource": "SortingType:1","unit": "C62"},"metadata": {}}`
+        * Type `StructuredList([JSON objects])`:
+          - Example in **`.csv`** file: `[{ "refResource":"SortingType:1" , "amount":1, "unit":"C62"}, { "refResource":"SortingType:2" , "amount":2, "unit":"C62"}]` (with the correct header with property names)
+          - Example in **`.json`** file: `"name": {"type": "List","value": [{"amount": 1,"refResource": "SortingType:1","unit": "C62"},{"amount": 2,"refResource": "SortingType:2","unit": "C62"}],"metadata": {}}`
 
-###### API
+**`Important:`** If property is mandatory, error will be reported if the property does not exist. If the wrong value is provided or a value is not provided when it is optional, a default value will be written. A default value for `"Text"` and `"ReferenceID"` types is an empty string **`""`**, for `"TextList(,)"`, `"NumberList(,)"`, `"ReferenceIDList(,)"` and `"StructuredList([JSON objects])"` it is an empty list **`[]`**. For `"Float"` and `"Integer"` default is zero value **`0`**, for `"Datetime"` the default value is a **`current date and time`**, for `"GeoJSON(Point)"` and `"StructuredValue(JSON object)"` it is an empty object **`"{}"`**. 
 
-NGSIBulkUpdater documentation can be found in its official [Swagger](backend.waste4think.eu:81) instance.
+Metadata in `csv` file can be sent in the header, like in the following example for property "width": **`width%%"metadata": {"unit": {"value": "MTR","type": "Text"}}%%`**. Metadata in `JSON` file are sent as shown in the examples.
+
+**`Important:`** In one file, only entities with the same type can be sent for upload. Otherwise, an error will be reported.
+
+#### API
+
+NGSIBulkUpdater documentation can be found in its official [Swagger](backend.waste4think.eu:8082) instance.
 
 All currently available endpoints are:
 
@@ -241,28 +293,42 @@ All currently available endpoints are:
     * **`entities`** 
         * Get all entities for Fiware-Service/Fiware-ServicePath
     * **`entities/:entitiyId`**
-        * Get single entity for Fiware-Service/Fiware-ServicePath
+        * Get a single entity for Fiware-Service/Fiware-ServicePath
     * **`entities/:entityType`**
         * Get entities for required type, as for previous 2 routes result depend on Fiware-Service/Fiware-ServicePath
     * **`rules`**
         * Get all rules currently supported in  NGSIBulkUpdater
     * **`rules/:ruleId`**
-        * Get single rule description, users can very fast find all info what properties are mandatory and what type they return.
+        * Get a single rule description, users can very fast find all info about what properties are mandatory and what type they return.
+    * **`typestructure`**
+        * Get the rules for creating structures of entity types that are going to be uploaded
+    * **`entitytype/:entityType`**
+        * Get the structure of specific entity type
 
 * **`POST`**
     * **`entities`**
         * Create entities from user file in Fiware-Service/Fiware-ServicePath
     * **`entities/update`**
         * Update entities from user file in Fiware-Service/Fiware-ServicePath
+    * **`entitytype`**
+        * Create a structure of specific entity type that will be setting the rules that are going to be used when uploading entities
 
-In description of API endpoints we mentioned Fiware-Service/Fiware-ServicePath more information regarding this topic can be found on its official
+* **`PUT`**
+    * **`entitytype`**
+        * Update a structure of specific entity type that will be setting the rules that are going to be used when uploading entities
+
+* **`DELETE`**
+    * **`entitytype/:entityType`**
+        * Delete from the database a structure of a specific entity type (delete rule)
+
+In the description of API endpoints, we mentioned Fiware-Service/Fiware-ServicePath more information regarding this topic can be found on its official
 [Documentation](https://fiware-orion.readthedocs.io/en/master/user/service_path/).
 <br />
 <br />
 
-This manual wont cover each endpoint in depth but will focus on key **`POST`** routes because they are backbone of entire system.
+This manual won't cover each endpoint in-depth but will focus on key **`POST`** routes because they are the backbone of the entire system.
 
-1. Creating entities from user file, bellow is example of typical CURL POST call to NGSIBulkUpdater.
+1. Creating entities from user files, bellow is an example of a typical CURL POST call to NGSIBulkUpdater.
 
 ```console
 curl -X POST \
@@ -281,7 +347,7 @@ EOF
     * **`userFIle`** Represent form name, can be any named user want to the user in this example we used `userFile`.
     * **`@C:\Users\deposit_point.csv`** Represent file location on the server/operating system, in this example widows path is used.
 
-2. Update entities from user file, below are an example of typical CURL POST call to NGSIBulkUpdater.
+2. Update entities from user file, below are an example of a typical CURL POST call to NGSIBulkUpdater.
 
 ```console
 curl -X POST \
@@ -296,9 +362,9 @@ EOF
 ```
 
 * On first glance this looks very almost same as the creation of entities but there are few key differences:
-    * **`Create`** require that **`.csv`** file structure be same as defined in rules, meaning if a rule has 10 properties first line in the file(this line is also called header)
+    * **`Create`** require that **`.csv`** file structure be same as defined in rules, meaning if a rule has 10 properties first line in the file (this line is also called header)
     must have 10 properties separated with ";".
-    * **`Update`** does not require that **`.csv`** file structure must be same as defined in rules, user can update all properties and provide the file as it would when creating
+    * An **`update`** does not require that **`.csv`** file structure must be same as defined in rules, user can update all properties and provide the file as it would when creating
     * or just provide properties that want to be updated.
 
 * **`Examples Create`**
@@ -309,10 +375,9 @@ EOF
     11;Room;33;200;Belgrade
     12;Room;12;2500;Belgrade
 ```
-As mentioned in rules section we assume that user created rule object with following properties (id,type,temperature,pressure,location) more about this can be found in rules
-section. So if we send this file to API no error will be raised because its first line(header) have same properties as defined in rule.
+As mentioned in the rules section, we assume that a user has created a rule object (entity type structure) with the following properties (id, type, temperature, pressure, location). So if we send this file to API no error will be raised because its first line (header) has the same properties as defined in the rule (in the structure of the specific entity type).
 
-* Error example
+* **`Error example`**
 
  ```console
     id;type;pressure;location
@@ -320,14 +385,13 @@ section. So if we send this file to API no error will be raised because its firs
     11;Room;200;Belgrade
     12;Room;2500;Belgrade
 ```
-This will raise an error when the user tries to upload the file, the reason is clear in rules we defined 5 properties but in the file we supply only 4. This is important to notice because
-creation is very strict but it makes sure the integrity of the system by following user-supplied rules.
+This will raise an error when the user tries to upload the file, the reason is clear in rules we defined 5 properties but in the file, we supply only 4. This is important to notice because creation is very strict but it makes sure the integrity of the system by following user-supplied rules.
 
 * **`Examples update`**
 
 Error example when creating entities will work when updating because when updating we can provide full properties (5 in the example above) or only properties we want to update
 
-This is correct file structure for an update but would result in failure when creating.
+This is the correct file structure for an update but would result in failure when creating.
 
  ```console
     id;type;pressure
@@ -335,7 +399,7 @@ This is correct file structure for an update but would result in failure when cr
     11;Room;200
     12;Room;2500
 ```
-This structure is also correct, only difference would be updating all entities instead of only few.
+This structure is also correct, the only difference would be updating all entities instead of only a few.
 
  ```console
     id;type;temperature;pressure;location
@@ -353,7 +417,7 @@ This structure is also correct, only difference would be updating all entities i
 
 The project seeks to design tools for the best design and implementation of different technological and non-technological solutions that would enable the improvement of all waste management stages, adopting a global approach and particularly focusing on citizen participation in order to build more sustainable, eco-friendly cities.
 
-These 20 highly innovative solutions will be validated in 4 European pilots. The village of Zamudio in Spain, the southerly Greek city of Halandri, the Portuguese municipality of Cascais and the Italian city of Seveso. They are directed towards the monitoring, collection and processing of real data, the creation of decision making tools, the launch of innovative awareness-raising campaigns and prevention campaigns, the introduction of serious games and innovative educational materials to ease the co-creation of new solutions (citizen science), the design of mobile applications to foster collaboration, transparency and mutual learning and the construction of two pilot plants for the treatment of organic waste and nappies with the aim of making progress in the construction of smart cities and laying the foundations of the circular economy.
+These 20 highly innovative solutions will be validated in 4 European pilots. The village of Zamudio in Spain, the southerly Greek city of Halandri, the Portuguese municipality of Cascais and the Italian city of Seveso. They are directed towards the monitoring, collection, and processing of real data, the creation of decision-making tools, the launch of innovative awareness-raising campaigns and prevention campaigns, the introduction of serious games and innovative educational materials to ease the co-creation of new solutions (citizen science), the design of mobile applications to foster collaboration, transparency, and mutual learning and the construction of two pilot plants for the treatment of organic waste and nappies with the aim of making progress in the construction of smart cities and laying the foundations of the circular economy.
 
 The Circular Economy is one of the seven emblematic initiatives that are part of the Europe 2020 strategy, which aims to generate smart, sustainable and conciliatory growth. Today it is Europe’s main strategy for generating growth and jobs, with the backing of the European Parliament and the European Council.
 
