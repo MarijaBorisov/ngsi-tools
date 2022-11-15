@@ -16,7 +16,7 @@
     "csv-parse": "^4.4.6",
     "csvtojson": "^2.0.3",
     "debug": "~2.6.9",
-    "ejs": "~2.5.7",
+    "ejs": "~3.1.7",
     "express": "^4.16.4",
     "http-errors": "~1.6.2",
     "moment": "^2.24.0",
