@@ -1,7 +1,7 @@
 const app = require('../app');
 const config = require('../config/index');
 const fs = require('fs');
-
+const path = require('path')
 log = config.log();
 
 if (!config.run_server_protocol === 'https' || !config.run_server_protocol === 'http')
@@ -16,12 +16,12 @@ if (config.run_server_protocol === 'http') {
   var server = protocol.createServer(app);
 } else {
   var server = protocol.createServer({
-    key: fs.readFileSync('./privateKey.key'),
-    cert: fs.readFileSync('./certificate.crt')
+    key: fs.readFileSync(path.join(__dirname, '../privateKey.key')),
+    cert: fs.readFileSync(path.join(__dirname, '../certificate.crt'))
   }, app);
 }
 
-server.timeout = 20*60*1000;
+server.timeout = 20 * 60 * 1000;
 server.listen(port);
 server.on('listening', () => {
   log.info(`NGSIConnector is listening on ${server.address().port} in ${app.get('env')} mode.`)
